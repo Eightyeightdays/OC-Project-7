@@ -2,12 +2,15 @@ const Post = require("../models/postModel");
 const fs = require("fs");
 
 exports.create = (req, res) => {
+    console.log(req.body)
     delete req.body._id;
     const postObject = req.body;
     const post = new Post({
         ...postObject,
+        userId: "DAVE"//req.auth.userId,    add the user id to every post
         // imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
     });
+    
     post.save()
         .then(() => res.status(201).json({message: "Post created"}))
         .catch(error => res.status(400).json({error}))
