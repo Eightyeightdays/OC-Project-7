@@ -24,7 +24,7 @@ exports.getById = (req, res) => {
 
 exports.getAll = (req, res) => {
     Post.find()
-        .then(posts => res.status(200).json({posts: posts}))
+        .then(posts => res.status(200).json(posts))
         .catch(error => res.status(400).json({error}))
 }
 
