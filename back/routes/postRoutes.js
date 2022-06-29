@@ -5,11 +5,12 @@ const multer = require("../middleware/multer-config");
 
 const postController = require("../controllers/postController");
 
-router.post("/posts",  multer, postController.create);       // Create  // TOOK OUT AUTH TO TEST
+// TOOK OUT AUTH TO TEST
+router.post("/posts",  multer, postController.create);       // Create  
 router.get("/posts/:id", postController.getById);           // Get single post
 router.get("/posts", postController.getAll);                // Get all posts
-router.put("/posts/:id", auth, multer, postController.modify);    // Edit post
-router.post("/posts/:id/like", auth, postController.likePost);    // Like post
-router.delete("/posts/:id", auth, multer, postController.delete); // Delete post
+router.put("/posts/:id", multer, postController.modify);    // Edit post
+router.post("/posts/:id/like", postController.likePost);    // Like post
+router.delete("/posts/:id", multer, postController.delete); // Delete post
 
 module.exports = router;

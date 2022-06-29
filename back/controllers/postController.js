@@ -47,7 +47,10 @@ exports.modify = (req, res) => {
 
 exports.likePost = (req, res) => {
     const postId = req.params.id;
-    const userId = req.auth.userId;
+    // const userId = req.auth.userId; 
+    // TESTING
+    const userId = "DAVE"
+    ////
 
     Post.findOne({_id: postId})
         .then(post => {
@@ -101,3 +104,4 @@ exports.delete = (req, res) =>{
         })
         .catch(error => res.status(500).json({error}));
 }
+
