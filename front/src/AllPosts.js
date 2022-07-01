@@ -1,4 +1,4 @@
-
+import DeleteButton from "./deleteButton"
 import LikeButton from "./likeButton"
 import { styles } from "./styles"
 
@@ -10,13 +10,15 @@ export default function Post(props){
     return(
         <div className="post" style={styles.post}>
             {Object.keys(props.post).map((key, index) =>{
-                return(
-                <div className="postItem" key={index}>{key}: {props.post[key]}</div>
-                )
+                if(key === "_id"){
+                    return (<div id={props.post[key]} key={index}>{key}: {props.post[key]}</div>)   // add the post id to the id tag for delete/modify
+                }else{
+                   return( <div className="postItem" key={index}>{key}: {props.post[key]}</div>) 
+                }
             })}
             <LikeButton id={props.post._id}/>
-            {userId === post.userId && <button type="submit" name="deletePost">Delete post</button>}
             {userId === post.userId && <button type="submit" name="modifyPost">Modify post</button>}
+            {userId === post.userId && <DeleteButton id={props.post._id} />}
         </div>
     )
 }

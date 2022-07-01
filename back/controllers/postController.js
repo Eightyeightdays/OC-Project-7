@@ -90,10 +90,9 @@ exports.likePost = (req, res) => {
 exports.delete = (req, res) =>{
     Post.findOne({_id: req.params.id})
         .then(post =>{
-            console.log(req.params.id)
-            if(req.auth.userId !== post.userId){
-                return res.status(403).json({message: "You don't have permission to delete this post"})
-            }
+            // if(req.auth.userId !== post.userId){
+            //     return res.status(403).json({message: "You don't have permission to delete this post"})
+            // }
 
             // const filename = post.imageUrl.split("/images/")[1];                 // RETEST ONCE THE FRONT END IS BUILT
             // fs.unlink(`images/${filename}`, ()=>{

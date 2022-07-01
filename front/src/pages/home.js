@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
-import Post from "../post.js";
+import Post from "../AllPosts.js";
 import { Link, Outlet } from "react-router-dom";
+import CreatePost from "./createPost.js";
 
 export default function Home(){
     const [posts, setPosts] = useState();
@@ -19,11 +20,11 @@ export default function Home(){
         <>            
             <div id="header">
                 <h1>GROUPOMANIA</h1>
-                <button type="submit" name="createPost">Create New Post</button> | {" "}
+                <Link to={"/post/new"}>Create New Post</Link> | {" "}
                 <button type="submit">LOGOUT</button>
             </div>
             
-            {posts && posts.map((item, index)=>(
+            {posts && posts.sort((a,b)=> b.datePosted - a.datePosted).map((item, index)=>(
                 <Link to={`/post/${item._id}`} key={index}>
                     <Post post={item} />
                 </Link>
