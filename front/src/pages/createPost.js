@@ -5,16 +5,16 @@ export default function CreatePost(){
     
     async function sendPost(){
         const form = document.getElementById("postForm");
-            const postData = Object.fromEntries(new FormData(form).entries());
-            
-            const settings = {
-                method: "POST",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(postData)
-            };
+        const postData = Object.fromEntries(new FormData(form).entries());
+        
+        const settings = {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(postData)
+        };
 
         await fetch("http://localhost:3001/posts", settings)
         .then(response => response.json())
