@@ -1,9 +1,8 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import React from "react";
 
 export default function DeleteButton(props){
     const navigate = useNavigate();
-    const[post, setPost] = useState();
 
     const handleDelete = ()=>{
         const settings = {
@@ -11,14 +10,17 @@ export default function DeleteButton(props){
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
+                "Authorization": props.token,
             },
         };
 
-        fetch(`http://localhost:3001/posts/${props.id}`, settings)
+        fetch(`http://localhost:3001/posts/${props.postId}`, settings)
         .then(response => {
             response.json();
-            alert("Post deleted");
-            navigate("/home");
+            if(response.status === 200){
+                navigate("/home");
+                alert("Post deleted");
+                }
             })
         };
         

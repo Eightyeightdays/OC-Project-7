@@ -1,9 +1,12 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { authContext } from "../App";
 
 export default function CreatePost(){
     const [post, setPost] = useState();
     const navigate = useNavigate();
+    const {auth} = useContext(authContext);
     
     async function handlePost(){
         const form = document.getElementById("postForm");
@@ -15,6 +18,7 @@ export default function CreatePost(){
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
+                "Authorization": auth.token,
             },
             body: JSON.stringify(postData)
         };

@@ -1,10 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 export default function LikeButton(props){
     const [like, setLike] = useState();
 
     function voteOnPost(choice){
-        return async function(){
+        return async function(){    // DO I REALLY NEED THIS???
             let vote;
             if(choice === "like"){
                 vote = {vote: "like"};
@@ -16,10 +16,11 @@ export default function LikeButton(props){
                         headers: {
                             "Accept": "application/json",
                             "Content-Type": "application/json",
+                            "Authorization" : props.token,
                         },
                         body: JSON.stringify(vote)
                     };
-            await fetch(`http://localhost:3001/posts/${props.id}/like`, settings)
+            await fetch(`http://localhost:3001/posts/${props.postId}/like`, settings)
                         .then(response => response.json()) 
                         .then(response => setLike(response))   
             }

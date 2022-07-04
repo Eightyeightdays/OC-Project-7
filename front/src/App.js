@@ -1,55 +1,37 @@
-import { Outlet, useNavigate } from "react-router-dom";
-import React, { useState, createContext } from "react";
+import {BrowserRouter as Router , Routes, Route} from "react-router-dom";
+import React, { createContext, useState } from "react";
+
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import DisplaySinglePost from "./pages/DisplaySinglePost";
+import CreatePost from "./pages/CreatePost";
+import RequireAuth from "./RequireAuth";
+import ModifyPost from "./pages/ModifyPost";
 
 export const authContext = createContext();
-const style = {
-    background: "lemonchiffon",
-    padding: "1em",
-    width: "min-content",
-    borderRadius: "10px",
-    margin: "2em"
-}
 
 export default function App(){
-    const [credentials, setCredentials] = useState({userId: null, token: null, loggedIn: false});
-    const navigate = useNavigate();
+    const [auth, setAuth] = useState({userId: null, token: null});
 
-    function handleLogin(){
-        const form = document.getElementById("loginForm");
-        const user = Object.fromEntries(new FormData(form).entries());
-        const settings = {
-        method: "POST",
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user)
-        };
-    
-        fetch("http://localhost:3001/auth/login", settings)
-        .then(response => response.json())
-        .then(data =>{
-            if(data.token){
-            // setCredentials({...data, loggedIn: true});  // Add bearer token to state variable
-            }
-            navigate("/home");
-        })
-    }
-    
     return(
-        <>
-            <authContext.Provider value={{credentials, setCredentials}}>
-                <h1>GROUPOMANIA</h1>
-                <div style={style}>
-                    <form id="loginForm">
-                        EMAIL:<input type="text" name="email" />
-                        PASSWORD:<input type="password" name="password" />
-                    </form> 
-                    <button type="submit" onClick={handleLogin}>LOGIN</button>
-                    {/* {credentials.loggedIn && <p>User: {credentials.userId} logged in</p>} */}
-                 </div>
-                <Outlet />
-            </authContext.Provider>
-        </>
+        <authContext.Provider value={{auth, setAuth}}>
+            <Router>
+                <Routes>
+                    <Route path="*" element={<h1>Page not found</h1>} />
+                    <Route exact path="/" element={<Login />} />
+                    <Route element ={<RequireAuth />}>
+                        <Route path="/home" element={<Home />}/>
+                        <Route path="/post/:postId" element={<DisplaySinglePost />} />
+                        <Route path="/post/:postId/edit" element={<ModifyPost />} />
+                        <Route path="/post/new" element={<CreatePost />} />
+                    </Route>
+                </Routes>
+            </Router>
+        </authContext.Provider>
     )
 }
+
+
+
+
+

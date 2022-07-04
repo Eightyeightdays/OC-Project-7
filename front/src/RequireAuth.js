@@ -1,20 +1,19 @@
+import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useContext } from "react";
-import { authContext } from "./pages/login";
-
+import { authContext } from "./App";
 
 
 export default function RequireAuth(){
-const credentials = useContext(authContext);
-    console.log(credentials)
-    if(!credentials.loggedIn){
+    const {auth} = useContext(authContext);
+
+    if(!auth.token){
         return(
-            <Navigate to="/login" state={{ replace: true }} />
+            <Navigate to="/" state={{ replace: true }} />
         )
     }else{
         return (
             <Outlet />
         )
     }
-    
 }

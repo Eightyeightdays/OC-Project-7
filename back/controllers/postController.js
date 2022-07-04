@@ -7,7 +7,7 @@ exports.create = (req, res) => {
     const postObject = req.body;
     const post = new Post({
         ...postObject,
-        userId: "DAVE"//req.auth.userId,    add the user id to every post
+        userId: req.auth.userId    // add the user id to every post
         // imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
     });
     
@@ -47,11 +47,8 @@ exports.modify = (req, res) => {
 
 exports.likePost = (req, res) => {
     const postId = req.params.id;
-    // const userId = req.auth.userId; 
-    // TESTING
-    const userId = "DAVE"
-    ////
-
+    const userId = req.auth.userId; 
+    
     Post.findOne({_id: postId})
         .then(post => {
             if(req.body.vote === "like"){
