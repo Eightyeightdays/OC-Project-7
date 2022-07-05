@@ -2,13 +2,11 @@ const Post = require("../models/postModel");
 const fs = require("fs");
 
 exports.create = (req, res) => {
-    console.log(req.body)
-    delete req.body._id;
     const postObject = req.body;
     const post = new Post({
         ...postObject,
-        userId: req.auth.userId    // add the user id to every post
-        // imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+        userId: req.auth.userId,    // add the user id to every post
+        imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
     });
     
     post.save()

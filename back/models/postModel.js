@@ -11,7 +11,7 @@ const post = mongoose.Schema({
     usersLiked: {type: Array, required: true},
     usersDisliked: {type: Array, required: true},
     datePosted: {type: String, required: true, default: " "},
-    dateEdited: {type: String, required: true, default: null},
+    dateEdited: {type: String, default: null},
 })
 
 module.exports = mongoose.model("Post", post);

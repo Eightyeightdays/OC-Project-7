@@ -1,3 +1,10 @@
+const image ={
+    width: "400px",
+    height: "400px",
+    objectFit: "cover",
+    borderRadius: "5%"
+}
+
 const post ={
     background: "lightsteelblue",
     margin: "1em",
@@ -21,5 +28,6 @@ const displaySinglePost ={
 export const styles = {
     post: post,
     displaySinglePost: displaySinglePost,
+    image: image,
 }
 

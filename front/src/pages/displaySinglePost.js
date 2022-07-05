@@ -40,6 +40,7 @@ export default function DisplaySinglePost(){
                 <div style={styles.post}>
                     <p>User: {post.userId}</p>
                     <p>Title: {post.title}</p>
+                    <img style={styles.image} className="postImage" src={post.imageUrl}></img>
                     <p>Message: {post.content}</p>
                     <p>Likes: {post.likes}</p>
                     <p>Disikes: {post.dislikes}</p>

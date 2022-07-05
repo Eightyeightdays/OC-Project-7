@@ -20,6 +20,10 @@ export default function Post(props){
                         return(
                             <div className="postItem" key={index}>{key}: {props.post[key]}</div>
                         )
+                    }else if(key === "imageUrl"){
+                        return(
+                            <img className="postImage" style={styles.image} src={props.post[key]}></img>
+                        )
                     }else if(key !== "_id" && key!== "usersLiked" && key!== "usersDisliked" && key!=="__v" && key!=="dateEdited"){  // only show the relevant fields
                         return( <div className="postItem" key={index}>{key}: {props.post[key]}</div>) 
                     }else{

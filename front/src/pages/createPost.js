@@ -10,17 +10,16 @@ export default function CreatePost(){
     
     async function handlePost(){
         const form = document.getElementById("postForm");
-        const postData = Object.fromEntries(new FormData(form).entries());
-        postData.datePosted = Date.now();
+        const formData = new FormData(form);
+        formData.append("datePosted", Date.now());
 
         const settings = {
             method: "POST",
             headers: {
                 "Accept": "application/json",
-                "Content-Type": "application/json",
                 "Authorization": auth.token,
             },
-            body: JSON.stringify(postData)
+            body: formData,
         };
 
         await fetch("http://localhost:3001/posts", settings)
@@ -33,9 +32,10 @@ export default function CreatePost(){
     
     return(
         <>
-            <form id="postForm">
+            <form id="postForm" encType="multipart/form-data">
                 TITLE<input type="text" name="title" />
                 CONTENT<input type="text" name="content" />
+                IMAGE<input type="file" name="image" />
             </form>
             <button type="submit" onClick={handlePost}>CREATE POST</button>
         </>

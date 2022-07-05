@@ -5,8 +5,8 @@ const multer = require("../middleware/multer-config");
 
 const postController = require("../controllers/postController");
 
-// TOOK OUT AUTH TO TEST
-router.post("/posts",  auth, multer, postController.create);       // Create  
+
+router.post("/posts",  auth, multer, postController.create);      // Create  
 router.get("/posts/:id", auth, postController.getById);           // Get single post
 router.get("/posts", auth, postController.getAll);                // Get all posts
 router.put("/posts/:id", auth, multer, postController.modify);    // Edit post
