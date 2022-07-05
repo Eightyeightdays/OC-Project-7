@@ -39,7 +39,7 @@ exports.modify = (req, res) => {
         } : {...req.body};
         
            
-        Post.updateOne({_id: req.params.id}, {...updatedPost, _id: req.params.id})           // NOTE: req.params.id = req.body._id
+        Post.updateOne({_id: req.params.id}, {...updatedPost, _id: req.params.id})   // NOTE: req.params.id = req.body._id
         .then(()=> res.status(200).json({message: "Post updated"}))
         .catch(error => res.status(400).json({error}))
     }
@@ -87,9 +87,9 @@ exports.likePost = (req, res) => {
 exports.delete = (req, res) =>{
     Post.findOne({_id: req.params.id})
         .then(post =>{
-            // if(req.auth.userId !== post.userId){
-            //     return res.status(403).json({message: "You don't have permission to delete this post"})
-            // }
+            if(req.auth.userId !== post.userId){
+                return res.status(403).json({message: "You don't have permission to delete this post"})
+            }
 
             // const filename = post.imageUrl.split("/images/")[1];                 // RETEST ONCE THE FRONT END IS BUILT
             // fs.unlink(`images/${filename}`, ()=>{
@@ -100,4 +100,3 @@ exports.delete = (req, res) =>{
         })
         .catch(error => res.status(500).json({error}));
 }
-

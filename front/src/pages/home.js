@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
-import Post from "../AllPosts.js";
+import Post from "../DisplayAllPosts.js";
 import { Link, Outlet } from "react-router-dom";
 import { useContext } from "react";
 import { authContext } from "../App";
 import LogOutButton from "../buttons/LogOutButton.js";
+
 
 export default function Home(){
     const [posts, setPosts] = useState();
@@ -30,6 +31,7 @@ export default function Home(){
 
     return(
         <>      
+     
             <div id="header">
                 <h1>GROUPOMANIA</h1>
                 <Link to={"/post/new"}>Create New Post</Link> | {" "}
@@ -37,11 +39,9 @@ export default function Home(){
             </div>
             
             {posts && posts.sort((a,b)=> b.datePosted - a.datePosted).map((item, index)=>(
-                <Link to={`/post/${item._id}`} key={index}>
-                    <Post post={item} />
-                </Link>
+                <Post key={index} post={item} />
             ))}
-
+            
             <Outlet />
         </>
     ) 
