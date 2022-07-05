@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { authContext } from "../App";
 import DeleteButton from "../buttons/DeleteButton"
 import LikeButton from "../buttons/LikeButton"
-// import ModifyButton from "../buttons/ModifyButton"
+import ModifyButton from "../buttons/ModifyButton"
 import { styles } from "../styles";
  
 export default function DisplaySinglePost(){
@@ -43,9 +43,11 @@ export default function DisplaySinglePost(){
                     <p>Message: {post.content}</p>
                     <p>Likes: {post.likes}</p>
                     <p>Disikes: {post.dislikes}</p>
+                    <p>Date posted: {post.datePosted}</p>
+                    {post.dateEdited !== null && <p>Date edited: {post.dateEdited}</p>}
                     <LikeButton token={token} postId={post._id}/>
-                    {userId === post.userId && <Link to={{pathname: `/post/${post._id}/edit`}}>Edit Post</Link>}
-                    {/* {userId === post.userId && <ModifyButton postId={post._id} />} */}
+                    {/* {userId === post.userId && <Link to={{pathname: `/post/${post._id}/edit`}}>Edit Post</Link>} */}
+                    {userId === post.userId && <ModifyButton postId={post._id} />}
                     {userId === post.userId && <DeleteButton token={token} postId={post._id} />}
                 </div>
             }

@@ -5,7 +5,7 @@ const post ={
     fontSize: "30px",
     padding: "1em",
     borderRadius: "10px",
-    width: "50vw"
+    width: "max-content"
 }
 
 const displaySinglePost ={
