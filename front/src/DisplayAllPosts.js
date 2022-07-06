@@ -1,11 +1,9 @@
-import DeleteButton from "./buttons/DeleteButton"
 import LikeButton from "./buttons/LikeButton"
-import ModifyButton from "./buttons/ModifyButton"
+import EditAndDeleteButton from "./buttons/EditAndDeleteButton";
 import { styles } from "./styles"
 import { authContext } from "./App";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-
 
 export default function Post(props){
     const {auth} = useContext(authContext);
@@ -32,9 +30,7 @@ export default function Post(props){
                 })}
             </Link>
             <LikeButton token={token} postId={props.post._id}/>
-            {userId === props.post.userId && <ModifyButton postId={props.post._id} />} 
-            {/* {userId === props.post.userId && <Link to={{pathname: `/post/${props.post._id}/edit`}}>Edit Post</Link>} */}
-            {userId === props.post.userId && <DeleteButton userId={userId} token={token} postId={props.post._id} />}
+            <EditAndDeleteButton userId={userId} token={token} postId={props.post._id} />
         </div>
     )
 }

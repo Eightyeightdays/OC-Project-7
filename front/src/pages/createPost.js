@@ -8,11 +8,10 @@ export default function CreatePost(){
     const navigate = useNavigate();
     const {auth} = useContext(authContext);
     
-    async function handlePost(){
+    function handlePost(){
         const form = document.getElementById("postForm");
         const formData = new FormData(form);
-        // formData.append("datePosted", Date.now());
-        formData.append("userId", auth.userId);
+        formData.append("userId", auth.userId); // can replace with req.auth.userId on back end
 
         const settings = {
             method: "POST",
@@ -23,7 +22,7 @@ export default function CreatePost(){
             body: formData,
         };
 
-        await fetch("http://localhost:3001/posts", settings)
+        fetch("http://localhost:3001/posts", settings)
         .then(response => response.json())
         .then(data => {
             setPost(data);
@@ -34,8 +33,8 @@ export default function CreatePost(){
     return(
         <>
             <form id="postForm" encType="multipart/form-data">
-                TITLE<input type="text" name="title" />
-                CONTENT<input type="text" name="content" />
+                TITLE<input type="text" name="title" maxLength="50"/>
+                CONTENT<input type="text" name="content" maxLength="1500" />
                 IMAGE<input type="file" name="image" />
             </form>
             <button type="submit" onClick={handlePost}>CREATE POST</button>

@@ -24,16 +24,17 @@ export default function EditPost(){
     }, [])
     
     function handleEdit(){
-        const postForm = document.getElementById("postForm");
-        const updatedPost = Object.fromEntries(new FormData(postForm).entries());
+        const form = document.getElementById("postForm");
+        const formData = new FormData(form);
+        formData.append("userId", auth.userId);
+
         const settings = {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
-                "Content-Type": "application/json",
                 "Authorization" : auth.token,
             },
-            body: JSON.stringify({...updatedPost, userId: auth.userId})
+            body: formData,
         };
     
         fetch(`http://localhost:3001/posts/${params.postId}`, settings)
@@ -47,9 +48,11 @@ export default function EditPost(){
     return(
         <>
             {post && <>
-            <form id="postForm">
+            <form id="postForm" encType="multipart/form-data">
                     TITLE<input type="text" name="title" defaultValue={post.title}/>
                     CONTENT<input type="text" name="content" defaultValue={post.content}/>
+                    <img alt="" src={post.imageUrl}></img>
+                    IMAGE<input type="file" name="image"/>
                 </form>
                 <button type="submit" onClick={handleEdit}>EDIT POST</button>
             </>}

@@ -1,8 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import React from "react";
 
-export default function DeleteButton(props){
+export default function EditAndDeleteButton(props){
     const navigate = useNavigate();
+    
+    function handleEdit(){
+        let url = `/post/${props.postId}/edit`;
+        navigate(url);
+    }
 
     const handleDelete = ()=>{
         const settings = {
@@ -24,8 +29,11 @@ export default function DeleteButton(props){
                 }
             })
         };
-        
+
     return(
-      <button type="submit" name="deletePost" onClick={handleDelete}>DELETE POST</button>
+        <>
+            <button type="submit" name="modifyPost" onClick={handleEdit}>EDIT post</button>
+            <button type="submit" name="deletePost" onClick={handleDelete}>DELETE POST</button>
+        </>
     )
 }

@@ -1,12 +1,11 @@
 import React, { useEffect, useState, useCallback, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import { authContext } from "../App";
-import DeleteButton from "../buttons/DeleteButton"
 import LikeButton from "../buttons/LikeButton"
 import LogOutButton from "../buttons/LogOutButton";
-import ModifyButton from "../buttons/ModifyButton"
+import EditAndDeleteButton from "../buttons/EditAndDeleteButton";
 import { styles } from "../styles";
- 
+
 export default function DisplaySinglePost(){
     const [post, setPost] = useState();
     const {auth} = useContext(authContext);
@@ -35,7 +34,7 @@ export default function DisplaySinglePost(){
     
        return(
         <>
-        <Link to="/home">HOME</Link>
+        <Link to="/home">HOME</Link> | {" "}
         <LogOutButton />
         <div style={styles.displaySinglePost}>
             {post && 
@@ -47,11 +46,9 @@ export default function DisplaySinglePost(){
                     <p>Likes: {post.likes}</p>
                     <p>Disikes: {post.dislikes}</p>
                     <p>Date posted: {post.displayDatePosted}</p>
-                    {post.displayDateEdited && <p>Date edited: {post.dateEdited}</p>}
+                    {post.displayDateEdited && <p>Date edited: {post.displayDateEdited}</p>}
                     <LikeButton token={token} postId={post._id}/>
-                    {/* {userId === post.userId && <Link to={{pathname: `/post/${post._id}/edit`}}>Edit Post</Link>} */}
-                    {userId === post.userId && <ModifyButton postId={post._id} />}
-                    {userId === post.userId && <DeleteButton userId={userId} token={token} postId={post._id} />}
+                    <EditAndDeleteButton userId={userId} token={token} postId={params.postId} />
                 </div>
             }
         </div>

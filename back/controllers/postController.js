@@ -34,7 +34,7 @@ exports.modify = (req, res) => {
     }else{
         const updatedPost = req.file ?
         {
-            ...JSON.parse(req.body.post),
+            ...req.body,
             displayDateEdited: moment().format('Do MMMM YYYY, h:mm a'),
             imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
         } : {...req.body, displayDateEdited: moment().format('Do MMMM YYYY, h:mm a')};
