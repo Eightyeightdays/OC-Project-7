@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { authContext } from "../App";
 import DeleteButton from "../buttons/DeleteButton"
 import LikeButton from "../buttons/LikeButton"
+import LogOutButton from "../buttons/LogOutButton";
 import ModifyButton from "../buttons/ModifyButton"
 import { styles } from "../styles";
  
@@ -35,6 +36,7 @@ export default function DisplaySinglePost(){
        return(
         <>
         <Link to="/home">HOME</Link>
+        <LogOutButton />
         <div style={styles.displaySinglePost}>
             {post && 
                 <div style={styles.post}>

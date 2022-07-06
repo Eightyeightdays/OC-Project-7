@@ -23,11 +23,11 @@ export default function Home(){
         fetch("http://localhost:3001/posts", settings)
             .then(response => response.json())
             .then(response => setPosts(response))
-    }, [])
+    }, [posts])
 
     useEffect(() => {
         getAllPosts();
-    }, [getAllPosts]);
+    }, []);
 
     return(
         <>      

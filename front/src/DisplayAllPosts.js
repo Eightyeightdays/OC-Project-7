@@ -14,7 +14,7 @@ export default function Post(props){
 
     return(
         <div className="post" style={styles.post}>
-            <Link to={{pathname: `/post/${props.post._id}/`}}>
+            <Link className="postLink" style={styles.postLink} to={{pathname: `/post/${props.post._id}/`}}>
                 {Object.keys(props.post).map((key, index)=>{
                     if(key === "dateEdited" && props.post[key] !== null){   // if the post has been edited show the edit date
                         return(

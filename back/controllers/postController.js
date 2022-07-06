@@ -89,12 +89,12 @@ exports.delete = (req, res) =>{
                 return res.status(403).json({message: "You don't have permission to delete this post"})
             }
 
-            // const filename = post.imageUrl.split("/images/")[1];                 // RETEST ONCE THE FRONT END IS BUILT
-            // fs.unlink(`images/${filename}`, ()=>{
+            const filename = post.imageUrl.split("/images/")[1];                 // RETEST ONCE THE FRONT END IS BUILT
+            fs.unlink(`images/${filename}`, ()=>{
                 Post.deleteOne({_id: req.params.id})
                 .then(()=> res.status(200).json({message: "Post deleted"}))
                 .catch(error => res.status(400).json({error}))
-            // });
+            });
         })
         .catch(error => res.status(500).json({error}));
 }
