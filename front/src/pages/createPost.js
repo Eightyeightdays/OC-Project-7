@@ -11,7 +11,8 @@ export default function CreatePost(){
     async function handlePost(){
         const form = document.getElementById("postForm");
         const formData = new FormData(form);
-        formData.append("datePosted", Date.now());
+        // formData.append("datePosted", Date.now());
+        formData.append("userId", auth.userId);
 
         const settings = {
             method: "POST",

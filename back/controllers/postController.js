@@ -1,11 +1,12 @@
 const Post = require("../models/postModel");
 const fs = require("fs");
+const moment = require('moment'); 
 
 exports.create = (req, res) => {
     const postObject = req.body;
     const post = new Post({
         ...postObject,
-        userId: req.auth.userId,    // add the user id to every post
+        datePosted: moment().format('MMMM Do YYYY, h:mm:ss a'),
         imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
     });
     
@@ -33,8 +34,9 @@ exports.modify = (req, res) => {
         const updatedPost = req.file ?
         {
             ...JSON.parse(req.body.post),
+            dateEdited: moment().format('MMMM Do YYYY, h:mm:ss a'),
             imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-        } : {...req.body};
+        } : {...req.body, dateEdited: moment().format('MMMM Do YYYY, h:mm:ss a')};
         
            
         Post.updateOne({_id: req.params.id}, {...updatedPost, _id: req.params.id})   // NOTE: req.params.id = req.body._id
@@ -88,8 +90,7 @@ exports.delete = (req, res) =>{
             if(req.auth.userId !== post.userId){
                 return res.status(403).json({message: "You don't have permission to delete this post"})
             }
-
-            const filename = post.imageUrl.split("/images/")[1];                 // RETEST ONCE THE FRONT END IS BUILT
+            const filename = post.imageUrl.split("/images/")[1];                 
             fs.unlink(`images/${filename}`, ()=>{
                 Post.deleteOne({_id: req.params.id})
                 .then(()=> res.status(200).json({message: "Post deleted"}))

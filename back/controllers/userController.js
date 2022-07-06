@@ -1,3 +1,4 @@
+require("dotenv").config({path: "../.env"});
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 const Post = require("../models/postModel");
@@ -16,7 +17,7 @@ exports.getAll = (req, res) => {
 exports.getById = (req, res) => {
     User.findOne({_id: req.params.id})
         .then(user => res.status(200).json({user}))
-        .catch(error => res.status(404).json({message: "User not found", error: error}))
+        .catch(error => res.status(404).json({error}))
 }
 
 exports.getPosts = (req, res) => {
@@ -43,21 +44,21 @@ exports.loginUser = (req, res) =>{
         .then(user =>{
 
             if(!user){
-                return res.status(404).json({error: "User not found"});
+                return res.status(404).json({error});
             }
 
             bcrypt.compare(req.body.password, user.password)
                 .then(valid =>{
 
                     if(!valid){
-                        return res.status(401).json({error: "Incorrect password"});
+                        return res.status(401).json({error});
                     }
 
                     res.status(200).json({
                         userId: user._id, 
                         token: jwt.sign(
                             {userId: user._id}, 
-                            "SECRET_PHRASE",
+                            process.env.SECRET_PHRASE,
                             {expiresIn: "24h"}
                         )
                     });

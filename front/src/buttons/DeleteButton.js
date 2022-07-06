@@ -12,6 +12,7 @@ export default function DeleteButton(props){
                 "Content-Type": "application/json",
                 "Authorization": props.token,
             },
+            body: JSON.stringify({userId:props.userId})
         };
 
         fetch(`http://localhost:3001/posts/${props.postId}`, settings)

@@ -33,7 +33,7 @@ export default function EditPost(){
                 "Content-Type": "application/json",
                 "Authorization" : auth.token,
             },
-            body: JSON.stringify({...updatedPost, userId: auth.userId, dateEdited: Date.now()})
+            body: JSON.stringify({...updatedPost, userId: auth.userId})
         };
     
         fetch(`http://localhost:3001/posts/${params.postId}`, settings)

@@ -42,7 +42,7 @@ export default function DisplaySinglePost(){
                 <div style={styles.post}>
                     <p>User: {post.userId}</p>
                     <p>Title: {post.title}</p>
-                    <img style={styles.image} className="postImage" src={post.imageUrl}></img>
+                    <img alt="" style={styles.image} className="postImage" src={post.imageUrl}></img>
                     <p>Message: {post.content}</p>
                     <p>Likes: {post.likes}</p>
                     <p>Disikes: {post.dislikes}</p>
@@ -51,7 +51,7 @@ export default function DisplaySinglePost(){
                     <LikeButton token={token} postId={post._id}/>
                     {/* {userId === post.userId && <Link to={{pathname: `/post/${post._id}/edit`}}>Edit Post</Link>} */}
                     {userId === post.userId && <ModifyButton postId={post._id} />}
-                    {userId === post.userId && <DeleteButton token={token} postId={post._id} />}
+                    {userId === post.userId && <DeleteButton userId={userId} token={token} postId={post._id} />}
                 </div>
             }
         </div>

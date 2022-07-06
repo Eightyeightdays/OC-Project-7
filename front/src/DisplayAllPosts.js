@@ -22,7 +22,7 @@ export default function Post(props){
                         )
                     }else if(key === "imageUrl"){
                         return(
-                            <img className="postImage" style={styles.image} src={props.post[key]}></img>
+                            <img alt="" key={index} className="postImage" style={styles.image} src={props.post[key]}></img>
                         )
                     }else if(key !== "_id" && key!== "usersLiked" && key!== "usersDisliked" && key!=="__v" && key!=="dateEdited"){  // only show the relevant fields
                         return( <div className="postItem" key={index}>{key}: {props.post[key]}</div>) 
@@ -34,7 +34,7 @@ export default function Post(props){
             <LikeButton token={token} postId={props.post._id}/>
             {userId === props.post.userId && <ModifyButton postId={props.post._id} />} 
             {/* {userId === props.post.userId && <Link to={{pathname: `/post/${props.post._id}/edit`}}>Edit Post</Link>} */}
-            {userId === props.post.userId && <DeleteButton token={token} postId={props.post._id} />}
+            {userId === props.post.userId && <DeleteButton userId={userId} token={token} postId={props.post._id} />}
         </div>
     )
 }
