@@ -10,8 +10,9 @@ const post = mongoose.Schema({
     comments: {type: Array, required: true},                                // EXTRA
     usersLiked: {type: Array, required: true},
     usersDisliked: {type: Array, required: true},
-    datePosted: {type: String, required: true, default: " "},
-    dateEdited: {type: String, default: null},
+    datePosted: {type: Number, required: true, default: " "},
+    displayDatePosted: {type: String, required: true},
+    displayDateEdited: {type: String, default: null},
 })
 
 module.exports = mongoose.model("Post", post);

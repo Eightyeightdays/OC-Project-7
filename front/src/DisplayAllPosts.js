@@ -16,7 +16,7 @@ export default function Post(props){
         <div className="post" style={styles.post}>
             <Link className="postLink" style={styles.postLink} to={{pathname: `/post/${props.post._id}/`}}>
                 {Object.keys(props.post).map((key, index)=>{
-                    if(key === "dateEdited" && props.post[key] !== null){   // if the post has been edited show the edit date
+                    if(key === "displayDateEdited" && props.post[key] !== null){   // if the post has been edited show the edit date
                         return(
                             <div className="postItem" key={index}>{key}: {props.post[key]}</div>
                         )
@@ -24,7 +24,7 @@ export default function Post(props){
                         return(
                             <img alt="" key={index} className="postImage" style={styles.image} src={props.post[key]}></img>
                         )
-                    }else if(key !== "_id" && key!== "usersLiked" && key!== "usersDisliked" && key!=="__v" && key!=="dateEdited"){  // only show the relevant fields
+                    }else if(key !== "_id" && key!== "usersLiked" && key!== "usersDisliked" && key!=="__v" && key!=="dateEdited" && key!=="datePosted" && key!== "displayDateEdited"){  // only show the relevant fields
                         return( <div className="postItem" key={index}>{key}: {props.post[key]}</div>) 
                     }else{
                         return;

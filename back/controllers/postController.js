@@ -6,7 +6,8 @@ exports.create = (req, res) => {
     const postObject = req.body;
     const post = new Post({
         ...postObject,
-        datePosted: moment().format('MMMM Do YYYY, h:mm:ss a'),
+        datePosted: Date.now(),
+        displayDatePosted: moment().format('Do MMMM YYYY, h:mm a'),
         imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
     });
     
@@ -34,9 +35,9 @@ exports.modify = (req, res) => {
         const updatedPost = req.file ?
         {
             ...JSON.parse(req.body.post),
-            dateEdited: moment().format('MMMM Do YYYY, h:mm:ss a'),
+            displayDateEdited: moment().format('Do MMMM YYYY, h:mm a'),
             imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-        } : {...req.body, dateEdited: moment().format('MMMM Do YYYY, h:mm:ss a')};
+        } : {...req.body, displayDateEdited: moment().format('Do MMMM YYYY, h:mm a')};
         
            
         Post.updateOne({_id: req.params.id}, {...updatedPost, _id: req.params.id})   // NOTE: req.params.id = req.body._id

@@ -46,8 +46,8 @@ export default function DisplaySinglePost(){
                     <p>Message: {post.content}</p>
                     <p>Likes: {post.likes}</p>
                     <p>Disikes: {post.dislikes}</p>
-                    <p>Date posted: {post.datePosted}</p>
-                    {post.dateEdited !== null && <p>Date edited: {post.dateEdited}</p>}
+                    <p>Date posted: {post.displayDatePosted}</p>
+                    {post.displayDateEdited && <p>Date edited: {post.dateEdited}</p>}
                     <LikeButton token={token} postId={post._id}/>
                     {/* {userId === post.userId && <Link to={{pathname: `/post/${post._id}/edit`}}>Edit Post</Link>} */}
                     {userId === post.userId && <ModifyButton postId={post._id} />}
