@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { authContext } from "../App";
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +15,7 @@ const container={
 }
 
 export default function LoginAndSignUp(){
-    
+    const [error, setError] = useState();
     const {auth, setAuth} = useContext(authContext);
     const navigate = useNavigate();
     
@@ -54,23 +54,24 @@ export default function LoginAndSignUp(){
         schema.has().symbols(2, "Password must contain at least 2 symbols");
         let passwordCheck = schema.validate(password, {details: true});
         let emailCheck = emailValidator.validate(email); 
+        let errorMessage ="";
 
         if(passwordCheck !== true && emailCheck !== true){
-            console.log("*** START OF ERROR ***");
-            passwordCheck.forEach(error => console.log(error.message));
-            console.log("Email format incorrect");
-            console.log("*** END OF ERROR ***");
+            passwordCheck.forEach(error => errorMessage+= error.message + " - ");
+            errorMessage+= " Email format incorrect";
+            setError(errorMessage);
+            console.log(errorMessage);
             return;
         }
         else if(passwordCheck !== true){
-            console.log("*** START OF ERROR ***");
-            passwordCheck.forEach(error => console.log(error.message));
-            console.log("*** END OF ERROR ***");
+            passwordCheck.forEach(error => errorMessage+= error.message + " - ");
+            setError(errorMessage);
+            console.log(errorMessage);
             return;
-            // set error on new state variable
-            // log error message(s) to screen
         }else if(emailCheck !== true){
-            console.log("Email format incorrect");
+            errorMessage+= "Email format incorrect";
+            setError(errorMessage);
+            console.log(errorMessage);
             return;
         }
 
@@ -118,6 +119,7 @@ export default function LoginAndSignUp(){
                     </form> 
                     <button type="submit" onClick={handleSignUp}>SIGN UP</button>
                 </div>
+                {error && <p id="errorMessage"></p>}
             </div>
         </>
     )

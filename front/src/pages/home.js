@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
-import Post from "../DisplayAllPosts.js";
 import { Link, Outlet } from "react-router-dom";
 import { useContext } from "react";
 import { authContext } from "../App";
 import LogOutButton from "../buttons/LogOutButton.js";
+import Card from "../components/Card.js";
 
 
 export default function Home(){
-    const [posts, setPosts] = useState();
+    const [posts, setPosts] = useState([]);
     const {auth} = useContext(authContext);
 
     const settings = {
@@ -23,12 +23,12 @@ export default function Home(){
         fetch("http://localhost:3001/posts", settings)
             .then(response => response.json())
             .then(response => setPosts(response))
-    }, [posts])
+    }, [])
 
     useEffect(() => {
         getAllPosts();
-    }, []);
-
+    }, [getAllPosts]);
+    
     return(
         <>      
             <div id="header">
@@ -37,8 +37,8 @@ export default function Home(){
                 <LogOutButton />
             </div>
             
-            {posts && posts.sort((a,b)=> b.datePosted - a.datePosted).map((item, index)=>(
-                <Post key={index} post={item} />
+            {posts.sort((a,b)=> b.datePosted - a.datePosted).map((item, index)=>(
+                <Card key={index} post={item} />
             ))}
             
             <Outlet />
