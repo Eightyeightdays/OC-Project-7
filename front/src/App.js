@@ -3,7 +3,7 @@ import React, { createContext, useState } from "react";
 
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-import DisplaySinglePost from "./pages/DisplaySinglePost";
+import SinglePost from "./pages/SinglePost";
 import CreatePost from "./pages/CreatePost";
 import RequireAuth from "./RequireAuth";
 import EditPost from "./pages/EditPost";
@@ -21,7 +21,7 @@ export default function App(){
                     <Route path="/" element={<Login />} />
                     <Route element ={<RequireAuth />}>
                         <Route path="/home" element={<Home />}/>
-                        <Route path="/post/:postId" element={<DisplaySinglePost />} />
+                        <Route path="/post/:postId" element={<SinglePost />} />
                         <Route path="/post/:postId/edit" element={<EditPost />} />
                         <Route path="/post/new" element={<CreatePost />} />
 
