@@ -22,7 +22,7 @@ export default function CreatePost(){
             body: formData,
         };
 
-        fetch("http://localhost:3001/posts", settings)
+        fetch("http://localhost:3001/posts", settings)  // need to handle cases where there is no title/content to prevent navigating home
         .then(response => response.json())
         .then(data => {
             setPost(data);

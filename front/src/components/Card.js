@@ -24,10 +24,19 @@ export default function Card(props){
             body: JSON.stringify(vote)
         };
         fetch(`http://localhost:3001/posts/${props.post._id}/like`, settings)
-            .then(function(response){
-               if(response.status === 200){
-                setLike(props.post.likes);   // props.post.likes ????
-               }
+            .then(response => response.json())
+            .then(data => {
+                switch(data.message){
+                    case "LIKE ADDED":
+                    setLike(like +1); 
+                    break;
+                    case "LIKE SWAPPED" :
+                    setLike(like +1);
+                    setDislike(dislike -1);
+                    break;
+                    case "LIKE REMOVED":
+                    setLike(like -1);
+                }
             })
     }
 
@@ -43,11 +52,20 @@ export default function Card(props){
             body: JSON.stringify(vote)
         };
         fetch(`http://localhost:3001/posts/${props.post._id}/dislike`, settings)
-            .then(function(response){
-               if(response.status === 200){
-                setDislike(props.post.dislikes);  
-               }
-            })
+        .then(response => response.json())
+        .then(data => {
+            switch(data.message){
+                case "DISLIKE ADDED":
+                setDislike(dislike +1); 
+                break;
+                case "DISLIKE SWAPPED" :
+                setDislike(dislike +1);
+                setLike(like -1);
+                break;
+                case "DISLIKE REMOVED":
+                setDislike(dislike -1);
+            }
+        })
     }
 
     return(

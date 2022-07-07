@@ -8,6 +8,8 @@ import { styles } from "../styles";
 
 export default function DisplaySinglePost(){
     const [post, setPost] = useState();
+    const [like, setLike]= useState(post.likes);
+    const [dislike, setDislike]= useState(post.dislikes);
     const {auth} = useContext(authContext);
     const params = useParams();
     const userId = auth.userId;
@@ -32,6 +34,61 @@ export default function DisplaySinglePost(){
         getSinglePost();
     }, []);
     
+    function likePost(){
+        const vote = {vote: "like"};
+        const settings = {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization" : token,
+            },
+            body: JSON.stringify(vote)
+        };
+        fetch(`http://localhost:3001/posts/${params.postId}/like`, settings)
+            .then(response => response.json())
+            .then(data => {
+                switch(data.message){
+                    case "LIKE ADDED":
+                    setLike(like +1); 
+                    break;
+                    case "LIKE SWAPPED" :
+                    setLike(like +1);
+                    setDislike(dislike -1);
+                    break;
+                    case "LIKE REMOVED":
+                    setLike(like -1);
+                }
+            })
+    }
+
+    function dislikePost(){
+        const vote = {vote: "dislike"};
+        const settings = {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization" : token,
+            },
+            body: JSON.stringify(vote)
+        };
+        fetch(`http://localhost:3001/posts/${params.postId}/dislike`, settings)
+        .then(response => response.json())
+        .then(data => {
+            switch(data.message){
+                case "DISLIKE ADDED":
+                setDislike(dislike +1); 
+                break;
+                case "DISLIKE SWAPPED" :
+                setDislike(dislike +1);
+                setLike(like -1);
+                break;
+                case "DISLIKE REMOVED":
+                setDislike(dislike -1);
+            }
+        })
+    }
        return(
         <>
         <Link to="/home">HOME</Link> | {" "}
@@ -47,7 +104,7 @@ export default function DisplaySinglePost(){
                     <p>Disikes: {post.dislikes}</p>
                     <p>Date posted: {post.displayDatePosted}</p>
                     {post.displayDateEdited && <p>Date edited: {post.displayDateEdited}</p>}
-                    <LikeButton token={token} postId={post._id}/>
+                    <LikeButton likePost={event => likePost(event)} dislikePost={event => dislikePost(event)} token={token} postId={params.postId}/>
                     <EditAndDeleteButton userId={userId} token={token} postId={params.postId} />
                 </div>
             }
