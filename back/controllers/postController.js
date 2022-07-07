@@ -46,45 +46,6 @@ exports.modify = (req, res) => {
     }
 }
 
-exports.likePost = (req, res) => {
-    const postId = req.params.id;
-    const userId = req.auth.userId; 
-    
-    Post.findOne({_id: postId})
-        .then(post => {
-            if(req.body.vote === "like"){
-                if(post.usersLiked.includes(userId) === false){
-                    if(post.usersDisliked.includes(userId) === false){
-                        Post.updateOne({_id: postId}, {$push: {usersLiked: userId},$inc: {likes: 1}})
-                        .then(() => res.status(200).json({message: "Post liked"}))
-                        .catch(error => res.status(400).json({error}))
-                    }else{
-                        Post.updateOne({_id: postId}, {$pull: {usersDisliked: userId}, $push:{usersLiked: userId}, $inc: {dislikes: -1, likes: 1}})
-                        .then(() => res.status(200).json({message: "Post liked SECOND CASE"}))
-                        .catch(error => res.status(400).json({error}))
-                    }
-                }else{
-                    return res.status(400).json({error: "You can't like more than once!"});
-                }
-            }else if(req.body.vote === "dislike"){
-                if(post.usersDisliked.includes(userId) === false){
-                    if(post.usersLiked.includes(userId) === false){
-                        Post.updateOne({_id: postId}, {$push: {usersDisliked: userId}, $inc: {dislikes: 1}})
-                        .then(() => res.status(200).json({message: "Post disliked"}))
-                        .catch(error => res.status(400).json({error}))
-                    }else{
-                        Post.updateOne({_id: postId}, {$pull: {usersLiked: userId}, $push: {usersDisliked: userId}, $inc: {likes: -1, dislikes: 1}})
-                        .then(() => res.status(200).json({message: "Post disliked SECOND CASE"}))
-                        .catch(error => res.status(400).json({error}))
-                    }
-                }else{
-                    return res.status(400).json({error: "You can't dislike more than once!"});
-                }
-            }
-        })
-        .catch(error => res.status(404).json({message: "Post not found", error: error}))
-}
-
 exports.delete = (req, res) =>{
     Post.findOne({_id: req.params.id})
         .then(post =>{
@@ -99,4 +60,54 @@ exports.delete = (req, res) =>{
             });
         })
         .catch(error => res.status(500).json({error}));
+}
+
+exports.likePost = (req, res) =>{
+    const postId = req.params.id;
+    const userId = req.auth.userId; 
+
+    Post.findOne({_id: postId})
+        .then(post => {
+            if(post.usersLiked.includes(userId) === false){                                     
+                if(post.usersDisliked.includes(userId) === false){
+                    Post.updateOne({_id: postId}, {$push: {usersLiked: userId},$inc: {likes: 1}})
+                    .then(() => res.status(200).json({message: "LIKE ADDED"}))                  // VOTE FOR THE FIRST TIME
+                    .catch(error => res.status(400).json({error}))
+                }else{
+                    Post.updateOne({_id: postId}, {$pull: {usersDisliked: userId}, $push:{usersLiked: userId}, $inc: {dislikes: -1, likes: 1}})
+                    .then(() => res.status(200).json({message: "LIKE SWAPPED"}))      // SWAP VOTE
+                    .catch(error => res.status(400).json({error}))
+                }
+            }else{
+                Post.updateOne({_id: postId}, {$pull: {usersLiked: userId}, $inc: {likes: -1}}) // REMOVE VOTE
+                .then(() => res.status(200).json({message: "LIKE REMOVED"}))
+                .catch(error => res.status(400).json({error}))
+            }
+        })
+        .catch(error => res.status(404).json({message: "Post not found", error: error}))    
+}
+
+exports.dislikePost = (req, res) =>{
+    const postId = req.params.id;
+    const userId = req.auth.userId; 
+
+    Post.findOne({_id: postId})
+        .then(post => {
+            if(post.usersDisliked.includes(userId) === false){
+                if(post.usersLiked.includes(userId) === false){
+                    Post.updateOne({_id: postId}, {$push: {usersDisliked: userId}, $inc: {dislikes: 1}})
+                    .then(() => res.status(200).json({message: "DISLIKE ADDED"}))                        // VOTE FOR THE FIRST TIME
+                    .catch(error => res.status(400).json({error}))
+                }else{
+                    Post.updateOne({_id: postId}, {$pull: {usersLiked: userId}, $push: {usersDisliked: userId}, $inc: {likes: -1, dislikes: 1}})
+                    .then(() => res.status(200).json({message: "DISLIKE SWAPPED"}))            // SWAP VOTE
+                    .catch(error => res.status(400).json({error}))
+                }
+            }else{
+                Post.updateOne({_id: postId}, {$pull: {usersDisliked: userId}, $inc: {dislikes: -1}})   // REMOVE VOTE
+                .then(() => res.status(200).json({message: "DISLIKE REMOVED"}))
+                .catch(error => res.status(400).json({error}))
+            }
+        })
+        .catch(error => res.status(404).json({message: "Post not found", error: error}))
 }

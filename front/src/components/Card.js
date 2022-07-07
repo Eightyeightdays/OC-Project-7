@@ -10,16 +10,10 @@ export default function Card(props){
     const userId = auth.userId; // from token created at login
     const token = auth.token;
     const [like, setLike]= useState(props.post.likes);
+    const [dislike, setDislike]= useState(props.post.dislikes);
 
-    const [count, setCount] = useState(0);
-
-    function voteOnPost(choice){
-        let vote;
-        if(choice === "like"){
-            vote = {vote: "like"};
-        }else{
-            vote = {vote: "dislike"}
-        }
+    function likePost(){
+        const vote = {vote: "like"};
         const settings = {
             method: "POST",
             headers: {
@@ -32,10 +26,28 @@ export default function Card(props){
         fetch(`http://localhost:3001/posts/${props.post._id}/like`, settings)
             .then(function(response){
                if(response.status === 200){
-                choice === "like" ? setLike(like +1) : setLike(like -1);
+                setLike(props.post.likes);   // props.post.likes ????
                }
             })
-            
+    }
+
+    function dislikePost(){
+        const vote = {vote: "dislike"};
+        const settings = {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization" : token,
+            },
+            body: JSON.stringify(vote)
+        };
+        fetch(`http://localhost:3001/posts/${props.post._id}/dislike`, settings)
+            .then(function(response){
+               if(response.status === 200){
+                setDislike(props.post.dislikes);  
+               }
+            })
     }
 
     return(
@@ -46,9 +58,11 @@ export default function Card(props){
                 <img alt="" className="postImage" style={styles.image} src={props.post.imageUrl}></img>
                 <p>{props.post.content}</p>
                 <div className="postItem" >Likes: {like}</div>
-                <div className="postItem" >Disikes: </div>
+                <div className="postItem" >Disikes: {dislike}</div>
+                <div>Disliked by: {props.post.usersDisliked}</div>
+                <div>Liked by: {props.post.usersLiked}</div>
             </Link>
-            <LikeButton handleClick={event => voteOnPost(event)} token={token} postId={props.post._id}/>
+            <LikeButton likePost={event => likePost(event)} dislikePost={event => dislikePost(event)} token={token} postId={props.post._id}/>
             <EditAndDeleteButton userId={userId} token={token} postId={props.post._id} />
         </div>
     )
