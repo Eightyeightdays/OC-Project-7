@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 
 export default function LikeButton(props){
     return(
         <>
-            <button type="button" name="like" onClick={event=> props.likePost()}>LIKE</button>
-            <button type="button" name="dislike" onClick={event=> props.dislikePost()}>DISLIKE</button>
+            <button type="button" name="like" onClick={()=> props.likePost(props.postId)}>LIKE</button>
+            <button type="button" name="dislike" onClick={()=> props.dislikePost(props.postId)}>DISLIKE</button>
         </>
     )
 }
