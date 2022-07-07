@@ -6,10 +6,13 @@ exports.create = (req, res) => {
     const postObject = req.body;
     const post = new Post({
         ...postObject,
+        userId: req.auth.userId,
         datePosted: Date.now(),
         displayDatePosted: moment().format('Do MMMM YYYY, h:mm a'),
         imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
     });
+
+    /// sanitize the data here
     
     post.save()
         .then(() => res.status(201).json({message: "Post created"}))

@@ -11,8 +11,12 @@ export default function CreatePost(){
     function handlePost(){
         const form = document.getElementById("postForm");
         const formData = new FormData(form);
-        formData.append("userId", auth.userId); // can replace with req.auth.userId on back end
-
+        const formObject = Object.fromEntries(formData.entries());
+        
+        if(formObject.title === "" || formObject.content === "" || formObject.file ===" "){
+            return;
+        }
+       
         const settings = {
             method: "POST",
             headers: {
@@ -22,7 +26,7 @@ export default function CreatePost(){
             body: formData,
         };
 
-        fetch("http://localhost:3001/posts", settings)  // need to handle cases where there is no title/content to prevent navigating home
+        fetch("http://localhost:3001/posts", settings)  
         .then(response => response.json())
         .then(data => {
             setPost(data);

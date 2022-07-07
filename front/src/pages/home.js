@@ -1,10 +1,8 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import { Link, Outlet } from "react-router-dom";
-import { useContext } from "react";
 import { authContext } from "../App";
 import LogOutButton from "../buttons/LogOutButton.js";
 import Card from "../components/Card.js";
-
 
 export default function Home(){
     const [posts, setPosts] = useState([]);
