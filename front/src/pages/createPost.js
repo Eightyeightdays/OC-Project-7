@@ -4,7 +4,6 @@ import { useContext } from "react";
 import { authContext } from "../App";
 
 export default function CreatePost(){
-    // const [post, setPost] = useState();
     const navigate = useNavigate();
     const {auth} = useContext(authContext);
     
@@ -29,7 +28,6 @@ export default function CreatePost(){
         fetch("http://localhost:3001/posts", settings)  
         .then(response => response.json())
         .then(data => {
-            // setPost(data);
             navigate("/home");
         });
     }

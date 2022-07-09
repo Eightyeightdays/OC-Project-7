@@ -8,14 +8,16 @@ const style = {
         padding: "1em",
         width: "min-content",
         borderRadius: "10px",
-        margin: "2em"
+        margin: "2em",
+        height: "min-content"
 }
 const container={
     display: "flex"
 }
 
 export default function LoginAndSignUp(){
-    const [error, setError] = useState();
+    const [loginError, setLoginError] = useState();
+    const [signupError, setSignupError] = useState();
     const {auth, setAuth} = useContext(authContext);
     const navigate = useNavigate();
     
@@ -37,6 +39,8 @@ export default function LoginAndSignUp(){
             if(data.token){
                 setAuth({token:data.token, userId: data.userId})  // Add bearer token and userId to state variable
                 navigate("/home");
+            }else{
+                setLoginError("LOGIN DETAILS INCORRECT");
             }
         })
     }
@@ -62,19 +66,19 @@ export default function LoginAndSignUp(){
             passwordCheck.forEach(error => errorMessage+= error.message + " - ");
             errorMessage+= " Email format incorrect";
             console.log("PASSWORD & EMAIL ERROR: " + errorMessage);
-            setError(errorMessage);
+            setSignupError(errorMessage);
             return;
         }
         else if(passwordCheck !== true){
             passwordCheck = schema.validate(password, {details: true});
             passwordCheck.forEach(error => errorMessage+= error.message + " - ");
             console.log("PASSWORD ERROR: " + errorMessage); 
-            setError(errorMessage);
+            setSignupError(errorMessage);
             return;
         }else if(emailCheck !== true){
             errorMessage = "Email format incorrect";
             console.log("EMAIL ERROR: " +errorMessage);
-            setError(errorMessage);
+            setSignupError(errorMessage);
             return;
         }
 
@@ -113,6 +117,7 @@ export default function LoginAndSignUp(){
                         PASSWORD:<input type="password" name="password" />
                     </form> 
                     <button type="submit" onClick={handleLogin}>LOGIN</button>
+                    {loginError && <p>{loginError}</p>}
                 </div>
                 <div style={style}>
                     <h2>SIGN UP</h2>
@@ -121,8 +126,8 @@ export default function LoginAndSignUp(){
                         PASSWORD:<input type="password" name="password" />
                     </form> 
                     <button type="submit" onClick={handleSignUp}>SIGN UP</button>
+                    {signupError && <p>{signupError}</p>}
                 </div>
-                {error && <p id="errorMessage"></p>}
             </div>
         </>
     )

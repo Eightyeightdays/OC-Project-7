@@ -9,10 +9,8 @@ export default function DisplaySinglePost(){
     const params = useParams();
     const {auth} = useContext(authContext);
     const [post, setPost] = useState();
-    
     const token = auth.token;
-    const userId = auth.userId;
-
+    
     const settings = {
         method: "GET",
         headers: {
@@ -40,7 +38,6 @@ export default function DisplaySinglePost(){
                 "Content-Type": "application/json",
                 "Authorization": token,
             },
-            body: JSON.stringify({userId})
         };
 
         fetch(`http://localhost:3001/posts/${id}`, settings)

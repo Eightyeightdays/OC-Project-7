@@ -1,7 +1,7 @@
 import LikeButton from "../buttons/LikeButton"
 import EditAndDeleteButton from "../buttons/EditAndDeleteButton";
 import { styles } from "../styles"
-import React from "react";
+import React, { useCallback } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { authContext } from "../App";
 import { useState, useContext, useEffect } from "react";
@@ -106,8 +106,8 @@ export default function Card(props){
             console.log("DISABLED")
             button.disabled = false;
           }, 1000)
-        
     }
+
     return(
         <div className="post" style={styles.post}>
                 <p>{userId}</p>

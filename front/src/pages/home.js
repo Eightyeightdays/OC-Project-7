@@ -9,7 +9,6 @@ export default function Home(){
     const {auth} = useContext(authContext);
     const [posts, setPosts] = useState([]);
     const token = auth.token;
-    const userId = auth.userId;
    
     const settings = {
         method: "GET",
@@ -38,7 +37,6 @@ export default function Home(){
                 "Content-Type": "application/json",
                 "Authorization": token,
             },
-            body: JSON.stringify({userId})
         };
         const getSettings = {
             method: "GET",
@@ -56,10 +54,7 @@ export default function Home(){
                 fetch("http://localhost:3001/posts", getSettings)
                 .then(response => response.json())
                 .then(response => setPosts(response))
-                /// if current page !== home navigate home
-                navigate("/home");
-                }
-            })
+            }})
         };
     
         
@@ -72,9 +67,7 @@ export default function Home(){
             </div>
             
             {posts.sort((a,b)=> b.datePosted - a.datePosted).map((post, index)=>(
-                <>
                 <Card key={index} post={post} handleDelete={handleDelete}/>
-                </>
             ))}
             
             <Outlet />
