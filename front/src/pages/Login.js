@@ -52,26 +52,29 @@ export default function LoginAndSignUp(){
         schema.is().max(15, "Password must be a maxiumum of 15 characters");
         schema.has().uppercase(2, "Password must contain at least 2 uppercase letters");
         schema.has().symbols(2, "Password must contain at least 2 symbols");
-        let passwordCheck = schema.validate(password, {details: true});
+    
+        let passwordCheck = schema.validate(password);
         let emailCheck = emailValidator.validate(email); 
         let errorMessage ="";
 
         if(passwordCheck !== true && emailCheck !== true){
+            passwordCheck = schema.validate(password, {details: true});
             passwordCheck.forEach(error => errorMessage+= error.message + " - ");
             errorMessage+= " Email format incorrect";
+            console.log("PASSWORD & EMAIL ERROR: " + errorMessage);
             setError(errorMessage);
-            console.log(errorMessage);
             return;
         }
         else if(passwordCheck !== true){
+            passwordCheck = schema.validate(password, {details: true});
             passwordCheck.forEach(error => errorMessage+= error.message + " - ");
+            console.log("PASSWORD ERROR: " + errorMessage); 
             setError(errorMessage);
-            console.log(errorMessage);
             return;
         }else if(emailCheck !== true){
-            errorMessage+= "Email format incorrect";
+            errorMessage = "Email format incorrect";
+            console.log("EMAIL ERROR: " +errorMessage);
             setError(errorMessage);
-            console.log(errorMessage);
             return;
         }
 

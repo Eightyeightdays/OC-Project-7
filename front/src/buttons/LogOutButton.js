@@ -10,7 +10,7 @@ export default function LogOutButton(){
     function handleLogOut(){
         setAuth({token: null, userId: null});
         navigate("/");
-        alert("You have been logged out")
+        console.log("You have been logged out")
     }
     
     return(

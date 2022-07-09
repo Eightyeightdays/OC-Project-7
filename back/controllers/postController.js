@@ -74,16 +74,16 @@ exports.likePost = (req, res) =>{
             if(post.usersLiked.includes(userId) === false){                                     
                 if(post.usersDisliked.includes(userId) === false){
                     Post.findOneAndUpdate({_id: postId}, {$push: {usersLiked: userId},$inc: {likes: 1}}, {returnDocument: "after"})
-                    .then(post => res.status(200).json({message: "LIKE ADDED"}))    // VOTE FOR THE FIRST TIME
+                    .then(post => res.status(200).json({message: "LIKE ADDED", likes: post.likes, dislikes: post.dislikes, usersLiked: post.usersLiked, usersDisliked: post.usersDisliked}))    // VOTE FOR THE FIRST TIME
                     .catch(error => res.status(400).json({error}))
                 }else{
                     Post.findOneAndUpdate({_id: postId}, {$pull: {usersDisliked: userId}, $push:{usersLiked: userId}, $inc: {dislikes: -1, likes: 1}}, {returnDocument: "after"})
-                    .then(() => res.status(200).json({message: "LIKE SWAPPED"}))    // SWAP VOTE
+                    .then(post => res.status(200).json({message: "LIKE REPLACED DISLIKE", likes: post.likes, dislikes: post.dislikes, usersLiked: post.usersLiked, usersDisliked: post.usersDisliked}))    // SWAP VOTE
                     .catch(error => res.status(400).json({error}))
                 }
             }else{
                 Post.findOneAndUpdate({_id: postId}, {$pull: {usersLiked: userId}, $inc: {likes: -1}}, {returnDocument: "after"}) 
-                .then(() => res.status(200).json({message: "LIKE REMOVED"}))        // REMOVE VOTE
+                .then(post => res.status(200).json({message: "LIKE REMOVED", likes: post.likes, dislikes: post.dislikes, usersLiked: post.usersLiked, usersDisliked: post.usersDisliked}))        // REMOVE VOTE
                 .catch(error => res.status(400).json({error}))
             }
         })
@@ -99,16 +99,16 @@ exports.dislikePost = (req, res) =>{
             if(post.usersDisliked.includes(userId) === false){
                 if(post.usersLiked.includes(userId) === false){
                     Post.findOneAndUpdate({_id: postId}, {$push: {usersDisliked: userId}, $inc: {dislikes: 1}}, {returnDocument: "after"})
-                    .then(() => res.status(200).json({message: "DISLIKE ADDED"}))                               // VOTE FOR THE FIRST TIME
+                    .then(post => res.status(200).json({message: "DISLIKE ADDED", likes: post.likes, dislikes: post.dislikes, usersLiked: post.usersLiked, usersDisliked: post.usersDisliked}))                               // VOTE FOR THE FIRST TIME
                     .catch(error => res.status(400).json({error}))
                 }else{
-                    Post.findOneAndUpdate({_id: postId}, {$pull: {usersLiked: userId}, $push: {usersDisliked: userId}, $inc: {likes: -1, dislikes: 1}})
-                    .then(() => res.status(200).json({message: "DISLIKE SWAPPED"}), {returnDocument: "after"})  // SWAP VOTE
+                    Post.findOneAndUpdate({_id: postId}, {$pull: {usersLiked: userId}, $push: {usersDisliked: userId}, $inc: {likes: -1, dislikes: 1}}, {returnDocument: "after"})
+                    .then(post => res.status(200).json({message: "DISLIKE REPLACED LIKE", likes: post.likes, dislikes: post.dislikes, usersLiked: post.usersLiked, usersDisliked: post.usersDisliked}))  // SWAP VOTE
                     .catch(error => res.status(400).json({error}))
                 }
             }else{
                 Post.findOneAndUpdate({_id: postId}, {$pull: {usersDisliked: userId}, $inc: {dislikes: -1}}, {returnDocument: "after"})   // REMOVE VOTE
-                .then(() => res.status(200).json({message: "DISLIKE REMOVED"}))
+                .then(post => res.status(200).json({message: "DISLIKE REMOVED", likes: post.likes, dislikes: post.dislikes, usersLiked: post.usersLiked, usersDisliked: post.usersDisliked}))
                 .catch(error => res.status(400).json({error}))
             }
         })

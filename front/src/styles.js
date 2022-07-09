@@ -5,20 +5,20 @@ const postLink = {
 }
 
 const image ={
-    width: "400px",
-    height: "400px",
+    width: "250px",
+    height: "250px",
     objectFit: "cover",
-    borderRadius: "5%"
+    borderRadius: "2%"
 }
 
 const post ={
     background: "lightsteelblue",
     margin: "1em",
     color: "white",
-    fontSize: "30px",
+    fontSize: "15px",
     padding: "1em",
     borderRadius: "10px",
-    width: "max-content",
+    width: "min-content",
     
 }
 
@@ -27,7 +27,7 @@ const displaySinglePost ={
     padding: "1em",
     color: "white",
     background: "gold",
-    fontSize: "30px",
+    fontSize: "15px",
     borderRadius: "10px",
     width: "max-content",
     display: "flex",

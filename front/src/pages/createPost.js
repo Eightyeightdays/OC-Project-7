@@ -4,11 +4,11 @@ import { useContext } from "react";
 import { authContext } from "../App";
 
 export default function CreatePost(){
-    const [post, setPost] = useState();
+    // const [post, setPost] = useState();
     const navigate = useNavigate();
     const {auth} = useContext(authContext);
     
-    function handlePost(){
+    function handleCreate(){
         const form = document.getElementById("postForm");
         const formData = new FormData(form);
         const formObject = Object.fromEntries(formData.entries());
@@ -29,7 +29,7 @@ export default function CreatePost(){
         fetch("http://localhost:3001/posts", settings)  
         .then(response => response.json())
         .then(data => {
-            setPost(data);
+            // setPost(data);
             navigate("/home");
         });
     }
@@ -41,7 +41,7 @@ export default function CreatePost(){
                 CONTENT<input type="text" name="content" maxLength="1500" />
                 IMAGE<input type="file" name="image" />
             </form>
-            <button type="submit" onClick={handlePost}>CREATE POST</button>
+            <button type="submit" onClick={handleCreate}>CREATE POST</button>
         </>
     )
 }

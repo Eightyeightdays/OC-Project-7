@@ -8,8 +8,6 @@ export default function Home(){
     const navigate = useNavigate();
     const {auth} = useContext(authContext);
     const [posts, setPosts] = useState([]);
-    const [like, setLike]= useState(0);
-    const [dislike, setDislike]= useState(0);
     const token = auth.token;
     const userId = auth.userId;
    
@@ -31,66 +29,6 @@ export default function Home(){
     useEffect(() => {
         getAllPosts();
     }, [getAllPosts]);
-    
-    function likePost(id){
-        const vote = {vote: "like"};
-        const settings = {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization" : token,
-            },
-            body: JSON.stringify(vote)
-        };
-        fetch(`http://localhost:3001/posts/${id}/like`, settings)
-            .then(response => response.json())
-            .then(data => {
-                switch(data.message){
-                    case "LIKE ADDED":
-                    setLike(like +1); 
-                    break;
-                    case "LIKE SWAPPED" :
-                    setLike(like +1);
-                    setDislike(dislike -1);
-                    break;
-                    case "LIKE REMOVED":
-                    setLike(like -1);
-                }
-            })
-    }
-    function dislikePost(id){
-        const vote = {vote: "dislike"};
-        const settings = {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization" : token,
-            },
-            body: JSON.stringify(vote)
-        };
-        fetch(`http://localhost:3001/posts/${id}/dislike`, settings)
-        .then(response => response.json())
-        .then(data => {
-            switch(data.message){
-                case "DISLIKE ADDED":
-                setDislike(dislike +1); 
-                break;
-                case "DISLIKE SWAPPED" :
-                setDislike(dislike +1);
-                setLike(like -1);
-                break;
-                case "DISLIKE REMOVED":
-                setDislike(dislike -1);
-            }
-        })
-    }
-
-    function handleEdit(id){
-        let url = `/post/${id}/edit`;
-        navigate(url);
-    }
 
     const handleDelete = (id)=>{
         const settings = {
@@ -102,13 +40,24 @@ export default function Home(){
             },
             body: JSON.stringify({userId})
         };
+        const getSettings = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": token,
+            },
+        };
 
         fetch(`http://localhost:3001/posts/${id}`, settings)
         .then(response => {
             response.json();
             if(response.status === 200){
+                fetch("http://localhost:3001/posts", getSettings)
+                .then(response => response.json())
+                .then(response => setPosts(response))
+                /// if current page !== home navigate home
                 navigate("/home");
-                alert("Post deleted");
                 }
             })
         };
@@ -121,8 +70,8 @@ export default function Home(){
                 <LogOutButton />
             </div>
             
-            {posts.sort((a,b)=> b.datePosted - a.datePosted).map((item, index)=>(
-                <Card key={index} post={item} like={like} likePost={likePost} dislike={dislike} dislikePost={dislikePost} handleEdit={handleEdit} handleDelete={handleDelete}/>
+            {posts.sort((a,b)=> b.datePosted - a.datePosted).map((post, index)=>(
+                <Card key={index} post={post} handleDelete={handleDelete}/>
             ))}
             
             <Outlet />
