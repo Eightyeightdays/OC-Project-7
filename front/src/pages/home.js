@@ -62,6 +62,7 @@ export default function Home(){
             })
         };
     
+        
     return(
         <>      
             <div id="header">
@@ -71,7 +72,9 @@ export default function Home(){
             </div>
             
             {posts.sort((a,b)=> b.datePosted - a.datePosted).map((post, index)=>(
+                <>
                 <Card key={index} post={post} handleDelete={handleDelete}/>
+                </>
             ))}
             
             <Outlet />

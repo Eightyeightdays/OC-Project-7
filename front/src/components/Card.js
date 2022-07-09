@@ -2,7 +2,7 @@ import LikeButton from "../buttons/LikeButton"
 import EditAndDeleteButton from "../buttons/EditAndDeleteButton";
 import { styles } from "../styles"
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { authContext } from "../App";
 import { useState, useContext, useEffect } from "react";
 
@@ -32,6 +32,7 @@ export default function Card(props){
     const [dislike, setDislike]= useState(dislikes);
     const [likers, setLikers] = useState(usersLiked);
     const [dislikers, setDislikers] = useState(usersDisliked);
+    const params = useParams();
     
     function updateLikeState(data){
         setLike(data.likes);
@@ -109,18 +110,20 @@ export default function Card(props){
     }
     return(
         <div className="post" style={styles.post}>
-            <Link className="postLink" style={styles.postLink} to={{pathname: `/post/${postId}/`}}>
                 <p>{userId}</p>
                 <div className="postItem">{datePosted}</div>
                 <p>{title}</p>
-                <img alt="" className="postImage" style={styles.image} src={imageUrl}></img>
+                {params.postId != postId ? 
+                <Link to={`/post/${postId}`}>
+                    <img alt="" className="postImage" style={styles.image} src={imageUrl}></img>
+                </Link> : 
+                <img alt="" className="postImage" style={styles.image} src={imageUrl}></img>}
                 <p>{content}</p>
                 <div className="postItem" >Likes: {like}</div>
                 <div className="postItem" >Disikes: {dislike}</div>
                 {dateEdited !== null && <p>Date edited: {dateEdited}</p>}
                 <p>Users liked:  {likers}</p>
                 <p>Users disliked: {dislikers}</p>
-            </Link>
             <LikeButton postId={postId} likePost={likePost} dislikePost={dislikePost} disableButton={disableButton}/>
             {auth.userId === userId && <EditAndDeleteButton postId={postId} handleEdit={handleEdit} handleDelete={handleDelete} />}
         </div>
