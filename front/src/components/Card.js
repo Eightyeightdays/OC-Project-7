@@ -1,10 +1,9 @@
 import LikeButton from "../buttons/LikeButton"
 import EditAndDeleteButton from "../buttons/EditAndDeleteButton";
 import { styles } from "../styles"
-import React, { useCallback } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { authContext } from "../App";
-import { useState, useContext, useEffect } from "react";
+import React,  { useState, useContext } from "react";
 
 export default function Card(props){
     const{
@@ -103,7 +102,6 @@ export default function Card(props){
         let button = document.getElementById(id);
         button.disabled = true;
         setTimeout(() => {
-            console.log("DISABLED")
             button.disabled = false;
           }, 1000)
     }
@@ -113,7 +111,7 @@ export default function Card(props){
                 <p>{userId}</p>
                 <div className="postItem">{datePosted}</div>
                 <p>{title}</p>
-                {params.postId != postId ? 
+                {params.postId !== postId ? 
                 <Link to={`/post/${postId}`}>
                     <img alt="" className="postImage" style={styles.image} src={imageUrl}></img>
                 </Link> : 

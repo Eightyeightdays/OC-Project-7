@@ -37,7 +37,7 @@ export default function LoginAndSignUp(){
         .then(response => response.json())
         .then(data =>{
             if(data.token){
-                setAuth({token:data.token, userId: data.userId})  // Add bearer token and userId to state variable
+                setAuth({token:data.token, userId: data.userId})  // Add bearer token and userId to context variable
                 navigate("/home");
             }else{
                 setLoginError("LOGIN DETAILS INCORRECT");
@@ -98,7 +98,7 @@ export default function LoginAndSignUp(){
                 .then(response => response.json())
                 .then(data =>{
                     if(data.token){
-                        setAuth({token:data.token, userId: data.userId})  // Add bearer token and userId to state variable
+                        setAuth({token:data.token, userId: data.userId})  // Add bearer token and userId to context variable
                         navigate("/home");
                     }
                 })

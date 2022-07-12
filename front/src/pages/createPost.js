@@ -14,7 +14,7 @@ export default function CreatePost(){
         
         if(formObject.title === "" || formObject.content === "" || formObject.file ===" "){
             return;
-        }
+        } // or if title or content
        
         const settings = {
             method: "POST",
@@ -26,10 +26,16 @@ export default function CreatePost(){
         };
 
         fetch("http://localhost:3001/posts", settings)  
-        .then(response => response.json())
-        .then(data => {
-            navigate("/home");
-        });
+        .then(response => {
+            response.json()
+            if(response.status === 201){
+                console.log("201");
+                navigate("/home");
+            }else{
+                console.log(response)
+                alert(response.title)
+            }
+        })
     }
     
     return(

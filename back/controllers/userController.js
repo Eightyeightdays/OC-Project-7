@@ -4,10 +4,6 @@ const User = require("../models/userModel");
 const Post = require("../models/postModel");
 const jwt = require("jsonwebtoken");
 
-exports.test = (req, res) => {
-    res.status(200).json({mes: "THIS TEST WORKS"})
-}
-
 exports.getAll = (req, res) => {
     User.find()
         .then(users => res.status(200).json({users: users}))

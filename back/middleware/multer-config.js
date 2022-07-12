@@ -10,12 +10,12 @@ const fileFilter = (req, file, cb) => {
 };
 
 const storage = multer.diskStorage({
-    destination: (req, file, callback) =>{      // try adding destination only
+    destination: (req, file, callback) =>{      
         callback(null, "images");               // save to a folder called "images"
     },
     filename: (req, file, callback) =>{
         const name = file.originalname.split(" ").join("_");
-        callback(null, Date.now() + name);     // CHECK IN CASE OF ERROR // replace userId with postId to make each image unique
+        callback(null, Date.now() + "_" + name);     
     }
 });
 

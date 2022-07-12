@@ -3,17 +3,14 @@ const fs = require("fs");
 const moment = require('moment'); 
 
 exports.create = (req, res) => {
-    const postObject = req.body;
     const post = new Post({
-        ...postObject,
+        ...req.body,
         userId: req.auth.userId,
         datePosted: Date.now(),
         displayDatePosted: moment().format('Do MMMM YYYY, h:mm a'),
         imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
     });
 
-    /// sanitize the data here
-    
     post.save()
         .then(() => res.status(201).json({message: "Post created"}))
         .catch(error => res.status(400).json({error}))
@@ -41,9 +38,8 @@ exports.modify = (req, res) => {
             displayDateEdited: moment().format('Do MMMM YYYY, h:mm a'),
             imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
         } : {...req.body, displayDateEdited: moment().format('Do MMMM YYYY, h:mm a')};
-        
-           
-        Post.updateOne({_id: req.params.id}, {...updatedPost, _id: req.params.id})   // NOTE: req.params.id = req.body._id
+            
+        Post.updateOne({_id: req.params.id}, {...updatedPost, _id: req.params.id}) 
         .then(()=> res.status(200).json({message: "Post updated"}))
         .catch(error => res.status(400).json({error}))
     }
@@ -99,7 +95,7 @@ exports.dislikePost = (req, res) =>{
             if(post.usersDisliked.includes(userId) === false){
                 if(post.usersLiked.includes(userId) === false){
                     Post.findOneAndUpdate({_id: postId}, {$push: {usersDisliked: userId}, $inc: {dislikes: 1}}, {returnDocument: "after"})
-                    .then(post => res.status(200).json({message: "DISLIKE ADDED", likes: post.likes, dislikes: post.dislikes, usersLiked: post.usersLiked, usersDisliked: post.usersDisliked}))                               // VOTE FOR THE FIRST TIME
+                    .then(post => res.status(200).json({message: "DISLIKE ADDED", likes: post.likes, dislikes: post.dislikes, usersLiked: post.usersLiked, usersDisliked: post.usersDisliked}))  // VOTE FOR THE FIRST TIME
                     .catch(error => res.status(400).json({error}))
                 }else{
                     Post.findOneAndUpdate({_id: postId}, {$pull: {usersLiked: userId}, $push: {usersDisliked: userId}, $inc: {likes: -1, dislikes: 1}}, {returnDocument: "after"})
