@@ -27,17 +27,11 @@ export default function Card(props){
     const navigate = useNavigate();
     const {auth} = useContext(authContext);
     const token = auth.token;
-    const [like, setLike]= useState(likes);
-    const [dislike, setDislike]= useState(dislikes);
-    const [likers, setLikers] = useState(usersLiked);
-    const [dislikers, setDislikers] = useState(usersDisliked);
+    const [like, setLike]= useState({likes: likes, dislikes: dislikes, usersLiked: usersLiked, usersDisliked: usersDisliked});
     const params = useParams();
     
     function updateLikeState(data){
-        setLike(data.likes);
-        setDislike(data.dislikes);
-        setLikers(data.usersLiked);
-        setDislikers(data.usersDisliked);
+        setLike({likes: data.likes, dislikes: data.dislikes, usersLiked: data.usersLiked, usersDisliked: data.usersDisliked});
         return
     }
 
@@ -93,11 +87,11 @@ export default function Card(props){
                 </Link> : 
                 <img alt="" className="postImage" style={styles.image} src={imageUrl}></img>}
                 <p>{content}</p>
-                <div className="postItem" >Likes: {like}</div>
-                <div className="postItem" >Disikes: {dislike}</div>
+                <div className="postItem" >Likes: {like.likes}</div>
+                <div className="postItem" >Disikes: {like.dislikes}</div>
                 {dateEdited !== null && <p>Date edited: {dateEdited}</p>}
-                <p>Users liked:  {likers}</p>
-                <p>Users disliked: {dislikers}</p>
+                <p>Users liked:  {like.usersLiked}</p>
+                <p>Users disliked: {like.usersDisliked}</p>
             <LikeButton postId={postId} likePost={likePost} dislikePost={dislikePost} disableButton={disableButton}/>
             {auth.userId === userId || auth.admin === true && <EditAndDeleteButton postId={postId} handleEdit={handleEdit} handleDelete={handleDelete} />}
             {/* { <EditAndDeleteButton postId={postId} handleEdit={handleEdit} handleDelete={handleDelete} />} */}
