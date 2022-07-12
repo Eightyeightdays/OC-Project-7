@@ -38,29 +38,29 @@ exports.createUser = (req, res) => {
 exports.loginUser = (req, res) =>{
     User.findOne({email: req.body.email})
         .then(user =>{
-
             if(!user){
                 return res.status(404).json({error});
             }
-
             bcrypt.compare(req.body.password, user.password)
                 .then(valid =>{
-
                     if(!valid){
                         return res.status(401).json({error});
                     }
-
-                    res.status(200).json({
+                    let response = {
                         userId: user._id, 
                         token: jwt.sign(
                             {userId: user._id}, 
                             process.env.SECRET_PHRASE,
-                            {expiresIn: "24h"}
-                        )
-                    });
-                    
+                            {expiresIn: "24h"})
+                    };
+                   let userId = user._id.toString();
+
+                    if(userId === "62cd807f15e0e9759515f31a"){
+                        response.admin = true;
+                    }
+                    return res.status(200).json(response); 
                 })
-                .catch(error => res.status(500).json({error}));
+                .catch(error => res.status(500).json({error: "Failed to validate user"}));
         })
-        .catch(error => res.status(500).json({error}));
+        .catch(error => res.status(500).json({error: "Error"}));
 }

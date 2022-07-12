@@ -11,7 +11,7 @@ import EditPost from "./pages/EditPost";
 export const authContext = createContext();
 
 export default function App(){
-    const [auth, setAuth] = useState({userId: null, token: null});
+    const [auth, setAuth] = useState({userId: null, token: null, admin: false});
 
     return(
         <authContext.Provider value={{auth, setAuth}}>

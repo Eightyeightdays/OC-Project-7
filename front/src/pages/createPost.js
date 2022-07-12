@@ -14,7 +14,11 @@ export default function CreatePost(){
         
         if(formObject.title === "" || formObject.content === "" || formObject.file ===" "){
             return;
-        } // or if title or content
+        }else if(typeof formObject.title !== "string"){
+            return console.log("Post TITLE was not a string")
+        }else if(typeof formObject.content !== "string"){
+            return console.log("Post CONTENT was not a string")
+        }
        
         const settings = {
             method: "POST",
@@ -29,11 +33,9 @@ export default function CreatePost(){
         .then(response => {
             response.json()
             if(response.status === 201){
-                console.log("201");
                 navigate("/home");
             }else{
                 console.log(response)
-                alert(response.title)
             }
         })
     }

@@ -36,9 +36,16 @@ export default function LoginAndSignUp(){
         fetch("http://localhost:3001/auth/login", settings)
         .then(response => response.json())
         .then(data =>{
+            console.log(data)
             if(data.token){
-                setAuth({token:data.token, userId: data.userId})  // Add bearer token and userId to context variable
-                navigate("/home");
+                if(data.admin){ 
+                    setAuth({token:data.token, userId: data.userId, admin: true}); // Add admin status to context
+                    console.log("ADMIN SIGNED IN");
+                    navigate("/home");
+                }else{
+                    setAuth({token:data.token, userId: data.userId})  // Add bearer token and userId to context variable
+                    navigate("/home");
+                }   
             }else{
                 setLoginError("LOGIN DETAILS INCORRECT");
             }
