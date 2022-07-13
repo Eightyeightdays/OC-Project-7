@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { authContext } from "../App";
 import { useNavigate } from "react-router-dom";
 
-
 const style = {
         background: "lemonchiffon",
         padding: "1em",
@@ -26,7 +25,9 @@ export default function LoginAndSignUp(){
         const user = Object.fromEntries(new FormData(loginForm).entries());
         const settings = {
         method: "POST",
+        credentials: "include",
         headers: {
+            "Access-Control-Allow-Credentials": true,
             "Accept": "application/json",
             "Content-Type": "application/json",
         },
@@ -36,7 +37,6 @@ export default function LoginAndSignUp(){
         fetch("http://localhost:3001/auth/login", settings)
         .then(response => response.json())
         .then(data =>{
-            console.log(data)
             if(data.token){
                 if(data.admin){ 
                     setAuth({token:data.token, userId: data.userId, admin: true}); // Add admin status to context
@@ -101,6 +101,7 @@ export default function LoginAndSignUp(){
         fetch("http://localhost:3001/auth/signup", settings)
         .then(response => {
             if(response.status === 201){
+                settings.credentials = "include";
                 fetch("http://localhost:3001/auth/login", settings)
                 .then(response => response.json())
                 .then(data =>{

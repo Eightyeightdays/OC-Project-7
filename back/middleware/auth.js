@@ -7,8 +7,8 @@ module.exports = (req, res, next) =>{
         const decodedToken = jwt.verify(token, process.env.SECRET_PHRASE);
         const userId = decodedToken.userId;
         req.auth = {userId};                    // add the decoded user ID to the request object 
-        const adminId = "62cd807f15e0e9759515f31a";
-        if(userId === adminId){
+        const adminStatus = decodedToken.admin;
+        if(adminStatus){
             req.auth.admin = true;              // add admin status to req.auth for admin account
         }
         if(req.body.userId && req.body.userId !== userId){ //

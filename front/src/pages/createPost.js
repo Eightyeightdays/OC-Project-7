@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useContext } from "react";
 import { authContext } from "../App";
 
@@ -42,6 +42,7 @@ export default function CreatePost(){
     
     return(
         <>
+            <Link to={"/home"}>Home</Link> | {" "}
             <form id="postForm" encType="multipart/form-data">
                 TITLE<input type="text" name="title" maxLength="50"/>
                 CONTENT<input type="text" name="content" maxLength="1500" />

@@ -13,6 +13,7 @@ export default function DisplaySinglePost(){
     
     const settings = {
         method: "GET",
+        credentials: "include",
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
@@ -33,6 +34,7 @@ export default function DisplaySinglePost(){
     const handleDelete = (id)=>{
         const settings = {
             method: "DELETE",
+            credentials: "include",
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",

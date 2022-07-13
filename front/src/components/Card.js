@@ -93,8 +93,7 @@ export default function Card(props){
                 <p>Users liked:  {like.usersLiked}</p>
                 <p>Users disliked: {like.usersDisliked}</p>
             <LikeButton postId={postId} likePost={likePost} dislikePost={dislikePost} disableButton={disableButton}/>
-            {auth.userId === userId || auth.admin === true && <EditAndDeleteButton postId={postId} handleEdit={handleEdit} handleDelete={handleDelete} />}
-            {/* { <EditAndDeleteButton postId={postId} handleEdit={handleEdit} handleDelete={handleDelete} />} */}
+            {(auth.userId === userId || auth.admin === true) && <EditAndDeleteButton postId={postId} handleEdit={handleEdit} handleDelete={handleDelete} />}
         </div>
     )
 }

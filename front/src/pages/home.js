@@ -12,6 +12,7 @@ export default function Home(){
    
     const settings = {
         method: "GET",
+        credentials: "include",
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
@@ -32,6 +33,7 @@ export default function Home(){
     const handleDelete = (id)=>{
         const settings = {
             method: "DELETE",
+            credentials: "include",
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
@@ -40,6 +42,7 @@ export default function Home(){
         };
         const getSettings = {
             method: "GET",
+            credentials: "include",
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",

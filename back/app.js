@@ -1,7 +1,7 @@
 require("dotenv").config({path: "./.env"});
 
 const path = require("path");
-
+const cookieParser = require("cookie-parser");
 const express = require("express");
 const app = express();
 
@@ -12,12 +12,12 @@ mongoose.connect(process.env.DB_URL,
     .catch(()=> console.log("Failed to connect to MongoDB"));
 
 const cors = require("cors");
-app.use(cors());
+app.use(cors({origin: true, credentials: true}));
 
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
 
-
+app.use(cookieParser());
 app.use(express.json());
 
 app.use("/", userRoutes);

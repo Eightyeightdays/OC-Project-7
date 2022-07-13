@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { authContext } from "../App";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 export default function EditPost(){
     const {auth, setAuth} = useContext(authContext);
@@ -10,6 +10,7 @@ export default function EditPost(){
     const params = useParams();
     const settings = {
         method: "GET",
+        credentials: "include",
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
@@ -30,6 +31,7 @@ export default function EditPost(){
 
         const settings = {
             method: "PUT",
+            credentials: "include",
             headers: {
                 "Accept": "application/json",
                 "Authorization" : auth.token,
@@ -47,6 +49,7 @@ export default function EditPost(){
 
     return(
         <>
+            <Link to={"/home"}>Home</Link> | {" "}
             {post && <>
             <form id="postForm" encType="multipart/form-data">
                     TITLE<input type="text" name="title" defaultValue={post.title}/>

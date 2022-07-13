@@ -36,6 +36,9 @@ exports.createUser = (req, res) => {
 }
 
 exports.loginUser = (req, res) =>{
+    if(req.cookies.token){
+        res.clearCookie("token");   // Delete previous cookie
+    }
     User.findOne({email: req.body.email})
         .then(user =>{
             if(!user){
@@ -46,21 +49,28 @@ exports.loginUser = (req, res) =>{
                     if(!valid){
                         return res.status(401).json({error});
                     }
+                    let token = jwt.sign(
+                        {userId: user._id}, 
+                        process.env.SECRET_PHRASE,
+                        {expiresIn: "24h"});
+
                     let response = {
                         userId: user._id, 
-                        token: jwt.sign(
-                            {userId: user._id}, 
-                            process.env.SECRET_PHRASE,
-                            {expiresIn: "24h"})
+                        token: token
                     };
-                   let userId = user._id.toString();
 
-                    if(userId === "62cd807f15e0e9759515f31a"){
+                    if(user.admin){
                         response.admin = true;
                     }
+                    res.cookie("token", token);
                     return res.status(200).json(response); 
                 })
                 .catch(error => res.status(500).json({error: "Failed to validate user"}));
         })
         .catch(error => res.status(500).json({error: "Error"}));
+}
+
+exports.logoutUser = (req, res) =>{
+    res.clearCookie("token"); 
+    res.status(200).json({message: "User logged out"})
 }
