@@ -29,6 +29,8 @@ export default function Card(props){
     const token = auth.token;
     const [like, setLike]= useState({likes: likes, dislikes: dislikes, usersLiked: usersLiked, usersDisliked: usersDisliked});
     const params = useParams();
+
+    const cookieToken = document.cookie.slice(6);
     
     function updateLikeState(data){
         setLike({likes: data.likes, dislikes: data.dislikes, usersLiked: data.usersLiked, usersDisliked: data.usersDisliked});
@@ -41,7 +43,7 @@ export default function Card(props){
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                "Authorization" : token,
+                "Authorization" : cookieToken,
             },
         };
         fetch(`http://localhost:3001/posts/${postId}/like`, settings)
@@ -55,7 +57,7 @@ export default function Card(props){
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                "Authorization" : token,
+                "Authorization" : cookieToken,
             },
         };
         fetch(`http://localhost:3001/posts/${postId}/dislike`, settings)

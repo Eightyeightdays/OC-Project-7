@@ -1,22 +1,23 @@
 import React, { useEffect, useState, useCallback, useContext } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { authContext } from "../App";
+// import { authContext } from "../App";
 import LogOutButton from "../buttons/LogOutButton.js";
 import Card from "../components/Card.js";
 
 export default function Home(){ 
+    const cookieToken = document.cookie.slice(6);
     const navigate = useNavigate();
-    const {auth} = useContext(authContext);
+    // const {auth} = useContext(authContext);
     const [posts, setPosts] = useState([]);
-    const token = auth.token;
-   
+    // const token = auth.token;
+
     const settings = {
         method: "GET",
         credentials: "include",
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "Authorization" : token,
+            "Authorization" : cookieToken,
         },
     };
     
@@ -37,7 +38,7 @@ export default function Home(){
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                "Authorization": token,
+                "Authorization": cookieToken,
             },
         };
         const getSettings = {
@@ -46,7 +47,7 @@ export default function Home(){
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                "Authorization": token,
+                "Authorization": cookieToken,
             },
         };
 

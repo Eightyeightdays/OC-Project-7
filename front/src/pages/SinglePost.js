@@ -5,11 +5,12 @@ import Card from "../components/Card";
 import LogOutButton from "../buttons/LogOutButton";
 
 export default function DisplaySinglePost(){
+    const cookieToken = document.cookie.slice(6);
     const navigate = useNavigate();
     const params = useParams();
-    const {auth} = useContext(authContext);
+    // const {auth} = useContext(authContext);
     const [post, setPost] = useState();
-    const token = auth.token;
+    // const token = auth.token;
     
     const settings = {
         method: "GET",
@@ -17,7 +18,7 @@ export default function DisplaySinglePost(){
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "Authorization" : auth.token,
+            "Authorization" : cookieToken,
         },
     };
 
@@ -38,7 +39,7 @@ export default function DisplaySinglePost(){
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                "Authorization": token,
+                "Authorization": cookieToken,
             },
         };
 

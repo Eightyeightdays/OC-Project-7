@@ -7,6 +7,8 @@ export default function EditPost(){
     const [post, setPost] = useState();
     const navigate = useNavigate();
 
+    const cookieToken = document.cookie.slice(6);
+
     const params = useParams();
     const settings = {
         method: "GET",
@@ -14,7 +16,7 @@ export default function EditPost(){
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "Authorization" : auth.token,
+            "Authorization" : cookieToken,
         },
     };
 
@@ -34,7 +36,7 @@ export default function EditPost(){
             credentials: "include",
             headers: {
                 "Accept": "application/json",
-                "Authorization" : auth.token,
+                "Authorization" : cookieToken,
             },
             body: formData,
         };
