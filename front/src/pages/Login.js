@@ -1,5 +1,4 @@
-import React, { useContext, useState } from "react";
-import { authContext } from "../App";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const style = {
@@ -17,7 +16,6 @@ const container={
 export default function LoginAndSignUp(){
     const [loginError, setLoginError] = useState();
     const [signupError, setSignupError] = useState();
-    const {auth, setAuth} = useContext(authContext);
     const navigate = useNavigate();
     
     function handleLogin(){
@@ -39,13 +37,9 @@ export default function LoginAndSignUp(){
         .then(data =>{
             if(data.token){
                 if(data.admin){ 
-                    setAuth({token:data.token, userId: data.userId, admin: true}); // Add admin status to context
                     console.log("ADMIN SIGNED IN");
-                    navigate("/home");
-                }else{
-                    setAuth({token:data.token, userId: data.userId})  // Add bearer token and userId to context variable
-                    navigate("/home");
-                }   
+                }
+                navigate("/home"); 
             }else{
                 setLoginError("LOGIN DETAILS INCORRECT");
             }
@@ -106,7 +100,6 @@ export default function LoginAndSignUp(){
                 .then(response => response.json())
                 .then(data =>{
                     if(data.token){
-                        setAuth({token:data.token, userId: data.userId})  // Add bearer token and userId to context variable
                         navigate("/home");
                     }
                 })

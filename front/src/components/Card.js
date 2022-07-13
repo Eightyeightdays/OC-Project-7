@@ -2,8 +2,8 @@ import LikeButton from "../buttons/LikeButton"
 import EditAndDeleteButton from "../buttons/EditAndDeleteButton";
 import { styles } from "../styles"
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { authContext } from "../App";
 import React,  { useState, useContext } from "react";
+import extractCookieData from "../utils/extractCookieData";
 
 export default function Card(props){
     const{
@@ -25,13 +25,10 @@ export default function Card(props){
         handleDelete
     } = props;
     const navigate = useNavigate();
-    const {auth} = useContext(authContext);
-    const token = auth.token;
     const [like, setLike]= useState({likes: likes, dislikes: dislikes, usersLiked: usersLiked, usersDisliked: usersDisliked});
     const params = useParams();
+    const cookieData = extractCookieData(document.cookie);
 
-    const cookieToken = document.cookie.slice(6);
-    
     function updateLikeState(data){
         setLike({likes: data.likes, dislikes: data.dislikes, usersLiked: data.usersLiked, usersDisliked: data.usersDisliked});
         return
@@ -43,7 +40,7 @@ export default function Card(props){
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                "Authorization" : cookieToken,
+                "Authorization" : cookieData.token,
             },
         };
         fetch(`http://localhost:3001/posts/${postId}/like`, settings)
@@ -57,7 +54,7 @@ export default function Card(props){
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                "Authorization" : cookieToken,
+                "Authorization" : cookieData.token,
             },
         };
         fetch(`http://localhost:3001/posts/${postId}/dislike`, settings)
@@ -95,7 +92,7 @@ export default function Card(props){
                 <p>Users liked:  {like.usersLiked}</p>
                 <p>Users disliked: {like.usersDisliked}</p>
             <LikeButton postId={postId} likePost={likePost} dislikePost={dislikePost} disableButton={disableButton}/>
-            {(auth.userId === userId || auth.admin === true) && <EditAndDeleteButton postId={postId} handleEdit={handleEdit} handleDelete={handleDelete} />}
+            {(cookieData.userId === userId || cookieData.admin ) && <EditAndDeleteButton postId={postId} handleEdit={handleEdit} handleDelete={handleDelete} />}
         </div>
     )
 }

@@ -1,16 +1,14 @@
-import React, { useEffect, useState, useCallback, useContext } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { authContext } from "../App";
 import Card from "../components/Card";
 import LogOutButton from "../buttons/LogOutButton";
+import extractCookieData from "../utils/extractCookieData";
 
 export default function DisplaySinglePost(){
-    const cookieToken = document.cookie.slice(6);
     const navigate = useNavigate();
     const params = useParams();
-    // const {auth} = useContext(authContext);
     const [post, setPost] = useState();
-    // const token = auth.token;
+    const cookieData = extractCookieData(document.cookie);
     
     const settings = {
         method: "GET",
@@ -18,7 +16,7 @@ export default function DisplaySinglePost(){
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "Authorization" : cookieToken,
+            "Authorization" : cookieData.token,
         },
     };
 
@@ -39,7 +37,7 @@ export default function DisplaySinglePost(){
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                "Authorization": cookieToken,
+                "Authorization": cookieData.token,
             },
         };
 
@@ -58,11 +56,7 @@ export default function DisplaySinglePost(){
             <Link to={"/home"}>Home</Link> | {" "}
             <Link to={"/post/new"}>Create New Post</Link> | {" "}
             <LogOutButton />
-            {post && 
-            <>
-                <Card post={post} handleDelete={handleDelete}/>
-            </>
-            }
+            {post && <Card post={post} handleDelete={handleDelete}/>}
         </>
     )
 }

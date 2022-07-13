@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useContext } from "react";
-// import { authContext } from "../App";
+import extractCookieData from "../utils/extractCookieData";
+
 
 export default function CreatePost(){
     const navigate = useNavigate();
-    // const {auth} = useContext(authContext);
-
-    const cookieToken = document.cookie.slice(6);
+    const cookieData = extractCookieData(document.cookie);
     
     function handleCreate(){
         const form = document.getElementById("postForm");
@@ -22,7 +20,7 @@ export default function CreatePost(){
             method: "POST",
             headers: {
                 "Accept": "application/json",
-                "Authorization": cookieToken,
+                "Authorization": cookieData.token,
             },
             body: formData,
         };

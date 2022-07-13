@@ -1,15 +1,12 @@
-import React, { useEffect, useState, useCallback, useContext } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
-// import { authContext } from "../App";
+import React, { useEffect, useState, useCallback } from "react";
+import { Link, Outlet } from "react-router-dom";
 import LogOutButton from "../buttons/LogOutButton.js";
 import Card from "../components/Card.js";
+import extractCookieData from "../utils/extractCookieData.js";
 
 export default function Home(){ 
-    const cookieToken = document.cookie.slice(6);
-    const navigate = useNavigate();
-    // const {auth} = useContext(authContext);
     const [posts, setPosts] = useState([]);
-    // const token = auth.token;
+    const cookieData = extractCookieData(document.cookie);
 
     const settings = {
         method: "GET",
@@ -17,7 +14,7 @@ export default function Home(){
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "Authorization" : cookieToken,
+            "Authorization" : cookieData.token,
         },
     };
     
@@ -38,7 +35,7 @@ export default function Home(){
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                "Authorization": cookieToken,
+                "Authorization": cookieData.token,
             },
         };
         const getSettings = {
@@ -47,7 +44,7 @@ export default function Home(){
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                "Authorization": cookieToken,
+                "Authorization": cookieData.token,
             },
         };
 

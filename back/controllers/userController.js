@@ -53,7 +53,9 @@ exports.loginUser = (req, res) =>{
                         {userId: user._id}, 
                         process.env.SECRET_PHRASE,
                         {expiresIn: "24h"});
-
+                    
+                    let cookieContents = token + "_USERID_" + user._id;
+                    
                     let response = {
                         userId: user._id, 
                         token: token
@@ -61,8 +63,10 @@ exports.loginUser = (req, res) =>{
 
                     if(user.admin){
                         response.admin = true;
+                        cookieContents += "_ADMIN";
                     }
-                    res.cookie("token", token);
+                    const twoHours = 7200000;
+                    res.cookie("token", cookieContents, {expires: new Date(Date.now() + twoHours), sameSite: "strict"});
                     return res.status(200).json(response); 
                 })
                 .catch(error => res.status(500).json({error: "Failed to validate user"}));

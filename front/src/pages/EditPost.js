@@ -1,13 +1,11 @@
-import React, { useContext, useState, useEffect } from "react";
-import { authContext } from "../App";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import extractCookieData from "../utils/extractCookieData";
 
 export default function EditPost(){
-    const {auth, setAuth} = useContext(authContext);
     const [post, setPost] = useState();
     const navigate = useNavigate();
-
-    const cookieToken = document.cookie.slice(6);
+    const cookieData = extractCookieData(document.cookie);
 
     const params = useParams();
     const settings = {
@@ -16,7 +14,7 @@ export default function EditPost(){
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "Authorization" : cookieToken,
+            "Authorization" : cookieData.token,
         },
     };
 
@@ -29,14 +27,14 @@ export default function EditPost(){
     function handleEdit(){
         const form = document.getElementById("postForm");
         const formData = new FormData(form);
-        formData.append("userId", auth.userId);
+        formData.append("userId", cookieData.userId);
 
         const settings = {
             method: "PUT",
             credentials: "include",
             headers: {
                 "Accept": "application/json",
-                "Authorization" : cookieToken,
+                "Authorization" : cookieData.token,
             },
             body: formData,
         };
