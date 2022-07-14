@@ -2,12 +2,20 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginAndSignUp(){
-    const [loginError, setLoginError] = useState();
-    const [signupError, setSignupError] = useState();
-    const [existingUser, setExistingUser] = useState();
-    const [buttonLabel, setButtonLabel] = useState("Sign up");
+    const [error, setError] = useState();
+    const [existingUser, setExistingUser] = useState(true);
+    const [buttonLabel, setButtonLabel] = useState("Already have an account?");
     const navigate = useNavigate();
     
+    function displayErrorMessage(err){
+        setError(err);
+        const errorElement = document.getElementById("error");
+        errorElement.className="visible";
+        setTimeout(()=>{
+            errorElement.className = errorElement.className.replace("visible", "")}, 
+            5000);
+    }
+
     function handleLogin(){
         const loginForm = document.getElementById("loginForm");
         const user = Object.fromEntries(new FormData(loginForm).entries());
@@ -31,7 +39,7 @@ export default function LoginAndSignUp(){
                 }
                 navigate("/home"); 
             }else{
-                setLoginError("LOGIN DETAILS INCORRECT");
+                displayErrorMessage("LOGIN DETAILS INCORRECT");
             }
         })
     }
@@ -57,19 +65,19 @@ export default function LoginAndSignUp(){
             passwordCheck.forEach(error => errorMessage+= error.message + " - ");
             errorMessage+= " Email format incorrect";
             console.log("PASSWORD & EMAIL ERROR: " + errorMessage);
-            setSignupError(errorMessage);
+            displayErrorMessage(errorMessage);
             return;
         }
         else if(passwordCheck !== true){
             passwordCheck = schema.validate(password, {details: true});
             passwordCheck.forEach(error => errorMessage+= error.message + " - ");
             console.log("PASSWORD ERROR: " + errorMessage); 
-            setSignupError(errorMessage);
+            displayErrorMessage(errorMessage)
             return;
         }else if(emailCheck !== true){
             errorMessage = "Email format incorrect";
             console.log("EMAIL ERROR: " +errorMessage);
-            setSignupError(errorMessage);
+            displayErrorMessage(errorMessage);
             return;
         }
 
@@ -99,10 +107,12 @@ export default function LoginAndSignUp(){
     
     function changeUi(){
         setExistingUser(!existingUser);
-        if(!existingUser){
+        if(existingUser !== false){
             setButtonLabel("Sign up");
+            setError("");
         }else{
             setButtonLabel("Already have an account?")
+            setError("");
         }
     }
 
@@ -112,24 +122,23 @@ export default function LoginAndSignUp(){
             <div className="loginContainer">
                 {!existingUser ? 
                 <div className="loginAndSignup">
-                    <h2>LOGIN</h2>
+                    <h2>Welcome back!</h2>
                     <form id="loginForm">
                         <input type="text" name="email" placeholder="Email address" />
-                        <input type="password" name="password" placeholder="Password" />
+                        <input type="password" name="password" placeholder="Password" maxLength="15"/>
                     </form> 
-                    <button type="submit" onClick={handleLogin}>LOGIN</button>
-                    {loginError && <p>{loginError}</p>}
+                    <button className="loginButton" type="submit" onClick={handleLogin}>LOGIN</button>
                 </div> : 
                 <div className="loginAndSignup">
-                    <h2>SIGN UP</h2>
+                    <h2>Welcome!</h2>
                     <form id="signUpForm">
                         <input type="text" name="email" placeholder="Email address" />
-                        <input type="password" name="password" placeholder="Password" />
+                        <input type="password" name="password" placeholder="Password" maxLength="15"/>
                     </form> 
-                    <button type="submit" onClick={handleSignUp}>SIGN UP AND LOG IN</button>
-                    {signupError && <p>{signupError}</p>}
+                    <button className="loginButton" type="submit" onClick={handleSignUp}>SIGN UP AND LOG IN</button>
                 </div>}
-                <button type="button" onClick={changeUi}>{buttonLabel}</button>
+                <button className="selectButton" type="button" onClick={changeUi}>{buttonLabel}</button> 
+                <div id="error">{error}</div>
             </div>
         </>
     )

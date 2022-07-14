@@ -4,22 +4,30 @@
     --tertiary: #4E5166;
     font-family: 'Lato', sans-serif;
     
-    background: var(--primary);
+    background: var(--secondary);
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .loginAndSignup{
+    display: flex;
+    flex-direction: column;
     background: var(--secondary);
     padding: 1em;
-    width: min-content;
+    width: max-content;
     border-radius: 5px;
     margin: 2em;
     height: min-content;
 }
 
 .loginContainer{
+    border: 1px solid var(--primary);
+    border-radius: 0.2em;
+    align-items: center;
+}
+
+.loginContainer, form{
     display: flex;
     flex-direction: column;
 }
@@ -33,16 +41,17 @@
 input[type="text"], input[type="password"]{
     text-align: center;
     background: white;
-    opacity: 0.3;
+    opacity: 0.5;
     font-size: 15px;
     font-weight: bolder;
     padding: 1.5em 3em;
-    border: 3px solid red;
-    color: red;
-    margin: 0.5em 0;
-    transition: opacity 0.2s ease-out;
-    transition: width 0.4s ease-out;
-    /* width: 100%; */
+    outline: 1px solid var(--primary);
+    border: 1px solid var(--primary);
+    border-radius: 0.2em;;
+    color: var(--primary);
+    margin: 0.5em 0.5em;
+    transition: all 0.35s ease-out;
+    align-self: center;
 }
 
 input:hover{
@@ -52,14 +61,84 @@ input:hover{
 
 input:focus{
     opacity: 1;
-    width: 60%;
-    outline: none;
+    padding: 1.5em 5em;
+    outline: 1px solid transparent;
+    border: 1px solid transparent;
 }
 
 input:focus::placeholder {
     color: transparent;
 }
 
-h2{
+h1{
+    font-size: 45px;
+    font-weight: 900;
+    letter-spacing: 0.25em;
+}
+
+h1, h2{
     text-align: center;
+}
+
+button{
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    font-weight: bolder;
+    border: none;
+    width: max-content;
+    padding: 1em;
+    align-self: center;
+}
+
+.selectButton{
+    background: var(--primary);
+    color: var(--secondary);
+    border-top-right-radius: 0.85em;
+    border-top-left-radius: 0.85em;
+}
+
+.loginButton{
+    margin-top: 1em;
+    letter-spacing: 0.15em;
+    color: white;
+    background: var(--tertiary)
+}
+
+button:hover{
+    cursor: pointer;
+}
+
+@media (max-width: 535px) {
+    h1{
+        font-size: 25px;
+    }
+    input[type="text"], input[type="password"]{
+        padding: 0.5em 0.5em;
+        margin: 0.5em 0.5em;
+    }
+    .loginAndSignup{
+        margin: 0.5em;
+    }
+}
+
+#error{   
+    width: 320px;
+    height: max-content;
+    background: black;
+    color: white;
+    text-align: center; 
+    border-top-right-radius: 0.85em;
+    border-top-left-radius: 0.85em;
+    padding: 1em 2em;
+    position: fixed; 
+    z-index: 1; 
+    bottom: -160px; 
+    right: 0;
+    line-height: 2em;
+    box-shadow: 10px 10px 10px 10px 10px;
+    transition: all 1s ease-in-out;
+}
+
+#error.visible{
+    bottom: 0;
 }
