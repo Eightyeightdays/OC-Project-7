@@ -2,7 +2,7 @@ import LikeButton from "../buttons/LikeButton"
 import EditAndDeleteButton from "../buttons/EditAndDeleteButton";
 import { styles } from "../styles"
 import { Link, useNavigate, useParams } from "react-router-dom";
-import React,  { useState, useContext } from "react";
+import React,  { useState } from "react";
 import extractCookieData from "../utils/extractCookieData";
 
 export default function Card(props){
