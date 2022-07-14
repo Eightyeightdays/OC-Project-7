@@ -1,21 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const style = {
-        background: "lemonchiffon",
-        padding: "1em",
-        width: "min-content",
-        borderRadius: "10px",
-        margin: "2em",
-        height: "min-content"
-}
-const container={
-    display: "flex"
-}
-
 export default function LoginAndSignUp(){
     const [loginError, setLoginError] = useState();
     const [signupError, setSignupError] = useState();
+    const [existingUser, setExistingUser] = useState();
+    const [buttonLabel, setButtonLabel] = useState("Sign up");
     const navigate = useNavigate();
     
     function handleLogin(){
@@ -107,28 +97,39 @@ export default function LoginAndSignUp(){
         })
     }
     
+    function changeUi(){
+        setExistingUser(!existingUser);
+        if(!existingUser){
+            setButtonLabel("Sign up");
+        }else{
+            setButtonLabel("Already have an account?")
+        }
+    }
+
     return(
         <>
             <h1>GROUPOMANIA</h1>
-                <div style={container}>
-                <div style={style}>
+            <div className="loginContainer">
+                {!existingUser ? 
+                <div className="loginAndSignup">
                     <h2>LOGIN</h2>
                     <form id="loginForm">
-                        EMAIL:<input type="text" name="email" />
-                        PASSWORD:<input type="password" name="password" />
+                        <input type="text" name="email" placeholder="Email address" />
+                        <input type="password" name="password" placeholder="Password" />
                     </form> 
                     <button type="submit" onClick={handleLogin}>LOGIN</button>
                     {loginError && <p>{loginError}</p>}
-                </div>
-                <div style={style}>
+                </div> : 
+                <div className="loginAndSignup">
                     <h2>SIGN UP</h2>
                     <form id="signUpForm">
-                        EMAIL:<input type="text" name="email" />
-                        PASSWORD:<input type="password" name="password" />
+                        <input type="text" name="email" placeholder="Email address" />
+                        <input type="password" name="password" placeholder="Password" />
                     </form> 
-                    <button type="submit" onClick={handleSignUp}>SIGN UP</button>
+                    <button type="submit" onClick={handleSignUp}>SIGN UP AND LOG IN</button>
                     {signupError && <p>{signupError}</p>}
-                </div>
+                </div>}
+                <button type="button" onClick={changeUi}>{buttonLabel}</button>
             </div>
         </>
     )

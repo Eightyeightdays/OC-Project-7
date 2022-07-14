@@ -4,8 +4,62 @@
     --tertiary: #4E5166;
     font-family: 'Lato', sans-serif;
     
-    background: var(--secondary);
+    background: var(--primary);
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.loginAndSignup{
+    background: var(--secondary);
+    padding: 1em;
+    width: min-content;
+    border-radius: 5px;
+    margin: 2em;
+    height: min-content;
+}
+
+.loginContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.header{
+    display: flex;
+    background: var(--secondary);
+    width: 100vw;
+}
+
+input[type="text"], input[type="password"]{
+    text-align: center;
+    background: white;
+    opacity: 0.3;
+    font-size: 15px;
+    font-weight: bolder;
+    padding: 1.5em 3em;
+    border: 3px solid red;
+    color: red;
+    margin: 0.5em 0;
+    transition: opacity 0.2s ease-out;
+    transition: width 0.4s ease-out;
+    /* width: 100%; */
+}
+
+input:hover{
+    opacity: 1;
+    cursor: pointer;
+}
+
+input:focus{
+    opacity: 1;
+    width: 60%;
+    outline: none;
+}
+
+input:focus::placeholder {
+    color: transparent;
+}
+
+h2{
+    text-align: center;
 }

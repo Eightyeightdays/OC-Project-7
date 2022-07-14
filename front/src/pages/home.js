@@ -61,7 +61,7 @@ export default function Home(){
         
     return(
         <>      
-            <div id="header">
+            <div className="header" id="header">
                 <h1>GROUPOMANIA</h1>
                 <Link to={"/post/new"}>Create New Post</Link> | {" "}
                 <LogOutButton />
