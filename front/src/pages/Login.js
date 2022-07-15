@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginAndSignUp(){
-    const [error, setError] = useState();
+    const [error, setError] = useState([]);
     const [existingUser, setExistingUser] = useState(true);
     const [buttonLabel, setButtonLabel] = useState("Already have an account?");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const navigate = useNavigate();
     
     function displayErrorMessage(err){
@@ -21,6 +23,7 @@ export default function LoginAndSignUp(){
         const user = Object.fromEntries(new FormData(loginForm).entries());
         const settings = {
         method: "POST",
+        credentials: "include",
         headers: {
             "Access-Control-Allow-Credentials": true,
             "Accept": "application/json",
@@ -45,7 +48,15 @@ export default function LoginAndSignUp(){
         })
     }
 
-    function handleSignUp(){
+    function handleInputs(event){
+        if(event.target.type === "text"){
+            setEmail(event.target.value);
+        }else{
+            setPassword(event.target.value);
+        }
+    }
+
+    const checkNewUser = ()=>{
         const signUpForm = document.getElementById("signUpForm");
         const user = Object.fromEntries(new FormData(signUpForm).entries());
         const {email, password} = user;
@@ -59,28 +70,33 @@ export default function LoginAndSignUp(){
     
         let passwordCheck = schema.validate(password);
         let emailCheck = emailValidator.validate(email); 
-        let errorMessage ="";
+        let errorMessage =[];
 
         if(passwordCheck !== true && emailCheck !== true){
             passwordCheck = schema.validate(password, {details: true});
-            passwordCheck.forEach(error => errorMessage+= error.message + " - ");
-            errorMessage+= " Email format incorrect";
+            passwordCheck.forEach(error => errorMessage.push(error.message));
+            errorMessage.push(" Email format incorrect");
             console.log("PASSWORD & EMAIL ERROR: " + errorMessage);
             displayErrorMessage(errorMessage);
             return;
         }
         else if(passwordCheck !== true){
             passwordCheck = schema.validate(password, {details: true});
-            passwordCheck.forEach(error => errorMessage+= error.message + " - ");
+            passwordCheck.forEach(error => errorMessage.push(error.message));
             console.log("PASSWORD ERROR: " + errorMessage); 
             displayErrorMessage(errorMessage)
             return;
         }else if(emailCheck !== true){
-            errorMessage = "Email format incorrect";
+            errorMessage.push("Email format incorrect");
             console.log("EMAIL ERROR: " +errorMessage);
             displayErrorMessage(errorMessage);
             return;
         }
+        return user;
+    }
+
+    function handleSignUp(){
+        const user = checkNewUser();
 
         const settings = {
         method: "POST",
@@ -94,6 +110,7 @@ export default function LoginAndSignUp(){
         fetch("http://localhost:3001/auth/signup", settings)
         .then(response => {
             if(response.status === 201){
+                settings.credentials = "include";
                 fetch("http://localhost:3001/auth/login", settings)
                 .then(response => response.json())
                 .then(data =>{
@@ -107,6 +124,8 @@ export default function LoginAndSignUp(){
     
     function changeUi(){
         setExistingUser(!existingUser);
+        setEmail("");
+        setPassword("");
         if(existingUser){
             setButtonLabel("Sign up");
             setError("");
@@ -124,8 +143,8 @@ export default function LoginAndSignUp(){
                 <>
                     <h2>Welcome back!</h2>
                     <form id="loginForm">
-                        <input type="text" name="email" placeholder="Email address" />
-                        <input type="password" name="password" placeholder="Password" maxLength="15"/>
+                        <input type="text" name="email" placeholder="Email address" onChange={event=>handleInputs(event)} value={email} />
+                        <input type="password" name="password" placeholder="Password" maxLength="15" onChange={event=>handleInputs(event)} value={password} />
                     </form> 
                     <button className="loginButton" type="submit" onClick={handleLogin}>LOGIN</button>
                 </> 
@@ -133,14 +152,18 @@ export default function LoginAndSignUp(){
                <>
                     <h2>Welcome!</h2>
                     <form id="signUpForm">
-                        <input type="text" name="email" placeholder="Email address" />
-                        <input type="password" name="password" placeholder="Password" maxLength="15"/>
+                        <input type="text" name="email" placeholder="Email address" onChange={event=>handleInputs(event)} value={email} />
+                        <input type="password" name="password" placeholder="Password" maxLength="15" onChange={event=>handleInputs(event)} value={password} />
                     </form> 
                     <button className="loginButton" type="submit" onClick={handleSignUp}>SIGN UP AND LOG IN</button>
                 </>
                 }
                 <button className="selectButton" type="button" onClick={changeUi}>{buttonLabel}</button> 
-                <div id="error">{error}</div>
+                {error && <div id="error">
+                    <ul>
+                        {error.map(err=> <li>{err}</li>)}
+                    </ul>
+                </div>}
             </div>
         </>
     )
