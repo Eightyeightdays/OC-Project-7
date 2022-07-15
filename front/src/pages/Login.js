@@ -21,7 +21,6 @@ export default function LoginAndSignUp(){
         const user = Object.fromEntries(new FormData(loginForm).entries());
         const settings = {
         method: "POST",
-        credentials: "include",
         headers: {
             "Access-Control-Allow-Credentials": true,
             "Accept": "application/json",
@@ -36,6 +35,8 @@ export default function LoginAndSignUp(){
             if(data.token){
                 if(data.admin){ 
                     console.log("ADMIN SIGNED IN");
+                    navigate("/home");
+                    console.log("DIDN'T NAVIGATE HOME")
                 }
                 navigate("/home"); 
             }else{
@@ -93,7 +94,6 @@ export default function LoginAndSignUp(){
         fetch("http://localhost:3001/auth/signup", settings)
         .then(response => {
             if(response.status === 201){
-                settings.credentials = "include";
                 fetch("http://localhost:3001/auth/login", settings)
                 .then(response => response.json())
                 .then(data =>{
@@ -107,7 +107,7 @@ export default function LoginAndSignUp(){
     
     function changeUi(){
         setExistingUser(!existingUser);
-        if(existingUser !== false){
+        if(existingUser){
             setButtonLabel("Sign up");
             setError("");
         }else{
@@ -121,22 +121,24 @@ export default function LoginAndSignUp(){
             <h1>GROUPOMANIA</h1>
             <div className="loginContainer">
                 {!existingUser ? 
-                <div className="loginAndSignup">
+                <>
                     <h2>Welcome back!</h2>
                     <form id="loginForm">
                         <input type="text" name="email" placeholder="Email address" />
                         <input type="password" name="password" placeholder="Password" maxLength="15"/>
                     </form> 
                     <button className="loginButton" type="submit" onClick={handleLogin}>LOGIN</button>
-                </div> : 
-                <div className="loginAndSignup">
+                </> 
+                :
+               <>
                     <h2>Welcome!</h2>
                     <form id="signUpForm">
                         <input type="text" name="email" placeholder="Email address" />
                         <input type="password" name="password" placeholder="Password" maxLength="15"/>
                     </form> 
                     <button className="loginButton" type="submit" onClick={handleSignUp}>SIGN UP AND LOG IN</button>
-                </div>}
+                </>
+                }
                 <button className="selectButton" type="button" onClick={changeUi}>{buttonLabel}</button> 
                 <div id="error">{error}</div>
             </div>
