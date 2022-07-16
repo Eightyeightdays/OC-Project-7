@@ -67,15 +67,17 @@ export default function EditPost(){
         <>
             <Link to={"/home"}>Home</Link> | {" "}
             {post && <>
-            <form id="postForm" encType="multipart/form-data">
-                    TITLE<input id="titleInput" type="text" name="title" maxLength="50" onChange={(event)=>handleTitle(setTitle, setTitleAlert, title, event)} value={title} />
+            <form className="edit-post-form" id="postForm" encType="multipart/form-data">
+                    Title<input className="title-input" id="titleInput" type="text" name="title" maxLength="50" onChange={(event)=>handleTitle(setTitle, setTitleAlert, title, event)} value={title} />
                     {<p>{titleAlert}</p>}
-                    CONTENT<textarea type="text" name="content" maxLength="1500" onChange={(event)=>handleContent(setContent, setContentAlert, content, event)} value={content} />
+                    Content<textarea className="content-input" type="text" name="content" maxLength="1500" onChange={(event)=>handleContent(setContent, setContentAlert, content, event)} value={content} />
                     {<p>{contentAlert}</p>}
-                    <img alt="" src={post.imageUrl}></img>
-                    IMAGE<input type="file" name="image"/>
+                    <div className="edit-image-container">
+                        <img className="edit-image" alt="" src={post.imageUrl}></img>
+                        <input classname="select-file-button" type="file" name="image"/>
+                    </div>
                 </form>
-                <button type="submit" onClick={handleEdit}>EDIT POST</button>
+                <button type="submit" onClick={handleEdit}>Edit Post</button>
             </>}
         </>
     )

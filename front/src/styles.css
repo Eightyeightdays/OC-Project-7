@@ -3,11 +3,17 @@
     --secondary: #FFD7D7;
     --tertiary: #4E5166;
     font-family: 'Lato', sans-serif;
-    
     background: var(--secondary);
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
 }
 
 .loginContainer{
@@ -28,13 +34,13 @@
     flex-direction: column;
 }
 
-.header{
+/* .header{
     display: flex;
     background: var(--secondary);
     width: 100vw;
-}
+} */
 
-input[type="text"], input[type="password"]{
+.login-input{
     text-align: center;
     background: white;
     opacity: 0.5;
@@ -50,19 +56,19 @@ input[type="text"], input[type="password"]{
     align-self: center;
 }
 
-input:hover{
+.login-input:hover{
     opacity: 1;
     cursor: pointer;
 }
 
-input:focus{
+.login-input:focus{
     opacity: 1;
     padding: 1.5em 5em;
     outline: 1px solid transparent;
     border: 1px solid transparent;
 }
 
-input:focus::placeholder {
+.login-input:focus::placeholder {
     color: transparent;
 }
 
@@ -76,7 +82,7 @@ h1, h2{
     text-align: center;
 }
 
-button{
+.loginButton, .selectButton{
     font-family: 'Lato', sans-serif;
     font-size: 15px;
     font-weight: bolder;
@@ -143,3 +149,166 @@ button:hover{
 #error.visible{
     bottom: 0;
 }
+
+.card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    margin: 1em;
+    color: var(--tertiary);
+    font-size: 15px;
+    /* border-radius: 3px; */
+    width: 600px;
+    height: max-content;
+    margin: 1.5em;
+}
+
+.card_header{
+    height: 75px;
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    padding: 1em;
+    margin-bottom: 1em;
+}
+
+.card_title{
+    font-weight: 900;
+    font-size: 20px;
+}
+
+.card p{
+    margin: 0;
+}
+
+.image-box{
+    height: 350px;
+}
+
+.image-box a{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.card img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.card_content{
+    border-bottom: 1px solid var(--tertiary);
+    padding: 1em;
+    align-self: start;
+    height: min-content;
+    width: 100%;
+}
+
+.card_details{
+    height: 100px;
+    width: 100%;
+}
+.card_like-container{
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+    padding: 1em;
+}
+
+.button_container{
+    display: flex;
+    width: 100%;
+    /* background: palegoldenrod; */
+}
+
+.like_buttons{
+    display: flex;
+    justify-content: flex-start;
+    padding: 0 0 0 1em;
+    width: 100%;
+}
+
+.edit_buttons{
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 1em 0 0;
+    width: 100%;
+}
+
+.card button{
+    margin: 0.5em;
+    border: none;
+    padding: 0.5em 0.2em;
+    font-family: lato;
+    letter-spacing: 0.1em;
+    border-radius: 2px;
+}
+
+.like-button{
+    background: green;
+    color: white;
+}
+
+.dislike-button{
+    background: red;
+    color: white;
+}
+
+.content-input{
+    width: 600px;
+    resize: none;
+    height: 200px;
+}
+
+/* EDIT PAGE */
+
+.edit-post-form{
+    width: 800px;
+    background: white;
+    margin: 2em;
+    padding: 1em;
+}
+
+.title-input{
+    padding: 0.5em 1em;
+    margin-top: 0.5em;
+    width: 360px;
+}
+
+.content-input{
+    font-family: lato;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    padding: 1em;
+    margin-top: 0.5em;
+    height: 400px;
+    width: 100%;
+}
+
+form input:focus, form textarea:focus{
+    outline: transparent;
+}
+
+.edit-image-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 320px;
+    background: var(--tertiary)
+}
+
+.edit-image{
+    object-fit: cover;
+    height: 100%;
+    margin-bottom: 1em;
+}
+
+input[type="file"]{
+    border: none;
+    width: 200px;
+    height: 50px;
+    background: red;
+}
+

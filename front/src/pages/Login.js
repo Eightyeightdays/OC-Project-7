@@ -46,7 +46,6 @@ export default function LoginAndSignUp(){
         .then(data =>{
             if(data.token){
                 if(data.admin){ 
-                    console.log("ADMIN SIGNED IN");
                     navigate("/home");
                 }
                 navigate("/home"); 
@@ -158,9 +157,9 @@ export default function LoginAndSignUp(){
                 {!existingUser ? 
                 <>
                     <h2>Welcome back!</h2>
-                    <form id="loginForm">
-                        <input type="text" name="email" placeholder="Email address" onChange={event=>handleInputs(event)} value={emailField} />
-                        <input type="password" name="password" placeholder="Password" maxLength="15" onChange={event=>handleInputs(event)} value={passwordField} />
+                    <form id="loginForm" >
+                        <input className="login-input" type="text" name="email" placeholder="Email address" onChange={event=>handleInputs(event)} value={emailField} />
+                        <input className="login-input" type="password" name="password" placeholder="Password" maxLength="15" onChange={event=>handleInputs(event)} value={passwordField} />
                     </form> 
                     <button className="loginButton" type="submit" onClick={handleLogin}>LOGIN</button>
                 </> 
@@ -168,8 +167,8 @@ export default function LoginAndSignUp(){
                <>
                     <h2>Welcome!</h2>
                     <form id="signUpForm">
-                        <input type="text" name="email" placeholder="Email address" onChange={event=>handleInputs(event)} value={emailField} />
-                        <input type="password" name="password" placeholder="Password" maxLength="15" onChange={event=>handleInputs(event)} value={passwordField} />
+                        <input className="login-input" type="text" name="email" placeholder="Email address" onChange={event=>handleInputs(event)} value={emailField} />
+                        <input className="login-input" type="password" name="password" placeholder="Password" maxLength="15" onChange={event=>handleInputs(event)} value={passwordField} />
                     </form> 
                     <button className="loginButton" type="submit" onClick={handleSignUp}>SIGN UP AND LOG IN</button>
                 </>

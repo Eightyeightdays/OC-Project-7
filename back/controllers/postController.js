@@ -3,6 +3,9 @@ const fs = require("fs");
 const moment = require('moment'); 
 
 exports.create = (req, res) => {
+    req.body.title = req.body.title.replace(/&#x27;/g, "'");
+    req.body.content = req.body.content.replace(/&#x27;/g, "'");
+
     const post = new Post({
         ...req.body,
         userId: req.auth.userId,
@@ -29,6 +32,9 @@ exports.getAll = (req, res) => {
 }
 
 exports.modify = (req, res) => {
+    req.body.title = req.body.title.replace(/&#x27;/g, "'");
+    req.body.content = req.body.content.replace(/&#x27;/g, "'");
+
     if(req.auth.userId !== req.body.userId && !req.auth.admin){   
         return res.status(403).json({message: "You don't have permission to edit this post"})
     }else{
@@ -68,6 +74,7 @@ function createResponseObject(message, data){
 exports.likePost = (req, res) =>{
     const postId = req.params.id;
     const userId = req.auth.userId; 
+    
     Post.findOne({_id: postId})
         .then(post => {
             if(post.usersLiked.includes(userId) === false){                                     
