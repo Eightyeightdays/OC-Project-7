@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import extractCookieData from "../utils/extractCookieData";
 import { handleTitle, handleContent } from "../utils/postInputHandlers";
 import Navbar from "../components/Navbar";
+import Header from "../components/Header";
 
 export default function EditPost(){
     const [post, setPost] = useState();
@@ -76,6 +77,7 @@ export default function EditPost(){
 
     return(
         <>
+            <Header />
             {post && <>
             <form className="upload-post-form" id="postForm" encType="multipart/form-data">
                     Title<input className="title-input" id="titleInput" type="text" name="title" maxLength="50" onChange={(event)=>handleTitle(setTitle, setTitleAlert, title, event)} value={title} />

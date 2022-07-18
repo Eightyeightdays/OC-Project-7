@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Link, Outlet } from "react-router-dom";
-import LogOutButton from "../buttons/LogOutButton.js";
 import Card from "../components/Card.js";
 import extractCookieData from "../utils/extractCookieData.js";
 import Navbar from "../components/Navbar.js";
+import Header from "../components/Header.js";
 
 export default function Home(){ 
     const [posts, setPosts] = useState([]);
@@ -60,18 +59,13 @@ export default function Home(){
         };
     
         
-    return(
-        <>      
-            <div className="header" id="header">
-                <h1>GROUPOMANIA</h1>
-            </div>
-            
+    return(    
+        <div className="flex-column">
+            <Header />
             {posts.sort((a,b)=> b.datePosted - a.datePosted).map((post, index)=>(
                 <Card key={index} post={post} handleDelete={handleDelete}/>
             ))}
-            
-            <Outlet />
             <Navbar nav={false} />
-        </>
+        </div>
     ) 
 }

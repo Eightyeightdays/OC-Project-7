@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Card from "../components/Card";
-import LogOutButton from "../buttons/LogOutButton";
 import extractCookieData from "../utils/extractCookieData";
 import Navbar from "../components/Navbar";
+import Header from "../components/Header";
 
 export default function DisplaySinglePost(){
     const navigate = useNavigate();
@@ -53,9 +53,10 @@ export default function DisplaySinglePost(){
         };
 
     return(
-        <>
+        <div className="flex-column">
+            <Header />
             {post && <Card post={post} handleDelete={handleDelete}/>}
             <Navbar nav={true} />
-        </>
+        </div>
     )
 }

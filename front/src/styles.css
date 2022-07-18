@@ -7,6 +7,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     box-sizing: border-box;
 }
 
@@ -33,12 +34,6 @@
     display: flex;
     flex-direction: column;
 }
-
-/* .header{
-    display: flex;
-    background: var(--secondary);
-    width: 100vw;
-} */
 
 .login-input{
     text-align: center;
@@ -112,22 +107,6 @@ button:hover{
     cursor: pointer;
 }
 
-@media (max-width: 535px) {
-    
-    h1{
-        font-size: 25px;
-    }
-    input[type="text"], input[type="password"]{
-        padding: 1.5em 0.5em;
-        margin: 0.5em 0.5em;
-        font-size: 15px;;
-    }
-    .loginContainer{
-        margin: 0.5em;
-        width: 300px;
-    }
-}
-
 #error{   
     width: max-content;
     height: max-content;
@@ -151,6 +130,7 @@ button:hover{
 }
 
 .card{
+    align-self: center;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -163,12 +143,12 @@ button:hover{
 }
 
 .card_header{
-    height: 75px;
+    height: max-content;
     display: flex;
     flex-direction: column;
     align-self: flex-start;
     padding: 1em;
-    margin-bottom: 1em;
+    margin-bottom: 0em;
 }
 
 .card_title{
@@ -200,8 +180,9 @@ button:hover{
     border-bottom: 1px solid var(--tertiary);
     padding: 1em;
     align-self: start;
-    height: min-content;
+    height: max-content;
     width: 100%;
+    /* background: gold; */
 }
 
 .card_details{
@@ -214,6 +195,7 @@ button:hover{
 .card_like-container{
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 1em;
     padding: 1em;
     height: 50%;
@@ -230,6 +212,7 @@ button:hover{
     justify-content: flex-start;
     padding: 0 0 0 0.5em;
     width: 100%;
+    
 }
 
 .edit_buttons{
@@ -346,10 +329,6 @@ input[type="file"]{
     align-self: center;
 }
 
-.upload-post-button:hover{
-   
-}
-
 .select-file-description{
     margin: 0.5em;
     color: white;
@@ -367,12 +346,14 @@ input[type="file"]{
     align-items: flex-start;
     transition: all 0.2s ease-out;
     gap: 0.5em;
+    opacity: 0.5
 }
-
+.navbar:hover{
+    opacity: 1;
+}
 .navbar *:hover{
     background: var(--tertiary);
 }
-
 .navbar a{
     text-decoration-line: none;
     background: var(--primary);
@@ -401,4 +382,77 @@ a:visited{
     color: white;
     transition: all 0.2s ease-out;
     text-align: start;
+}
+
+.flex-column{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ////// MOBILE //////// */
+
+@media (max-width: 535px) {
+    
+    h1{
+        font-size: 25px;
+    }
+    input[type="text"], input[type="password"]{
+        padding: 1.5em 0.5em;
+        margin: 0.5em 0.5em;
+        font-size: 15px;;
+    }
+    .loginContainer{
+        margin: 0.5em;
+        width: 300px;
+    }
+
+    .card, .upload-post-form{
+        width: 90%;
+    }
+   
+    .navbar{
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-end;
+        bottom: 0;
+        width: 100%;
+        height: 80px;
+        background: linear-gradient(180deg, transparent, white);
+        opacity: 1;
+    }
+    .new-post-link{
+        border-top-left-radius: 15px;
+        border-top-right-radius: 0;
+    }
+    .logout-button{
+        border-top-right-radius: 15px;
+        border-bottom-right-radius: 0;
+        box-shadow: 5px 5px 10px 2px  var(--tertiary);
+        text-align: center;
+    }
+    .navbar a{
+        box-shadow: 5px 5px 10px 2px  var(--tertiary);
+        text-align: center;
+    }
+    .stop-footer{
+        height: 80px;
+        width: 100%;
+        position: relative;
+        bottom: 0;
+        z-index: -1;
+    }
+}
+
+/* ///// TABLET ////// */
+@media (min-width: 536px) {
+    .card, .upload-post-form{
+        width: 90vw;
+    }
+}
+
+@media(min-width: 900px){
+    .card, .upload-post-form{
+        width: 800px;
+    }
 }
