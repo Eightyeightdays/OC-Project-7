@@ -3,7 +3,6 @@ import { useNavigate, Link } from "react-router-dom";
 import extractCookieData from "../utils/extractCookieData";
 import { handleTitle, handleContent } from "../utils/postInputHandlers";
 
-
 export default function CreatePost(){
     const navigate = useNavigate();
     const cookieData = extractCookieData(document.cookie);
@@ -11,8 +10,12 @@ export default function CreatePost(){
     const [content, setContent] = useState("");
     const [titleAlert, setTitleAlert] = useState();
     const [contentAlert, setContentAlert] = useState();
+    const [file, setFile] = useState();
+    const [src, setSrc] = useState();
     
-    function handleCreate(){
+    function handleCreate(event){
+        event.preventDefault();
+
         const form = document.getElementById("postForm");
         const formData = new FormData(form);
         const formObject = Object.fromEntries(formData.entries());
@@ -20,6 +23,8 @@ export default function CreatePost(){
         if(title === "" || content === "" || formObject.file ===" "){
             return;
         }
+
+        URL.revokeObjectURL(src);   // Remove from memory
 
         const settings = {
             method: "POST",
@@ -42,17 +47,32 @@ export default function CreatePost(){
         })
     }
     
+    function handleFileSelect(event){
+        setFile(event.target.files[0].name);
+        let url = URL.createObjectURL(event.target.files[0]);
+        setSrc(url);
+    }
+
     return(
         <>
             <Link to={"/home"}>Home</Link> | {" "}
-            <form id="postForm" encType="multipart/form-data">
-                TITLE<input id="titleInput" type="text" name="title" maxLength="50" onChange={(event)=>handleTitle(setTitle, setTitleAlert, title, event)} value={title}/>
-                {<p>{titleAlert}</p>}
-                CONTENT<textarea id="contentInput" type="text" name="content" maxLength="1500" onChange={(event)=>handleContent(setContent, setContentAlert, content, event)} value={content}/>
-                {<p>{contentAlert}</p>}
-                IMAGE<input type="file" name="image" />
+            <form className="upload-post-form" id="postForm" encType="multipart/form-data">
+                    Title<input className="title-input" id="titleInput" type="text" name="title" maxLength="50" onChange={(event)=>handleTitle(setTitle, setTitleAlert, title, event)} value={title} />
+                    {<p>{titleAlert}</p>}
+                    Content<textarea className="content-input" type="text" name="content" maxLength="1500" onChange={(event)=>handleContent(setContent, setContentAlert, content, event)} value={content} />
+                    {<p>{contentAlert}</p>}
+                    <div className="upload-image-container">
+                        {file && <img className="upload-image" alt="" src={src}></img>}
+                        <div className="select-file-description">
+                            {file}
+                        </div>
+                        <label className="select-file-button">
+                            <input className="select-file-input" type="file" name="image" onChange={event=>handleFileSelect(event)}/>
+                            Select file
+                        </label>
+                    </div>
+                <button className="upload-post-button" type="submit" onClick={handleCreate}>Publish</button>
             </form>
-            <button type="submit" onClick={handleCreate}>CREATE POST</button>
         </>
     )
 }

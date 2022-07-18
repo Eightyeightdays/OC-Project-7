@@ -9,6 +9,7 @@ export default function EditPost(){
     const [content, setContent] = useState();
     const [titleAlert, setTitleAlert] = useState();
     const [contentAlert, setContentAlert] = useState();
+    const [file, setFile] = useState();
     const navigate = useNavigate();
     const cookieData = extractCookieData(document.cookie);
 
@@ -30,12 +31,17 @@ export default function EditPost(){
                     setPost(data);
                     setTitle(data.title);
                     setContent(data.content);
+                    let filePath = data.imageUrl;
+                    let position = filePath.search(/[0-9]{10}/) + 14;
+                    let fileName = filePath.slice(position);
+                    setFile(fileName);
                 }); 
     }, [])
     
     
     
-    function handleEdit(){
+    function handleEdit(event){
+        event.preventDefault();
         const form = document.getElementById("postForm");
         const formData = new FormData(form);
         formData.append("userId", cookieData.userId);
@@ -63,21 +69,31 @@ export default function EditPost(){
             }) 
     }
 
+    function handleFileSelect(event){
+        setFile(event.target.files[0].name)
+    }
+
     return(
         <>
             <Link to={"/home"}>Home</Link> | {" "}
             {post && <>
-            <form className="edit-post-form" id="postForm" encType="multipart/form-data">
+            <form className="upload-post-form" id="postForm" encType="multipart/form-data">
                     Title<input className="title-input" id="titleInput" type="text" name="title" maxLength="50" onChange={(event)=>handleTitle(setTitle, setTitleAlert, title, event)} value={title} />
                     {<p>{titleAlert}</p>}
                     Content<textarea className="content-input" type="text" name="content" maxLength="1500" onChange={(event)=>handleContent(setContent, setContentAlert, content, event)} value={content} />
                     {<p>{contentAlert}</p>}
-                    <div className="edit-image-container">
-                        <img className="edit-image" alt="" src={post.imageUrl}></img>
-                        <input classname="select-file-button" type="file" name="image"/>
+                    <div className="upload-image-container">
+                        <img className="upload-image" alt="" src={post.imageUrl}></img>
+                        <div className="select-file-description">
+                            {post && file}
+                        </div>
+                        <label className="select-file-button">
+                            <input className="select-file-input" type="file" name="image" onChange={event=>handleFileSelect(event)}/>
+                            Select file
+                        </label>
                     </div>
-                </form>
-                <button type="submit" onClick={handleEdit}>Edit Post</button>
+                <button className="upload-post-button" type="submit" onClick={handleEdit}>Save changes</button>
+            </form>
             </>}
         </>
     )

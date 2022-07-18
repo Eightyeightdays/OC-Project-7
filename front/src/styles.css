@@ -155,10 +155,8 @@ button:hover{
     flex-direction: column;
     align-items: center;
     background: white;
-    margin: 1em;
     color: var(--tertiary);
     font-size: 15px;
-    /* border-radius: 3px; */
     width: 600px;
     height: max-content;
     margin: 1.5em;
@@ -207,43 +205,51 @@ button:hover{
 }
 
 .card_details{
-    height: 100px;
+    height: 60px;
     width: 100%;
+    margin-bottom: 0;
+    position: relative;
+    bottom: 0;
 }
 .card_like-container{
     display: flex;
     justify-content: center;
     gap: 1em;
     padding: 1em;
+    height: 50%;
 }
 
 .button_container{
     display: flex;
     width: 100%;
-    /* background: palegoldenrod; */
+    height: 50%;
 }
 
 .like_buttons{
     display: flex;
     justify-content: flex-start;
-    padding: 0 0 0 1em;
+    padding: 0 0 0 0.5em;
     width: 100%;
 }
 
 .edit_buttons{
     display: flex;
     justify-content: flex-end;
-    padding: 0 1em 0 0;
+    padding: 0 0.5em 0 0;
     width: 100%;
+    position: relative;
+    bottom: 0;
+    /* height: 50%; */
+    /* background: dodgerblue; */
 }
 
 .card button{
-    margin: 0.5em;
+    margin: 0 0.5em;
     border: none;
-    padding: 0.5em 0.2em;
+    padding: 0 0.5em;
     font-family: lato;
-    letter-spacing: 0.1em;
-    border-radius: 2px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
 }
 
 .like-button{
@@ -262,9 +268,11 @@ button:hover{
     height: 200px;
 }
 
-/* EDIT PAGE */
+/* EDIT PAGE & CREATE PAGE */
 
-.edit-post-form{
+.upload-post-form{
+    display: flex;
+    flex-direction: column;
     width: 800px;
     background: white;
     margin: 2em;
@@ -278,6 +286,7 @@ button:hover{
 }
 
 .content-input{
+    display: flex;
     font-family: lato;
     font-size: 15px;
     letter-spacing: 0.02em;
@@ -291,24 +300,57 @@ form input:focus, form textarea:focus{
     outline: transparent;
 }
 
-.edit-image-container{
+.upload-image-container{
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-end;
     height: 320px;
     background: var(--tertiary)
 }
 
-.edit-image{
+.upload-image{
     object-fit: cover;
     height: 100%;
-    margin-bottom: 1em;
 }
 
 input[type="file"]{
-    border: none;
-    width: 200px;
-    height: 50px;
-    background: red;
+    position: absolute; left: -99999rem 
 }
 
+.select-file-button{
+    background: var(--secondary);
+    padding: 1em;
+    margin-top: 1em;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+    width: 150px;
+    align-self: center;
+    text-align: center;
+}
+
+.select-file-button:hover{
+    background: var(--primary);
+    color: white;
+}
+
+.upload-post-button{
+    border: none;
+    padding: 1em;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    font-size: 15px;
+    width: 150px;
+    align-self: center;
+}
+
+.upload-post-button:hover{
+   
+}
+
+.select-file-description{
+    margin: 0.5em;
+    color: white;
+}
