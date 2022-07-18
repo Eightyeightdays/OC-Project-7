@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import extractCookieData from "../utils/extractCookieData";
 import { handleTitle, handleContent } from "../utils/postInputHandlers";
+import Navbar from "../components/Navbar";
 
 export default function CreatePost(){
     const navigate = useNavigate();
@@ -55,7 +56,6 @@ export default function CreatePost(){
 
     return(
         <>
-            <Link to={"/home"}>Home</Link> | {" "}
             <form className="upload-post-form" id="postForm" encType="multipart/form-data">
                     Title<input className="title-input" id="titleInput" type="text" name="title" maxLength="50" onChange={(event)=>handleTitle(setTitle, setTitleAlert, title, event)} value={title} />
                     {<p>{titleAlert}</p>}
@@ -73,6 +73,7 @@ export default function CreatePost(){
                     </div>
                 <button className="upload-post-button" type="submit" onClick={handleCreate}>Publish</button>
             </form>
+            <Navbar nav={true} />
         </>
     )
 }

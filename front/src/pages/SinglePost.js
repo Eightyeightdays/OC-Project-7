@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import Card from "../components/Card";
 import LogOutButton from "../buttons/LogOutButton";
 import extractCookieData from "../utils/extractCookieData";
+import Navbar from "../components/Navbar";
 
 export default function DisplaySinglePost(){
     const navigate = useNavigate();
@@ -53,10 +54,8 @@ export default function DisplaySinglePost(){
 
     return(
         <>
-            <Link to={"/home"}>Home</Link> | {" "}
-            <Link to={"/post/new"}>Create New Post</Link> | {" "}
-            <LogOutButton />
             {post && <Card post={post} handleDelete={handleDelete}/>}
+            <Navbar nav={true} />
         </>
     )
 }

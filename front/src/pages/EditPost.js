@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import extractCookieData from "../utils/extractCookieData";
 import { handleTitle, handleContent } from "../utils/postInputHandlers";
+import Navbar from "../components/Navbar";
 
 export default function EditPost(){
     const [post, setPost] = useState();
@@ -75,7 +76,6 @@ export default function EditPost(){
 
     return(
         <>
-            <Link to={"/home"}>Home</Link> | {" "}
             {post && <>
             <form className="upload-post-form" id="postForm" encType="multipart/form-data">
                     Title<input className="title-input" id="titleInput" type="text" name="title" maxLength="50" onChange={(event)=>handleTitle(setTitle, setTitleAlert, title, event)} value={title} />
@@ -94,6 +94,7 @@ export default function EditPost(){
                     </div>
                 <button className="upload-post-button" type="submit" onClick={handleEdit}>Save changes</button>
             </form>
+            <Navbar nav={true} />
             </>}
         </>
     )

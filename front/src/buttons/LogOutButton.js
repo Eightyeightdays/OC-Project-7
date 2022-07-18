@@ -20,6 +20,6 @@ export default function LogOutButton(){
     }
     
     return(
-        <button type="submit" onClick={handleLogOut}>LOGOUT</button>
+        <button className="logout-button" type="button" onClick={handleLogOut}>LOGOUT</button>
     )
 }
