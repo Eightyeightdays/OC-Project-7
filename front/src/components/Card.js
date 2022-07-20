@@ -4,6 +4,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import React,  { useState } from "react";
 import extractCookieData from "../utils/extractCookieData";
 
+import ReactButton from "../buttons/ReactButton";
+
 export default function Card(props){
     let{
         post:  {
@@ -75,6 +77,32 @@ export default function Card(props){
           }, 1000)
     }
 
+    function reactToPost(event){
+        let type;
+        if(event.target.id === "likeButton"){
+            type = "like";
+        }else if(event.target.id === "dislikeButton"){
+            type = "dislike";
+        }else if(event.target.id === "hateButton"){
+            type = "hate";
+        }else{
+            type = "remove";
+        }
+
+        const settings = {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization" : cookieData.token,
+            },
+            body: JSON.stringify({type: type, userId: cookieData.userId}),
+        };
+        fetch(`http://localhost:3001/posts/${postId}/react`, settings)
+        .then(response => response.json())
+        .then(data => console.log(data));
+    }
+
     if(content.length >150){
         clippedContent = content.slice(0, 150)+"...";
     }
@@ -105,7 +133,8 @@ export default function Card(props){
                 </div>
                 <div className="button_container">
                     <div className="like_buttons">
-                        <LikeButton postId={postId} likePost={likePost} dislikePost={dislikePost} disableButton={disableButton}/>
+                        {/* <LikeButton postId={postId} likePost={likePost} dislikePost={dislikePost} disableButton={disableButton}/> */}
+                        <ReactButton postId={postId} reactToPost={reactToPost} disableButton={disableButton}/>
                     </div>
                     <div className="edit_buttons">
                         {(cookieData.userId === userId || cookieData.admin ) && <EditAndDeleteButton postId={postId} handleEdit={handleEdit} handleDelete={handleDelete} />}

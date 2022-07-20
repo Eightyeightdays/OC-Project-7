@@ -1,6 +1,9 @@
 const Post = require("../models/postModel");
+const Reaction = require("../models/reactionmodel");
 const fs = require("fs");
 const moment = require('moment'); 
+const mongoose = require("mongoose"); //
+const { populate } = require("../models/postModel");
 
 exports.create = (req, res) => {
     req.body.title = req.body.title.replace(/&#x27;/g, "'");
@@ -118,5 +121,49 @@ exports.dislikePost = (req, res) =>{
                 .catch(error => res.status(400).json({error}))
             }
         })
+        .catch(error => res.status(404).json({message: "Post not found", error: error}))
+}
+
+//////////////////////
+
+exports.reactToPost = (req, res) =>{
+    const user = req.body.userId;
+    const reactionType = req.body.type;
+    const postId = req.params.id;
+  
+    Post.findOne({_id: postId})
+        .populate("reactions")
+        .then(post=>{
+            // console.log(post.reactions[0].user.toString())
+            
+            if(post.reactions.includes({$toObjectId: "user"})){        // first user reaction
+                console.log("User has reacted");
+                const reaction = new Reaction({
+                    user: user,
+                    post: postId,
+                    type: reactionType,
+                })
+                reaction.save()                     // create reaction
+                Post.findOneAndUpdate({_id: postId}, {$push: {reactions: reaction._id}})    // push reaction to array
+                .then(post => {
+                    let likes = 0;
+                    let dislikes = 0;
+                    let hates = 0;
+                    let message = "";
+                        if(reactionType === "like"){
+                            likes++;
+                            message = "liked";
+                        }else if(reactionType === "dislike"){
+                            dislikes++;
+                            message = "disliked";
+                        }else if(reactionType === "hate"){
+                            hates++;
+                            message = "hated";
+                        }
+                    
+                    res.status(201).json({message: message, likes: likes, dislikes: dislikes, hates: hates});
+                })  
+                .catch(error => res.status(400).json({error}))
+        }})
         .catch(error => res.status(404).json({message: "Post not found", error: error}))
 }

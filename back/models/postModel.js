@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose"), Schema = mongoose.Schema;
 
 const post = mongoose.Schema({
     userId: {type: String, required: true},
@@ -10,6 +10,7 @@ const post = mongoose.Schema({
     comments: {type: Array, required: true},                                // EXTRA
     usersLiked: {type: Array, required: true},
     usersDisliked: {type: Array, required: true},
+    reactions: [{type: Schema.Types.ObjectId, ref: "Reaction"}],
     datePosted: {type: Number, required: true, default: " "},
     displayDatePosted: {type: String, required: true},
     displayDateEdited: {type: String, default: null},

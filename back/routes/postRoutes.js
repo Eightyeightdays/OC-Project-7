@@ -13,5 +13,6 @@ router.put("/posts/:id", auth, multer, sanitize, postController.modify);    // E
 router.post("/posts/:id/like", auth, postController.likePost);              // Like post
 router.post("/posts/:id/dislike", auth, postController.dislikePost);        // Dislike post
 router.delete("/posts/:id", auth, multer, postController.delete);           // Delete post
+router.post("/posts/:id/react", postController.reactToPost);      // React to post
 
 module.exports = router;
