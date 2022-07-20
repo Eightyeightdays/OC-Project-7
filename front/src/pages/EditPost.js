@@ -13,7 +13,7 @@ export default function EditPost(){
     const [contentAlert, setContentAlert] = useState();
     const [file, setFile] = useState();
     const navigate = useNavigate();
-    const cookieData = extractCookieData(document.cookie);
+    const cookieData = extractCookieData();
 
     const params = useParams();
     const settings = {

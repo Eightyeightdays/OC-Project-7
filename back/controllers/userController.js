@@ -49,33 +49,21 @@ exports.loginUser = (req, res) =>{
                     if(!valid){
                         return res.status(401).json({error});
                     }
+                    let token = jwt.sign(
+                        {userId: user._id},
+                        process.env.SECRET_PHRASE,
+                        {expiresIn: "24h"});
 
-                    let token;
-                    let cookieContents;
                     let response = {
-                        userId: user._id, 
+                        userId: user._id,
+                        token: token
                     };
 
-                    if(user.admin){
-                        token = jwt.sign(
-                            {userId: user._id, admin: true}, 
-                            process.env.SECRET_PHRASE,
-                            {expiresIn: "24h"});
-                        cookieContents = token + "_USERID_" + user._id + "_ADMIN";
-                        response.admin = true;
-                        response.token = token;
-                    }else{
-                        token = jwt.sign(
-                            {userId: user._id}, 
-                            process.env.SECRET_PHRASE,
-                            {expiresIn: "24h"});
-                        cookieContents = token + "_USERID_" + user._id;
-                        response.token = token;
-                    }
-                    
                     const twoHours = 7200000;
-                    res.cookie("token", cookieContents, {expires: new Date(Date.now() + twoHours), sameSite: "strict"});
-                    return res.status(200).json(response); 
+                    res.cookie("token", token, {expires: new Date(Date.now() + twoHours), sameSite: "strict"});
+                    res.cookie("isAdmin", true, {expires: new Date(Date.now() + twoHours), sameSite: "strict"});
+                    res.cookie("userId", user._id, {expires: new Date(Date.now() + twoHours), sameSite: "strict"});
+                    return res.status(200).json(response);
                 })
                 .catch(error => res.status(500).json({error: "Failed to validate user"}));
         })
@@ -83,6 +71,6 @@ exports.loginUser = (req, res) =>{
 }
 
 exports.logoutUser = (req, res) =>{
-    res.clearCookie("token"); 
+    res.clearCookie("token");
     res.status(200).json({message: "User logged out"})
 }

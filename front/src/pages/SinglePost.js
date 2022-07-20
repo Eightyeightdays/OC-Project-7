@@ -9,7 +9,7 @@ export default function DisplaySinglePost(){
     const navigate = useNavigate();
     const params = useParams();
     const [post, setPost] = useState();
-    const cookieData = extractCookieData(document.cookie);
+    const cookieData = extractCookieData();
     
     const settings = {
         method: "GET",

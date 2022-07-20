@@ -6,7 +6,7 @@ import Header from "../components/Header.js";
 
 export default function Home(){ 
     const [posts, setPosts] = useState([]);
-    const cookieData = extractCookieData(document.cookie);
+    const cookieData = extractCookieData();
 
     const settings = {
         method: "GET",
