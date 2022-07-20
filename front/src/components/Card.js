@@ -9,20 +9,20 @@ import ReactButton from "../buttons/ReactButton";
 export default function Card(props){
     let{
         post:  {
-            _id: postId, 
-            userId, 
-            title, 
-            content, 
+            _id: postId,
+            userId,
+            title,
+            content,
             imageUrl,
             likes,
             dislikes,
-            comments, 
-            usersLiked,     
-            usersDisliked, 
+            comments,
+            usersLiked,
+            usersDisliked,
             datePosted: timeStamp,
-            displayDatePosted: datePosted, 
+            displayDatePosted: datePosted,
             displayDateEdited: dateEdited,
-        }, 
+        },
         handleDelete
     } = props;
     let clippedContent;
@@ -34,34 +34,6 @@ export default function Card(props){
     function updateLikeState(data){
         setLike({likes: data.likes, dislikes: data.dislikes, usersLiked: data.usersLiked, usersDisliked: data.usersDisliked});
         return
-    }
-
-    const likePost = ()=>{
-        const settings = {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization" : cookieData.token,
-            },
-        };
-        fetch(`http://localhost:3001/posts/${postId}/like`, settings)
-            .then(response => response.json())
-            .then(data => updateLikeState(data));
-        }
-
-    function dislikePost(){
-        const settings = {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization" : cookieData.token,
-            },
-        };
-        fetch(`http://localhost:3001/posts/${postId}/dislike`, settings)
-        .then(response => response.json())
-        .then(data => updateLikeState(data));
     }
 
     function handleEdit(){
@@ -77,17 +49,7 @@ export default function Card(props){
           }, 1000)
     }
 
-    function reactToPost(event){
-        let type;
-        if(event.target.id === "likeButton"){
-            type = "like";
-        }else if(event.target.id === "dislikeButton"){
-            type = "dislike";
-        }else if(event.target.id === "hateButton"){
-            type = "hate";
-        }else{
-            type = "remove";
-        }
+    function reactToPost(type){
 
         const settings = {
             method: "POST",
@@ -100,7 +62,9 @@ export default function Card(props){
         };
         fetch(`http://localhost:3001/posts/${postId}/react`, settings)
         .then(response => response.json())
-        .then(data => console.log(data));
+        .then(function (data) {
+            setLike({likes: data.likeCount, dislikes: data.dislikeCount});
+        });
     }
 
     if(content.length >150){
@@ -108,7 +72,7 @@ export default function Card(props){
     }
 
     return(
-        
+
         <div className="card" >
             <div className="card_header">
                 <p className="card_creator-id">Posted by: <strong>{userId}</strong></p>
@@ -116,13 +80,13 @@ export default function Card(props){
                 <p className="card_title">{title}</p>
             </div>
             <div className="image-box">
-                {params.postId !== postId ? 
+                {params.postId !== postId ?
                 <Link to={`/post/${postId}`}>
                     <img alt="" className="card_link-image" src={imageUrl}></img>
-                </Link> : 
+                </Link> :
                 <img alt="" className="card_image" src={imageUrl}></img>}
             </div>
-            {params.postId !== postId ? 
+            {params.postId !== postId ?
             <p className="card_content">{content.length > 150? clippedContent : content}</p>
             :
             <p className="card_content">{content}</p>}

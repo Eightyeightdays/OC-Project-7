@@ -171,10 +171,9 @@ exports.reactToPost = async (req, res) => {
             post: post._id,
             type: reactionType
         }).save()
-        // push reaction to array
         await Post.updateOne({_id: postId}, {$addToSet: {reactions: reaction._id}})
 
-    } else if (reaction.type === reactionType) {
+    } else if (reaction.type === reactionType) { // case undo
         await reaction.deleteOne()
         await Post.updateOne({_id: postId}, {$pull: {reactions: reaction._id}})
     } else {
