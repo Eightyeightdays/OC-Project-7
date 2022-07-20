@@ -93,7 +93,7 @@ export default function Card(props){
             <div className="card_details">
                 <div className="card_like-container">
                     <span className="card_likes" >Likes: <strong>{like.likes}</strong></span>
-                    <span className="card_dislikes" >Disikes: <strong>{like.dislikes}</strong></span>
+                    <span className="card_dislikes" >Dislikes: <strong>{like.dislikes}</strong></span>
                 </div>
                 <div className="button_container">
                     <div className="like_buttons">
