@@ -7,7 +7,7 @@ import Header from "../components/Header";
 
 export default function CreatePost(){
     const navigate = useNavigate();
-    const cookieData = extractCookieData(document.cookie);
+    const cookieData = extractCookieData();
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [titleAlert, setTitleAlert] = useState();

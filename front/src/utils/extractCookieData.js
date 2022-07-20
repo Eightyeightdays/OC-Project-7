@@ -1,11 +1,11 @@
-export default function extractCookieData(cookie){
-    let admin = cookie.includes("ADMIN"); // true or false
-    let userStart =  + 7;
-    let userEnd = userStart + 24;
-    let userId = cookie.slice(userStart, userEnd);
-    let tokenStart = 6;
-    let tokenEnd = cookie.search("_USERID_");
-    let token = cookie.slice(tokenStart, tokenEnd);
+import Cookies from 'js-cookie'
+
+export default function extractCookieData(){
+    let token = Cookies.get('token')
+    let admin = Cookies.get('isAdmin'); // true or false
+    let userId = Cookies.get('userId');
+
+    console.log(userId);
 
     return {userId: userId, token: token, admin: admin}
 }

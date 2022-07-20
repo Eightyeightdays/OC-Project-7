@@ -2,9 +2,9 @@ import {BrowserRouter as Router , Routes, Route} from "react-router-dom";
 import React from "react";
 
 import Login from "./pages/Login";
-import Home from "./pages/Home";
-import SinglePost from "./pages/SinglePost";
-import CreatePost from "./pages/CreatePost";
+import Home from "./pages/home";
+import SinglePost from "./pages/SinglePost.js";
+import CreatePost from "./pages/createPost";
 import RequireAuth from "./RequireAuth";
 import EditPost from "./pages/EditPost";
 
@@ -52,9 +52,9 @@ export default function App() {
     );
   }
 
-  
-                           
-                            
+
+
+
 
 
 
