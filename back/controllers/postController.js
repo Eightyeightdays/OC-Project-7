@@ -160,30 +160,32 @@ exports.reactToPost = async (req, res) => {
     const user = await User.findById(req.auth.userId);
 
     if (!post || !user) {
-        return res.statusCode(400) // bad request
+        return res.status(400) // bad request
     }
 
     let reaction = await Reaction.findOne({user: user._id, post: post._id})
 
     if (!reaction) {
-        await new Reaction({
+       reaction = await new Reaction({
             user: user._id,
             post: post._id,
             type: reactionType
         }).save()
+        // push reaction to array
+        await Post.updateOne({_id: postId}, {$addToSet: {reactions: reaction._id}})
 
     } else if (reaction.type === reactionType) {
         await reaction.deleteOne()
+        await Post.updateOne({_id: postId}, {$pull: {reactions: reaction._id}})
     } else {
-        Reaction.updateOne({_id: reaction._id}, {type: reactionType})
+      await Reaction.updateOne({_id: reaction._id}, {type: reactionType})
     }
 
-    Post.updateOne({_id: postId}, {$addToSet: {reactions: reaction}})    // push reaction to array
     const likeCount = await Reaction.find({post: post._id, type: 'like'}).count();
     const dislikeCount = await Reaction.find({post: post._id, type: 'dislike'}).count();
     const hateCount = await Reaction.find({post: post._id, type: 'hate'}).count();
 
-    res.statusCode(200).json({likeCount : likeCount, dislikeCount : dislikeCount, hateCount: hateCount})
+    res.status(200).json({likeCount : likeCount, dislikeCount : dislikeCount, hateCount: hateCount})
 
 }
 
