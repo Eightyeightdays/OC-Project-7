@@ -2,9 +2,7 @@ const Post = require("../models/postModel");
 const Reaction = require("../models/reactionmodel");
 const User = require("../models/userModel");
 const fs = require("fs");
-const moment = require('moment');
-const mongoose = require("mongoose"); //
-const {populate} = require("../models/postModel");
+const moment = require("moment");
 
 exports.create = (req, res) => {
     req.body.title = req.body.title.replace(/&#x27;/g, "'");
@@ -13,8 +11,6 @@ exports.create = (req, res) => {
     const post = new Post({
         ...req.body,
         userId: req.auth.userId,
-        datePosted: Date.now(),
-        displayDatePosted: moment().format('Do MMMM YYYY, h:mm a'),
         imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
     });
 
@@ -36,7 +32,7 @@ exports.getAll = (req, res) => {
 }
 
 exports.modify = (req, res) => {
-    req.body.title = req.body.title.replace(/&#x27;/g, "'");
+    req.body.title = req.body.title.replace(/&#x27;/g, "'");    // allow apostrophes
     req.body.content = req.body.content.replace(/&#x27;/g, "'");
 
     if (req.auth.userId !== req.body.userId && !req.auth.admin) {
@@ -45,9 +41,9 @@ exports.modify = (req, res) => {
         const updatedPost = req.file ?
             {
                 ...req.body,
-                displayDateEdited: moment().format('Do MMMM YYYY, h:mm a'),
+                dateEdited: moment().format('Do MMMM YYYY, h:mm a'),
                 imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-            } : {...req.body, displayDateEdited: moment().format('Do MMMM YYYY, h:mm a')};
+            } : {...req.body, dateEdited: moment().format('Do MMMM YYYY, h:mm a')};
 
         Post.updateOne({_id: req.params.id}, {...updatedPost, _id: req.params.id})
             .then(() => res.status(200).json({message: "Post updated"}))
@@ -71,88 +67,6 @@ exports.delete = (req, res) => {
         .catch(error => res.status(500).json({error}));
 }
 
-function createResponseObject(message, data) {
-    return {
-        message: message,
-        likes: data.likes,
-        dislikes: data.dislikes,
-        usersLiked: data.usersLiked,
-        usersDisliked: data.usersDisliked
-    };
-}
-
-exports.likePost = (req, res) => {
-    const postId = req.params.id;
-    const userId = req.auth.userId;
-
-    Post.findOne({_id: postId})
-        .then(post => {
-            if (post.usersLiked.includes(userId) === false) {
-                if (post.usersDisliked.includes(userId) === false) {
-                    Post.findOneAndUpdate({_id: postId}, {
-                        $push: {usersLiked: userId},
-                        $inc: {likes: 1}
-                    }, {returnDocument: "after"})
-                        .then(post => res.status(200).json(createResponseObject("LIKE ADDED", post)))  // VOTE FOR THE FIRST TIME
-                        .catch(error => res.status(400).json({error}))
-                } else {
-                    Post.findOneAndUpdate({_id: postId}, {
-                        $pull: {usersDisliked: userId},
-                        $push: {usersLiked: userId},
-                        $inc: {dislikes: -1, likes: 1}
-                    }, {returnDocument: "after"})
-                        .then(post => res.status(200).json(createResponseObject("LIKE REPLACED DISLIKE", post)))    // SWAP VOTE
-                        .catch(error => res.status(400).json({error}))
-                }
-            } else {
-                Post.findOneAndUpdate({_id: postId}, {
-                    $pull: {usersLiked: userId},
-                    $inc: {likes: -1}
-                }, {returnDocument: "after"})
-                    .then(post => res.status(200).json(createResponseObject("LIKE REMOVED", post)))        // REMOVE VOTE
-                    .catch(error => res.status(400).json({error}))
-            }
-        })
-        .catch(error => res.status(404).json({message: "Post not found", error: error}))
-}
-
-exports.dislikePost = (req, res) => {
-    const postId = req.params.id;
-    const userId = req.auth.userId;
-
-    Post.findOne({_id: postId})
-        .then(post => {
-            if (post.usersDisliked.includes(userId) === false) {
-                if (post.usersLiked.includes(userId) === false) {
-                    Post.findOneAndUpdate({_id: postId}, {
-                        $push: {usersDisliked: userId},
-                        $inc: {dislikes: 1}
-                    }, {returnDocument: "after"})
-                        .then(post => res.status(200).json(createResponseObject("DISLIKE ADDED", post)))  // VOTE FOR THE FIRST TIME
-                        .catch(error => res.status(400).json({error}))
-                } else {
-                    Post.findOneAndUpdate({_id: postId}, {
-                        $pull: {usersLiked: userId},
-                        $push: {usersDisliked: userId},
-                        $inc: {likes: -1, dislikes: 1}
-                    }, {returnDocument: "after"})
-                        .then(post => res.status(200).json(createResponseObject("DISLIKE REPLACED LIKE", post)))  // SWAP VOTE
-                        .catch(error => res.status(400).json({error}))
-                }
-            } else {
-                Post.findOneAndUpdate({_id: postId}, {
-                    $pull: {usersDisliked: userId},
-                    $inc: {dislikes: -1}
-                }, {returnDocument: "after"})   // REMOVE VOTE
-                    .then(post => res.status(200).json(createResponseObject("DISLIKE REMOVED", post)))
-                    .catch(error => res.status(400).json({error}))
-            }
-        })
-        .catch(error => res.status(404).json({message: "Post not found", error: error}))
-}
-
-//////////////////////
-
 exports.reactToPost = async (req, res) => {
     const reactionType = req.body.type;
     const postId = req.params.id;
@@ -163,29 +77,26 @@ exports.reactToPost = async (req, res) => {
         return res.status(400) // bad request
     }
 
-    let reaction = await Reaction.findOne({user: user._id, post: post._id})
+    let reaction = await Reaction.findOne({user: user._id, post: post._id}) // search for a reaction by the user for the specific post
 
-    if (!reaction) {
-       reaction = await new Reaction({
+    if (!reaction) {                    // if there is no reaction
+       reaction = await new Reaction({  // create a new one
             user: user._id,
             post: post._id,
             type: reactionType
         }).save()
-        await Post.updateOne({_id: postId}, {$addToSet: {reactions: reaction._id}})
+        await Post.updateOne({_id: postId}, {$addToSet: {reactions: reaction._id}, $inc: {reactionCount: 1}}) // add the new reaction to the post // 
 
-    } else if (reaction.type === reactionType) { // case undo
-        await reaction.deleteOne()
-        await Post.updateOne({_id: postId}, {$pull: {reactions: reaction._id}})
+    } else if (reaction.type === reactionType) { // if the new reaction is the same as the old one
+        await reaction.deleteOne()              // delete the reaction
+        await Post.updateOne({_id: postId}, {$pull: {reactions: reaction._id}, $inc: {reactionCount: -1}}) // update the reactions array on the post
     } else {
-      await Reaction.updateOne({_id: reaction._id}, {type: reactionType})
+      await Reaction.updateOne({_id: reaction._id}, {type: reactionType})   // if the reaction is different, update the reaction type
     }
 
-    const likeCount = await Reaction.find({post: post._id, type: 'like'}).count();
-    const dislikeCount = await Reaction.find({post: post._id, type: 'dislike'}).count();
-    const hateCount = await Reaction.find({post: post._id, type: 'hate'}).count();
+    const reactionCount = await Reaction.find({post: post._id}).count(); // count total reactions for post
 
-    res.status(200).json({likeCount : likeCount, dislikeCount : dislikeCount, hateCount: hateCount})
-
+    res.status(200).json({reactionCount: reactionCount})    // use count to update state on front end
 }
 
 

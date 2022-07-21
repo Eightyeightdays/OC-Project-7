@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function LoginAndSignUp(){
     const [error, setError] = useState([]);
-    const [existingUser, setExistingUser] = useState(true);
-    const [buttonLabel, setButtonLabel] = useState("Already have an account?");
+    const [existingUser, setExistingUser] = useState(false);
+    const [buttonLabel, setButtonLabel] = useState("Sign up");
     const [emailField, setEmailField] = useState("");
     const [passwordField, setPasswordField] = useState("");
     const navigate = useNavigate();

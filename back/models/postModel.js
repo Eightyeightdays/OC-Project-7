@@ -5,15 +5,10 @@ const post = mongoose.Schema({
     title: {type: String, required: true},
     content: {type: String, required: true},
     imageUrl: {type: String, required: true},
-    likes: {type: Number, required: true, default: 0},
-    dislikes: {type: Number, required: true, default: 0},
-    comments: {type: Array, required: true},                                // EXTRA
-    usersLiked: {type: Array, required: true},
-    usersDisliked: {type: Array, required: true},
     reactions: [{type: Schema.Types.ObjectId, ref: "Reaction"}],
-    datePosted: {type: Number, required: true, default: " "},
-    displayDatePosted: {type: String, required: true},
-    displayDateEdited: {type: String, default: null},
-})
+    reactionCount: {type: Number, required: true, default: 0},
+    comments: {type: Array, required: true},   
+    dateEdited: {type: String},                             
+}, {timestamps: true})
 
 module.exports = mongoose.model("Post", post);

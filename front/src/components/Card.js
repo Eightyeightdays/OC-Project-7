@@ -1,4 +1,3 @@
-import LikeButton from "../buttons/LikeButton"
 import EditAndDeleteButton from "../buttons/EditAndDeleteButton";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import React,  { useState } from "react";
@@ -14,27 +13,24 @@ export default function Card(props){
             title,
             content,
             imageUrl,
-            likes,
-            dislikes,
+            reactionCount,
             comments,
-            usersLiked,
-            usersDisliked,
-            datePosted: timeStamp,
-            displayDatePosted: datePosted,
-            displayDateEdited: dateEdited,
+            dateEdited,
+            createdAt,
+            updatedAt,
         },
         handleDelete
     } = props;
+
     let clippedContent;
+    if(content.length >150){
+        clippedContent = content.slice(0, 150)+"...";
+    }
+
     const navigate = useNavigate();
-    const [like, setLike]= useState({likes: likes, dislikes: dislikes, usersLiked: usersLiked, usersDisliked: usersDisliked});
     const params = useParams();
     const cookieData = extractCookieData(document.cookie);
-
-    function updateLikeState(data){
-        setLike({likes: data.likes, dislikes: data.dislikes, usersLiked: data.usersLiked, usersDisliked: data.usersDisliked});
-        return
-    }
+    const [reactions, setReactions]= useState(reactionCount);
 
     function handleEdit(){
         let url = `/post/${postId}/edit`;
@@ -50,7 +46,6 @@ export default function Card(props){
     }
 
     function reactToPost(type){
-
         const settings = {
             method: "POST",
             headers: {
@@ -63,12 +58,8 @@ export default function Card(props){
         fetch(`http://localhost:3001/posts/${postId}/react`, settings)
         .then(response => response.json())
         .then(function (data) {
-            setLike({likes: data.likeCount, dislikes: data.dislikeCount});
+            setReactions(data.reactionCount);
         });
-    }
-
-    if(content.length >150){
-        clippedContent = content.slice(0, 150)+"...";
     }
 
     return(
@@ -76,7 +67,7 @@ export default function Card(props){
         <div className="card" >
             <div className="card_header">
                 <p className="card_creator-id">Posted by: <strong>{userId}</strong></p>
-                <p className="card_date-posted">{datePosted}{dateEdited !== null && <strong> | Edited: {dateEdited}</strong>}</p>
+                <p className="card_date-posted">{createdAt}{dateEdited && <strong> | Edited: {dateEdited}</strong>}</p>
                 <p className="card_title">{title}</p>
             </div>
             <div className="image-box">
@@ -92,12 +83,10 @@ export default function Card(props){
             <p className="card_content">{content}</p>}
             <div className="card_details">
                 <div className="card_like-container">
-                    <span className="card_likes" >Likes: <strong>{like.likes}</strong></span>
-                    <span className="card_dislikes" >Dislikes: <strong>{like.dislikes}</strong></span>
+                    <span className="card_likes" >Reactions: <strong>{reactions}</strong></span>
                 </div>
                 <div className="button_container">
                     <div className="like_buttons">
-                        {/* <LikeButton postId={postId} likePost={likePost} dislikePost={dislikePost} disableButton={disableButton}/> */}
                         <ReactButton postId={postId} reactToPost={reactToPost} disableButton={disableButton}/>
                     </div>
                     <div className="edit_buttons">

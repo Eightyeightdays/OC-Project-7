@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
-import Card from "../components/Card.js";
 import extractCookieData from "../utils/extractCookieData.js";
+import Card from "../components/Card.js";
 import Navbar from "../components/Navbar.js";
 import Header from "../components/Header.js";
 
@@ -62,7 +62,7 @@ export default function Home(){
     return(    
         <div className="flex-column">
             <Header />
-            {posts.sort((a,b)=> b.datePosted - a.datePosted).map((post, index)=>(
+            {posts.sort((a,b)=> b.createdAt - a.createdAt).map((post, index)=>(
                 <Card key={index} post={post} handleDelete={handleDelete}/>
             ))}
             <Navbar nav={false} />
