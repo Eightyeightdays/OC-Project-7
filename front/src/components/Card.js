@@ -1,6 +1,8 @@
 import EditAndDeleteButton from "../buttons/EditAndDeleteButton";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import React,  { useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 import extractCookieData from "../utils/extractCookieData";
 
 import ReactButton from "../buttons/ReactButton";
@@ -31,19 +33,20 @@ export default function Card(props){
     const params = useParams();
     const cookieData = extractCookieData(document.cookie);
     const [reactions, setReactions]= useState(reactionCount);
+    const [toggle, setToggle] = useState(false);
 
     function handleEdit(){
         let url = `/post/${postId}/edit`;
         navigate(url);
     }
 
-    function disableButton(id){
-        let button = document.getElementById(id);
-        button.disabled = true;
-        setTimeout(() => {
-            button.disabled = false;
-          }, 1000)
-    }
+    // function disableButton(id){
+    //     let button = document.getElementById(id);
+    //     button.disabled = true;
+    //     setTimeout(() => {
+    //         button.disabled = false;
+    //       }, 1000)
+    // }
 
     function reactToPost(type){
         const settings = {
@@ -62,6 +65,10 @@ export default function Card(props){
         });
     }
 
+    function toggleSettings(){
+        setToggle(!toggle);
+    }
+
     return(
 
         <div className="card" >
@@ -69,6 +76,13 @@ export default function Card(props){
                 <p className="card_creator-id">Posted by: <strong>{userId}</strong></p>
                 <p className="card_date-posted">{createdAt}{dateEdited && <strong> | Edited: {dateEdited}</strong>}</p>
                 <p className="card_title">{title}</p>
+                {(cookieData.userId === userId || cookieData.admin ) && 
+                    <FontAwesomeIcon icon={faBars} className="settingsIcon" onClick={toggleSettings}/>
+                }
+                {toggle && 
+                    <div className="edit_buttons">
+                        <EditAndDeleteButton postId={postId} handleEdit={handleEdit} handleDelete={handleDelete} />
+                    </div>}
             </div>
             <div className="image-box">
                 {params.postId !== postId ?
@@ -85,13 +99,8 @@ export default function Card(props){
                 <div className="card_like-container">
                     <span className="card_likes" >Reactions: <strong>{reactions}</strong></span>
                 </div>
-                <div className="button_container">
-                    <div className="like_buttons">
-                        <ReactButton postId={postId} reactToPost={reactToPost} disableButton={disableButton}/>
-                    </div>
-                    <div className="edit_buttons">
-                        {(cookieData.userId === userId || cookieData.admin ) && <EditAndDeleteButton postId={postId} handleEdit={handleEdit} handleDelete={handleDelete} />}
-                    </div>
+                <div className="reaction_buttons">
+                    <ReactButton postId={postId} reactToPost={reactToPost}/>
                 </div>
             </div>
         </div>
