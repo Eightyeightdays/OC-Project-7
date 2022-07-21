@@ -6,6 +6,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import extractCookieData from "../utils/extractCookieData";
 
 import ReactButton from "../buttons/ReactButton";
+import ConfirmDeletePopup from "./ConfirmDeletePopup";
 
 export default function Card(props){
     let{
@@ -40,14 +41,6 @@ export default function Card(props){
         navigate(url);
     }
 
-    // function disableButton(id){
-    //     let button = document.getElementById(id);
-    //     button.disabled = true;
-    //     setTimeout(() => {
-    //         button.disabled = false;
-    //       }, 1000)
-    // }
-
     function reactToPost(type){
         const settings = {
             method: "POST",
@@ -74,6 +67,14 @@ export default function Card(props){
         }, 3000);        
     }
 
+    const [popup, setPopup] = useState(false);
+   
+    const confirmDelete = ()=>{
+        setPopup(true);
+        return;
+    }
+
+
     return(
 
         <div className="card" >
@@ -82,11 +83,11 @@ export default function Card(props){
                 <p className="card_date-posted">{createdAt}{dateEdited && <strong> | Edited: {dateEdited}</strong>}</p>
                 <p className="card_title">{title}</p>
                 {(cookieData.userId === userId || cookieData.admin ) && 
-                    <FontAwesomeIcon icon={faBars} className="settingsIcon" onClick={toggleSettings}/>
+                    <FontAwesomeIcon icon={faBars} className="settingsIcon" onClick={()=> toggleSettings()}/>
                 }
                 {toggle && 
                     <div className="edit_buttons">
-                        <EditAndDeleteButton postId={postId} handleEdit={handleEdit} handleDelete={handleDelete} />
+                        <EditAndDeleteButton postId={postId} handleEdit={handleEdit} confirmDelete={confirmDelete} />
                     </div>}
             </div>
             <div className="image-box">
@@ -108,6 +109,7 @@ export default function Card(props){
                     <ReactButton postId={postId} reactToPost={reactToPost}/>
                 </div>
             </div>
+            {popup && <ConfirmDeletePopup postId={postId} handleDelete={handleDelete} />}
         </div>
     )
 }

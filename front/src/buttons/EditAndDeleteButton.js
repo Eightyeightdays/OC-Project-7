@@ -5,7 +5,7 @@ import { faTrashCan, faScrewdriverWrench } from '@fortawesome/free-solid-svg-ico
 export default function EditAndDeleteButton(props){
     return(
         <> 
-            <button type="button" name="deletePost" onClick={()=> props.handleDelete(props.postId)}><FontAwesomeIcon icon={faTrashCan}/></button>
+            <button type="button" name="deletePost" onClick={()=> props.confirmDelete()}><FontAwesomeIcon icon={faTrashCan}/></button>
             <button type="button" name="modifyPost" onClick={()=> props.handleEdit(props.postId)}><FontAwesomeIcon icon={faScrewdriverWrench}/></button>
         </>
     )
