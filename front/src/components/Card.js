@@ -65,8 +65,13 @@ export default function Card(props){
         });
     }
 
+    var toggleTimeout;
     function toggleSettings(){
-        setToggle(!toggle);
+        setToggle(true);
+        
+        toggleTimeout = setTimeout(()=>{
+        setToggle(false);
+        }, 3000);        
     }
 
     return(

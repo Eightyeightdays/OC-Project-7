@@ -8,9 +8,9 @@ export default function Navbar(props){
     return(
         <>
             <div className="navbar">
-                <Link className="new-post-link" to="/post/new">Create</Link> 
-                {nav ? <Link to="/home">Home</Link> : null}
                 <LogOutButton />
+                {nav ? <Link to="/home">Home</Link> : null}
+                <Link className="new-post-link" to="/post/new">Create</Link> 
             </div>
             <div className="stop-footer"></div>
         </>
