@@ -54,7 +54,10 @@ export default function Home(){
             if(response.status === 200){
                 fetch("http://localhost:3001/posts", getSettings)
                 .then(response => response.json())
-                .then(response => setPosts(response))
+                .then(response => {
+                    setPosts(response);
+                    console.log("All posts fetched after delete");
+                })
             }})
         };
     
@@ -62,7 +65,7 @@ export default function Home(){
     return(    
         <div className="flex-column">
             <Header />
-            {posts.sort((a,b)=> b.createdAt - a.createdAt).map((post, index)=>(
+            {posts.sort((a,b)=> b.sortDate - a.sortDate).map((post, index)=>(
                 <Card key={index} post={post} handleDelete={handleDelete}/>
             ))}
             <Navbar nav={false} />

@@ -17,10 +17,8 @@ export default function Card(props){
             content,
             imageUrl,
             reactionCount,
-            comments,
+            dateCreated,
             dateEdited,
-            createdAt,
-            updatedAt,
         },
         handleDelete
     } = props;
@@ -58,7 +56,7 @@ export default function Card(props){
         });
     }
 
-    var toggleTimeout;
+    let toggleTimeout;
     function toggleSettings(){
         setToggle(true);
         
@@ -80,7 +78,7 @@ export default function Card(props){
         <div className="card" >
             <div className="card_header">
                 <p className="card_creator-id">Posted by: <strong>{userId}</strong></p>
-                <p className="card_date-posted">{createdAt}{dateEdited && <strong> | Edited: {dateEdited}</strong>}</p>
+                <p className="card_date-posted">{dateCreated}{dateEdited && <strong> | Edited: {dateEdited}</strong>}</p>
                 <p className="card_title">{title}</p>
                 {(cookieData.userId === userId || cookieData.admin ) && 
                     <FontAwesomeIcon icon={faBars} className="settingsIcon" onClick={()=> toggleSettings()}/>
@@ -109,7 +107,7 @@ export default function Card(props){
                     <ReactButton postId={postId} reactToPost={reactToPost}/>
                 </div>
             </div>
-            {popup && <ConfirmDeletePopup postId={postId} handleDelete={handleDelete} />}
+            {popup && <ConfirmDeletePopup postId={postId} handleDelete={handleDelete} setPopup={setPopup} />}
         </div>
     )
 }

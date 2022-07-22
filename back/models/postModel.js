@@ -7,8 +7,9 @@ const post = mongoose.Schema({
     imageUrl: {type: String, required: true},
     reactions: [{type: Schema.Types.ObjectId, ref: "Reaction"}],
     reactionCount: {type: Number, required: true, default: 0},
-    comments: {type: Array, required: true},   
-    dateEdited: {type: String},                             
-}, {timestamps: true})
+    dateCreated: {type: String, required: true},
+    dateEdited: {type: String},  
+    sortDate: {type: String, required: true}                          
+})
 
 module.exports = mongoose.model("Post", post);

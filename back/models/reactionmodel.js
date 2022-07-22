@@ -5,10 +5,9 @@ const reaction = mongoose.Schema({
     post: {type: Schema.Types.ObjectId, ref: "Post"},
     type: {
         type: String,
-        enum : ["like", "dislike", "hate"],
+        enum : ["like", "dislike", "hate", "love", "funny", "sad"],
     },
-}
-, {timestamps: true})
+})
 
 
 module.exports = mongoose.model("Reaction", reaction);

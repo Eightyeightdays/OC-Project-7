@@ -16,7 +16,6 @@ export default function LogOutButton(){
         fetch("http://localhost:3001/auth/logout", settings)
         .then(response => response.json());
         navigate("/");
-        console.log("You have been logged out")
     }
     
     return(

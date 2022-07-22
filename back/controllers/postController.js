@@ -2,16 +2,21 @@ const Post = require("../models/postModel");
 const Reaction = require("../models/reactionmodel");
 const User = require("../models/userModel");
 const fs = require("fs");
-const moment = require("moment");
+const dayjs = require("dayjs");
 
 exports.create = (req, res) => {
-    req.body.title = req.body.title.replace(/&#x27;/g, "'");
+    req.body.title = req.body.title.replace(/&#x27;/g, "'");        // put apostrophes in
     req.body.content = req.body.content.replace(/&#x27;/g, "'");
+
+    req.body.title = req.body.title.replace(/&quot;/g, "\"");       // put quotation marks in
+    req.body.content = req.body.content.replace(/&quot;/g, "\"");
 
     const post = new Post({
         ...req.body,
         userId: req.auth.userId,
-        imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+        imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+        dateCreated: dayjs().format("dddd, MMMM D YYYY, HH:mm:ss a"),
+        sortDate: Date.now(),
     });
 
     post.save()
@@ -34,6 +39,8 @@ exports.getAll = (req, res) => {
 exports.modify = (req, res) => {
     req.body.title = req.body.title.replace(/&#x27;/g, "'");    // allow apostrophes
     req.body.content = req.body.content.replace(/&#x27;/g, "'");
+    req.body.title = req.body.title.replace(/&quot;/g, "\"");       // put quotation marks in
+    req.body.content = req.body.content.replace(/&quot;/g, "\"");
 
     if (req.auth.userId !== req.body.userId && !req.auth.admin) {
         return res.status(403).json({message: "You don't have permission to edit this post"})
@@ -41,9 +48,9 @@ exports.modify = (req, res) => {
         const updatedPost = req.file ?
             {
                 ...req.body,
-                dateEdited: moment().format('Do MMMM YYYY, h:mm a'),
+                dateEdited: dayjs().format("dddd, MMMM D YYYY, HH:mm:ss a"),
                 imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-            } : {...req.body, dateEdited: moment().format('Do MMMM YYYY, h:mm a')};
+            } : {...req.body, dateEdited: dayjs().format("dddd, MMMM D YYYY, HH:mm:ss a")};
 
         Post.updateOne({_id: req.params.id}, {...updatedPost, _id: req.params.id})
             .then(() => res.status(200).json({message: "Post updated"}))
@@ -60,8 +67,15 @@ exports.delete = (req, res) => {
             const filename = post.imageUrl.split("/images/")[1];
             fs.unlink(`images/${filename}`, () => {
                 Post.deleteOne({_id: req.params.id})
-                    .then(() => res.status(200).json({message: "Post deleted"}))
+                    .then(() => {
+                        Reaction.deleteMany({post: req.params.id})
+                        .then(result => res.status(200).json({deleteStatus: result.acknowledged, reactionsDeleted: result.deletedCount, message: "post deleted"}))
+                        .catch(error => res.status(400).json({error}))
+                    })
                     .catch(error => res.status(400).json({error}))
+                
+                    
+                
             });
         })
         .catch(error => res.status(500).json({error}));

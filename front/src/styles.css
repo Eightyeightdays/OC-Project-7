@@ -291,7 +291,7 @@ svg:hover{
 .title-input{
     padding: 0.5em 1em;
     margin-top: 0.5em;
-    width: 360px;
+    max-width: 360px;
 }
 
 .content-input{
@@ -436,6 +436,7 @@ a:visited{
     border-radius: 15px;
     background: white;
     color: black;
+    width: max-content;
 }
 
 #confirmDeleteButton:hover{
@@ -447,6 +448,19 @@ a:visited{
 #cancelDeleteButton{
     font-size: 2em;
     font-weight: bolder;
+    transition: all 0.2s ease-out;
+}
+
+#cancelDeleteButton:hover{
+    transform:scale(1.04)
+}
+
+.stop-footer{
+    height: 80px;
+    width: 100%;
+    position: relative;
+    bottom: 0;
+    z-index: -1;
 }
 
 /* MEDIA QUERIES  */
@@ -469,19 +483,12 @@ a:visited{
     .card, .upload-post-form{
         width: 90vw;
     }
-   
-    .stop-footer{
-        height: 80px;
-        width: 100%;
-        position: relative;
-        bottom: 0;
-        z-index: -1;
-    }
+
 }
 
 @media(max-width: 650px){
     .edit_buttons{
-        top: 230px;
+        top: 40%;
         right: -10px;
         flex-direction: column;
         gap: 1em;
