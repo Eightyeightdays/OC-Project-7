@@ -199,7 +199,6 @@ button:hover{
     height: max-content;
     width: 100%;
     white-space: pre-wrap;
-    /* background: gold; */
 }
 
 .card_details{
@@ -208,7 +207,6 @@ button:hover{
     margin-bottom: 1em;
     position: relative;
     bottom: 0;
-    /* background: gold; */
 }
 .card_like-container{
     display: flex;
@@ -217,14 +215,12 @@ button:hover{
     gap: 1em;
     padding: 1em;
     height: 50%;
-    /* background: paleturquoise; */
 }
 
 .reaction_buttons{
     display: flex;
     justify-content: center;
     gap: 0.6em;
-    /* background: tomato; */
 }
 
 svg{

@@ -12,7 +12,7 @@ exports.create = (req, res) => {
     req.body.content = req.body.content.replace(/&quot;/g, "\"");
 
     let paragraphs = (req.body.content.split(/\r?\n/g));
-    let indentedText; 
+    let indentedText=""; 
     paragraphs.map(el =>{
         indentedText += el + "\n";
     })
@@ -50,11 +50,11 @@ exports.modify = (req, res) => {
     req.body.content = req.body.content.replace(/&quot;/g, "\"");
 
     let paragraphs = (req.body.content.split(/\r?\n/g));
-    let indentedText; 
+    let indentedText =""; 
     paragraphs.map(el =>{
         indentedText += el + "\n";
     })
-
+    
     if (req.auth.userId !== req.body.userId && !req.auth.admin) {
         return res.status(403).json({message: "You don't have permission to edit this post"})
     } else {

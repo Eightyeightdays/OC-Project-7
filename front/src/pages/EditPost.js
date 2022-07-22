@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useHistory } from "react-router-dom";
 import extractCookieData from "../utils/extractCookieData";
 import { handleTitle, handleContent } from "../utils/postInputHandlers";
 import Navbar from "../components/Navbar";
@@ -14,6 +14,7 @@ export default function EditPost(){
     const [file, setFile] = useState();
     const navigate = useNavigate();
     const cookieData = extractCookieData(document.cookie);
+    const history = useHistory();
 
     const params = useParams();
     const settings = {
@@ -67,7 +68,7 @@ export default function EditPost(){
             .then(response => response.json()) 
             .then(data => {
                 setPost(data);
-                navigate("/home");
+                navigate(`/post/${params.postId}`);
             }) 
     }
 
