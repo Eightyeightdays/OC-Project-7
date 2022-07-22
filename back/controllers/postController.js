@@ -33,12 +33,14 @@ exports.create = (req, res) => {
 
 exports.getById = (req, res) => {
     Post.findOne({_id: req.params.id})
+        .populate("reactions")
         .then(post => res.status(200).json(post))
         .catch(error => res.status(400).json({error}))
 }
 
 exports.getAll = (req, res) => {
     Post.find()
+        .populate("reactions")
         .then(posts => res.status(200).json(posts))
         .catch(error => res.status(400).json({error}))
 }

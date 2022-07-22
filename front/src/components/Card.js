@@ -1,10 +1,9 @@
-import EditAndDeleteButton from "../buttons/EditAndDeleteButton";
-import { Link, useNavigate, useParams } from "react-router-dom";
 import React,  { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import extractCookieData from "../utils/extractCookieData";
-
+import EditAndDeleteButton from "../buttons/EditAndDeleteButton";
 import ReactButton from "../buttons/ReactButton";
 import ConfirmDeletePopup from "./ConfirmDeletePopup";
 
@@ -31,7 +30,9 @@ export default function Card(props){
     const navigate = useNavigate();
     const params = useParams();
     const cookieData = extractCookieData(document.cookie);
-    const [reactions, setReactions]= useState(reactionCount);
+    const currentUser = cookieData.userId;
+    const [countReactions, setCountReactions]= useState(reactionCount);
+    
     const [toggle, setToggle] = useState(false);
     const [popup, setPopup] = useState(false);
 
@@ -53,7 +54,7 @@ export default function Card(props){
         fetch(`http://localhost:3001/posts/${postId}/react`, settings)
         .then(response => response.json())
         .then(function (data) {
-            setReactions(data.reactionCount);
+            setCountReactions(data.reactionCount);
         });
     }
 
@@ -81,7 +82,7 @@ export default function Card(props){
                 <p className="card_creator-id">Posted by: <strong>{userId}</strong></p>
                 <p className="card_date-posted">{dateCreated}{dateEdited && <strong> | Edited: {dateEdited}</strong>}</p>
                 <p className="card_title">{title}</p>
-                {(cookieData.userId === userId || cookieData.admin ) && 
+                {(currentUser === userId || cookieData.admin ) && 
                     <FontAwesomeIcon icon={faBars} className="settingsIcon" onClick={()=> toggleSettings()}/>
                 }
                 {toggle && 
@@ -102,7 +103,7 @@ export default function Card(props){
             <p className="card_content">{content}</p>}
             <div className="card_details">
                 <div className="card_like-container">
-                    <span className="card_likes" >Reactions: <strong>{reactions}</strong></span>
+                    <span className="card_likes" >Reactions: <strong>{countReactions}</strong></span>
                 </div>
                 <div className="reaction_buttons">
                     <ReactButton postId={postId} reactToPost={reactToPost}/>

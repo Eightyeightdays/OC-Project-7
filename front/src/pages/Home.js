@@ -62,12 +62,10 @@ export default function Home(){
                 })
             }})
         };
-    
         
     return(    
         <div className="flex-column">
             <Header />
-            {posts.length === 0 && <p className="noPostsMessage">Click the tab below and be the first to post!</p>}
             {posts.sort((a,b)=> b.sortDate - a.sortDate).map((post, index)=>(
                 <Card key={index} post={post} handleDelete={handleDelete}/>
             ))}

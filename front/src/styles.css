@@ -75,8 +75,8 @@
 }
 
 h1{
-    font-size: 45px;
-    font-weight: 900;
+    font-size: 25px;
+    /* font-weight: 900; */
     letter-spacing: 0.25em;
 }
 
@@ -471,6 +471,19 @@ a:visited{
     font-size: 20px;
 }
 
+.header{
+    width: 90%;
+    display: flex;
+    justify-content: center;
+}
+.header-logo{
+    width: 40%;
+}
+
+.logo{
+    width: 100%;
+}
+
 /* MEDIA QUERIES  */
 /* ////// MOBILE //////// */
 
@@ -490,6 +503,10 @@ a:visited{
 
     .card, .upload-post-form{
         width: 90vw;
+    }
+
+    .logo{
+        width: 60%;
     }
 
 }

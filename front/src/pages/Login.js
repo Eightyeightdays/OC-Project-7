@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Logo from "../assets/icon-left-font-monochrome-black.png";
 
 export default function LoginAndSignUp(){
     const [error, setError] = useState([]);
@@ -152,7 +153,6 @@ export default function LoginAndSignUp(){
 
     return(
         <>
-            <h1>GROUPOMANIA</h1>
             <div className="loginContainer">
                 {!existingUser ? 
                 <>
@@ -172,7 +172,7 @@ export default function LoginAndSignUp(){
                     </form> 
                     <button className="loginButton" type="submit" onClick={handleSignUp}>SIGN UP AND LOG IN</button>
                 </>
-                }
+                }<img className="logo" src={Logo} alt="Groupomania logo"></img>
                 <button className="selectButton" type="button" onClick={changeUi}>{buttonLabel}</button> 
                 <div id="error">
                     <ul>
@@ -180,6 +180,7 @@ export default function LoginAndSignUp(){
                     </ul>
                 </div>
             </div>
+            
         </>
     )
 }
