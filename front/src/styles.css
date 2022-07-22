@@ -35,13 +35,18 @@
     flex-direction: column;
 }
 
+#loginForm{
+    width: 100%;
+}
+
 .login-input{
+    width: 80%;
     text-align: center;
     background: white;
     opacity: 0.5;
     font-size: 15px;
     font-weight: bolder;
-    padding: 1.5em 3em;
+    padding: 1.5em;
     outline: 1px solid var(--primary);
     border: 1px solid var(--primary);
     border-radius: 0.2em;;
@@ -49,16 +54,18 @@
     margin: 0.5em 0.5em;
     transition: all 0.35s ease-out;
     align-self: center;
+    z-index: 1;
 }
 
 .login-input:hover{
     opacity: 1;
-    cursor: pointer;
+    cursor: text;
 }
 
 .login-input:focus{
     opacity: 1;
-    padding: 1.5em 5em;
+    /* padding: 1.5em 5em; */
+    width: 100%;
     outline: 1px solid transparent;
     border: 1px solid transparent;
 }
@@ -191,6 +198,7 @@ button:hover{
     align-self: start;
     height: max-content;
     width: 100%;
+    white-space: pre-wrap;
     /* background: gold; */
 }
 
@@ -461,6 +469,10 @@ a:visited{
     position: relative;
     bottom: 0;
     z-index: -1;
+}
+
+.noPostsMessage{
+    font-size: 20px;
 }
 
 /* MEDIA QUERIES  */

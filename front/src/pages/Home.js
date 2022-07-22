@@ -21,7 +21,9 @@ export default function Home(){
     const getAllPosts = useCallback(function (count) {
         fetch("http://localhost:3001/posts", settings)
             .then(response => response.json())
-            .then(response => setPosts(response))
+            .then(response => {
+                setPosts(response);
+            })
     }, [])
 
     useEffect(() => {
@@ -65,6 +67,7 @@ export default function Home(){
     return(    
         <div className="flex-column">
             <Header />
+            {posts.length === 0 && <p className="noPostsMessage">Click the tab below and be the first to post!</p>}
             {posts.sort((a,b)=> b.sortDate - a.sortDate).map((post, index)=>(
                 <Card key={index} post={post} handleDelete={handleDelete}/>
             ))}

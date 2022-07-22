@@ -1,6 +1,6 @@
 import EditAndDeleteButton from "../buttons/EditAndDeleteButton";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import React,  { useState } from "react";
+import React,  { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import extractCookieData from "../utils/extractCookieData";
@@ -33,6 +33,7 @@ export default function Card(props){
     const cookieData = extractCookieData(document.cookie);
     const [reactions, setReactions]= useState(reactionCount);
     const [toggle, setToggle] = useState(false);
+    const [popup, setPopup] = useState(false);
 
     function handleEdit(){
         let url = `/post/${postId}/edit`;
@@ -56,23 +57,23 @@ export default function Card(props){
         });
     }
 
-    let toggleTimeout;
-    function toggleSettings(){
-        setToggle(true);
-        
-        toggleTimeout = setTimeout(()=>{
-        setToggle(false);
-        }, 3000);        
-    }
-
-    const [popup, setPopup] = useState(false);
-   
     const confirmDelete = ()=>{
-        setPopup(true);
-        return;
+            setPopup(true);
+            return;
+        }
+
+    useEffect(()=> {
+        const timer = setTimeout(()=>{
+            setToggle(false);
+        }, 3000);
+        return () => clearTimeout(timer);
+    }, [toggle])
+
+        
+    function toggleSettings(){
+        setToggle(true);      
     }
-
-
+   
     return(
 
         <div className="card" >
