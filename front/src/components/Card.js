@@ -15,6 +15,7 @@ export default function Card(props){
             title,
             content,
             imageUrl,
+            reactions,
             reactionCount,
             dateCreated,
             dateEdited,
@@ -31,7 +32,7 @@ export default function Card(props){
     const params = useParams();
     const cookieData = extractCookieData(document.cookie);
     const currentUser = cookieData.userId;
-    const [countReactions, setCountReactions]= useState(reactionCount);
+    const [countReactions, setCountReactions]= useState(reactions.length);
     
     const [toggle, setToggle] = useState(false);
     const [popup, setPopup] = useState(false);

@@ -4,21 +4,25 @@ const User = require("../models/userModel");
 const fs = require("fs");
 const dayjs = require("dayjs");
 
-exports.create = (req, res) => {
-    req.body.title = req.body.title.replace(/&#x27;/g, "'");        // put apostrophes in
-    req.body.content = req.body.content.replace(/&#x27;/g, "'");
-
-    req.body.title = req.body.title.replace(/&quot;/g, "\"");       // put quotation marks in
-    req.body.content = req.body.content.replace(/&quot;/g, "\"");
-
-    let paragraphs = (req.body.content.split(/\r?\n/g));
+function rebuild(req){
+    let title = req.body.title.replace(/&#x27;/g, "'");        // put apostrophes in
+    let content = req.body.content.replace(/&#x27;/g, "'");
+    title = title.replace(/&quot;/g, "\"");       // put quotation marks in
+    content = content.replace(/&quot;/g, "\"");
+    let paragraphs = (content.split(/\r?\n/g));    // put paragraphs in
     let indentedText=""; 
     paragraphs.map(el =>{
         indentedText += el + "\n";
     })
 
+    return [title, indentedText];
+}
+
+exports.create = (req, res) => {
+    const [title, indentedText] = rebuild(req);
+
     const post = new Post({
-        title: req.body.title,
+        title: title,
         content: indentedText,
         userId: req.auth.userId,
         imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
@@ -46,28 +50,19 @@ exports.getAll = (req, res) => {
 }
 
 exports.modify = (req, res) => {
-    req.body.title = req.body.title.replace(/&#x27;/g, "'");    // allow apostrophes
-    req.body.content = req.body.content.replace(/&#x27;/g, "'");
-    req.body.title = req.body.title.replace(/&quot;/g, "\"");       // put quotation marks in
-    req.body.content = req.body.content.replace(/&quot;/g, "\"");
+    const [title, indentedText] = rebuild(req);
 
-    let paragraphs = (req.body.content.split(/\r?\n/g));
-    let indentedText =""; 
-    paragraphs.map(el =>{
-        indentedText += el + "\n";
-    })
-    
     if (req.auth.userId !== req.body.userId && !req.auth.admin) {
         return res.status(403).json({message: "You don't have permission to edit this post"})
     } else {
         const updatedPost = req.file ?
             {
-                title: req.body.title,
+                title: title,
                 content: indentedText,
                 dateEdited: dayjs().format("dddd, MMMM D YYYY, HH:mm:ss a"),
                 imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
             } : {
-                title: req.body.title, 
+                title: title, 
                 content: indentedText, 
                 dateEdited: dayjs().format("dddd, MMMM D YYYY, HH:mm:ss a")
             };
@@ -116,11 +111,11 @@ exports.reactToPost = async (req, res) => {
             post: post._id,
             type: reactionType
         }).save()
-        await Post.updateOne({_id: postId}, {$addToSet: {reactions: reaction._id}, $inc: {reactionCount: 1}}) // add the new reaction to the post // 
+        await Post.updateOne({_id: postId}, {$addToSet: {reactions: reaction._id}}) // add the new reaction to the post // 
 
     } else if (reaction.type === reactionType) { // if the new reaction is the same as the old one
         await reaction.deleteOne()              // delete the reaction
-        await Post.updateOne({_id: postId}, {$pull: {reactions: reaction._id}, $inc: {reactionCount: -1}}) // update the reactions array on the post
+        await Post.updateOne({_id: postId}, {$pull: {reactions: reaction._id}}) // update the reactions array on the post
     } else {
       await Reaction.updateOne({_id: reaction._id}, {type: reactionType})   // if the reaction is different, update the reaction type
     }

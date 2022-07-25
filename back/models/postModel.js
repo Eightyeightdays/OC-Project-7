@@ -6,7 +6,6 @@ const post = mongoose.Schema({
     content: {type: String, required: true},
     imageUrl: {type: String, required: true},
     reactions: [{type: Schema.Types.ObjectId, ref: "Reaction"}],
-    reactionCount: {type: Number, required: true, default: 0},
     dateCreated: {type: String, required: true},
     dateEdited: {type: String},  
     sortDate: {type: String, required: true}                          

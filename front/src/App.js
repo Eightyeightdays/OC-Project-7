@@ -5,7 +5,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import SinglePost from "./pages/SinglePost";
 import CreatePost from "./pages/CreatePost";
-import RequireAuth from "./RequireAuth";
+import RequireAuth from "./components/security/RequireAuth";
 import EditPost from "./pages/EditPost";
 
 export default function App() {
