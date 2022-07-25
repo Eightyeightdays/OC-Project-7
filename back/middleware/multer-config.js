@@ -11,7 +11,7 @@ const fileFilter = (req, file, cb) => {
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) =>{      
-        callback(null, "images");               // save to a folder called "images"
+        callback(null, "images");               // save to a local folder called "images"
     },
     filename: (req, file, callback) =>{
         const name = file.originalname.split(" ").join("_");

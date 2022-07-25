@@ -48,7 +48,6 @@ exports.loginUser = (req, res) =>{
                     }
 
                     let token;
-                    let admin;
                     let response = {
                         userId: user._id, 
                     };
@@ -60,15 +59,13 @@ exports.loginUser = (req, res) =>{
                             {expiresIn: "24h"});
                         response.admin = true;
                         response.token = token;
-                        admin = true;
                     }else{                  // define token, response and admin status for standard user
                         token = jwt.sign(
-                            {userId: user._id}, 
+                            {userId: user._id, admin: false}, 
                             process.env.SECRET_PHRASE,
                             {expiresIn: "24h"});
                         response.admin = false;
                         response.token = token;
-                        admin = false;
                     }
 
                     return res.status(200).json(response); 

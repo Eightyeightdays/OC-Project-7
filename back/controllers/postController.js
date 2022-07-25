@@ -5,11 +5,11 @@ const fs = require("fs");
 const dayjs = require("dayjs");
 
 function rebuild(req){
-    let title = req.body.title.replace(/&#x27;/g, "'");        // put apostrophes in
+    let title = req.body.title.replace(/&#x27;/g, "'");         // put apostrophes in
     let content = req.body.content.replace(/&#x27;/g, "'");
-    title = title.replace(/&quot;/g, "\"");       // put quotation marks in
+    title = title.replace(/&quot;/g, "\"");                     // put quotation marks in
     content = content.replace(/&quot;/g, "\"");
-    let paragraphs = (content.split(/\r?\n/g));    // put paragraphs in
+    let paragraphs = (content.split(/\r?\n/g));                 // put paragraphs in
     let indentedText=""; 
     paragraphs.map(el =>{
         indentedText += el + "\n";
@@ -52,7 +52,7 @@ exports.getAll = (req, res) => {
 exports.modify = (req, res) => {
     const [title, indentedText] = rebuild(req);
 
-    if (req.auth.userId !== req.body.userId && !req.auth.admin) {
+    if (req.auth.userId !== req.body.userId || !req.auth.admin) {
         return res.status(403).json({message: "You don't have permission to edit this post"})
     } else {
         const updatedPost = req.file ?
@@ -124,7 +124,3 @@ exports.reactToPost = async (req, res) => {
 
     res.status(200).json({reactionCount: reactionCount})    // use count to update state on front end
 }
-
-
-
-

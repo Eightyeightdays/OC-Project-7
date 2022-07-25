@@ -8,7 +8,7 @@ module.exports = (req, res, next) =>{
         const userId = decodedToken.userId;
         req.auth = {userId};                    // add the decoded user ID to the request object 
         const adminStatus = decodedToken.admin;
-        if(adminStatus){
+        if(adminStatus === true){
             req.auth.admin = true;              // add admin status to req.auth for admin account
         }
         if(req.body.userId && req.body.userId !== userId){ //

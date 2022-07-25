@@ -81,7 +81,7 @@ export default function Card(props){
                 <p className="card_creator-id">Posted by: <strong>{userId}</strong></p>
                 <p className="card_date-posted">{dateCreated}{dateEdited && <strong> | Edited: {dateEdited}</strong>}</p>
                 <p className="card_title">{title}</p>
-                {(currentUser === userId || Cookies.get("admin") ) && 
+                {(currentUser === userId || Cookies.get("admin") === true ) && 
                     <FontAwesomeIcon icon={faBars} className="settingsIcon" onClick={()=> toggleSettings()}/>
                 }
                 {toggle && 
