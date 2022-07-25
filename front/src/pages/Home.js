@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import Card from "../components/Card.js";
 import Navbar from "../components/Navbar.js";
 import Header from "../components/Header.js";
+import handleErrors from "../utils/handleErrors";
 
 
 export default function Home(){ 
@@ -20,10 +21,11 @@ export default function Home(){
     
     const getAllPosts = useCallback(function (count) {
         fetch("http://localhost:3001/posts", settings)
-            .then(response => response.json())
+            .then(handleErrors)
             .then(response => {
                 setPosts(response);
             })
+            .catch(error => console.log(error));
     }, [])
 
     useEffect(() => {
@@ -51,17 +53,18 @@ export default function Home(){
         };
 
         fetch(`http://localhost:3001/posts/${id}`, settings)
+        .then(handleErrors)
         .then(response => {
-            response.json();
-            if(response.status === 200){
-                fetch("http://localhost:3001/posts", getSettings)
-                .then(response => response.json())
-                .then(response => {
-                    setPosts(response);
-                    console.log("All posts fetched after delete");
-                })
-            }})
-        };
+            fetch("http://localhost:3001/posts", getSettings)
+            .then(handleErrors)
+            .then(response => {
+                setPosts(response);
+                console.log("All posts fetched after delete");
+            })
+            .catch(error => console.log(error));
+        })
+        .catch(error => console.log(error));
+    };
         
     return(    
         <div className="flex-column">

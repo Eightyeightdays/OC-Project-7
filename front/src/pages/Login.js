@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Logo from "../assets/icon-left-font-monochrome-black.png";
 import Cookies from "js-cookie";
+import Logo from "../assets/icon-left-font-monochrome-black.png";
+import handleErrors from "../utils/handleErrors";
 
 export default function LoginAndSignUp(){
     const [error, setError] = useState([]);
@@ -19,7 +20,6 @@ export default function LoginAndSignUp(){
             errorElement.className = errorElement.className.replace("visible", "")}, 
             5000);
     }
-
 
     function handleLogin(){
         const loginForm = document.getElementById("loginForm");
@@ -44,7 +44,7 @@ export default function LoginAndSignUp(){
         };
     
         fetch("http://localhost:3001/auth/login", settings)
-        .then(response => response.json())
+        .then(handleErrors)
         .then(data =>{
             if(data.token){
                 Cookies.set("userId", data.userId, { sameSite: 'strict' });
@@ -60,6 +60,7 @@ export default function LoginAndSignUp(){
                 return;
             }
         })
+        .catch(error => console.log(error));
     }
 
     function handleInputs(event){
@@ -92,18 +93,15 @@ export default function LoginAndSignUp(){
             passwordCheck = schema.validate(password, {details: true});
             passwordCheck.forEach(error => errorMessage.push(error.message));
             errorMessage.push(" Email format incorrect");
-            console.log("PASSWORD & EMAIL ERROR: " + errorMessage);
             displayErrorMessage(errorMessage);
             return;
         }else if(passwordCheck !== true){
             passwordCheck = schema.validate(password, {details: true});
             passwordCheck.forEach(error => errorMessage.push(error.message));
-            console.log("PASSWORD ERROR: " + errorMessage); 
             displayErrorMessage(errorMessage)
             return;
         }else if(emailCheck !== true){
             errorMessage.push("Email format incorrect");
-            console.log("EMAIL ERROR: " +errorMessage);
             displayErrorMessage(errorMessage);
             return;
         }
@@ -126,21 +124,22 @@ export default function LoginAndSignUp(){
         };
     
         fetch("http://localhost:3001/auth/signup", settings)
+        .then(handleErrors)
         .then(response => {
-            if(response.status === 201){
-                settings.credentials = "include";
-                fetch("http://localhost:3001/auth/login", settings)
-                .then(response => response.json())
-                .then(data =>{
-                    if(data.token){
-                        Cookies.set("userId", data.userId, { sameSite: 'strict' });
-                        Cookies.set("token", data.token, { sameSite: 'strict' });            // set cookies
-                        Cookies.set("admin", data.admin, { sameSite: 'strict' });
-                        navigate("/home");
-                    }
-                })
-            }
+            settings.credentials = "include";
+            fetch("http://localhost:3001/auth/login", settings)
+            .then(handleErrors)
+            .then(data =>{
+                if(data.token){
+                    Cookies.set("userId", data.userId, { sameSite: 'strict' });
+                    Cookies.set("token", data.token, { sameSite: 'strict' });            // set cookies
+                    Cookies.set("admin", data.admin, { sameSite: 'strict' });
+                    navigate("/home");
+                }
+            })
+            .catch(error => console.log(error));
         })
+        .catch(error => console.log(error));
     }
     
     function changeUi(){

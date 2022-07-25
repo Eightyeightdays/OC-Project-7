@@ -10,13 +10,29 @@
     justify-content: center;
     box-sizing: border-box;
 }
-
 *,
 *:before,
 *:after {
   box-sizing: inherit;
 }
+h1{
+    font-size: 25px;
+    letter-spacing: 0.25em;
+}
+h1, h2{
+    text-align: center;
+}
+button:hover{
+    cursor: pointer;
+}
+a:visited{
+    color: white;
+}
+.logo{
+    width: 100%;
+}
 
+ /* LOGIN PAGE */
 .loginContainer{
     display: flex;
     flex-direction: column;
@@ -29,16 +45,13 @@
     height: min-content;
     width: 400px;
 }
-
 .loginContainer, form{
     display: flex;
     flex-direction: column;
 }
-
 #loginForm{
     width: 100%;
 }
-
 .login-input{
     width: 80%;
     text-align: center;
@@ -56,34 +69,19 @@
     align-self: center;
     z-index: 1;
 }
-
 .login-input:hover{
     opacity: 1;
     cursor: text;
 }
-
 .login-input:focus{
     opacity: 1;
-    /* padding: 1.5em 5em; */
     width: 100%;
     outline: 1px solid transparent;
     border: 1px solid transparent;
 }
-
 .login-input:focus::placeholder {
     color: transparent;
 }
-
-h1{
-    font-size: 25px;
-    /* font-weight: 900; */
-    letter-spacing: 0.25em;
-}
-
-h1, h2{
-    text-align: center;
-}
-
 .loginButton, .selectButton{
     font-family: 'Lato', sans-serif;
     font-size: 15px;
@@ -93,7 +91,6 @@ h1, h2{
     padding: 1em;
     align-self: center;
 }
-
 .selectButton{
     background: var(--primary);
     color: var(--secondary);
@@ -102,7 +99,6 @@ h1, h2{
     position: fixed;
     bottom: 0;
 }
-
 .loginButton{
     margin-top: 1em;
     letter-spacing: 0.15em;
@@ -110,9 +106,7 @@ h1, h2{
     background: var(--tertiary)
 }
 
-button:hover{
-    cursor: pointer;
-}
+/* ERROR POPUP */
 
 #error{   
     width: max-content;
@@ -131,10 +125,11 @@ button:hover{
     box-shadow: 10px 10px 10px 10px 10px;
     transition: all 1s cubic-bezier( 0.31, 0.59, 0.16, 1.03 );
 }
-
 #error.visible{
     bottom: 0;
 }
+
+/* CARD */
 
 .card{
     position: relative;
@@ -150,7 +145,6 @@ button:hover{
     margin: 1.5em;
     overflow: hidden;
 }
-
 .card_header{
     height: max-content;
     display: flex;
@@ -159,16 +153,13 @@ button:hover{
     padding: 1em;
     margin-bottom: 0em;
 }
-
 .card_title{
     font-weight: 900;
     font-size: 20px;
 }
-
 .card p{
     margin: 0;
 }
-
 .image-box{
     max-height: 350px;
     max-width: 100%;
@@ -177,7 +168,6 @@ button:hover{
     justify-content: center;
     align-items: center;
 }
-
 .image-box a{
     display: flex;
     justify-content: center;
@@ -185,13 +175,11 @@ button:hover{
     width: 100%;
     height: 100%;
 }
-
 .card_link-image, .card_image{
     max-height: 350px;
     max-width: 100%;
     object-fit: cover;
 }
-
 .card_content{
     border-bottom: 1px solid var(--tertiary);
     padding: 1em;
@@ -200,7 +188,6 @@ button:hover{
     width: 100%;
     white-space: pre-wrap;
 }
-
 .card_details{
     height: 60px;
     width: 100%;
@@ -216,25 +203,20 @@ button:hover{
     padding: 1em;
     height: 50%;
 }
-
 .reaction_buttons{
     display: flex;
     justify-content: center;
     gap: 0.6em;
 }
-
 svg{
     font-size: 2em;
 }
-
 svg:hover{
     cursor: pointer;
 }
-
 .reaction_buttons svg:hover{
     color: var(--primary);
 }
-
 .settingsIcon{
     font-size: 1em;
     position: absolute;
@@ -242,11 +224,9 @@ svg:hover{
     top: 0;
     right: 0;
 }
-
 .settingsIcon:hover{
     color: var(--primary);
 }
-
 .edit_buttons{
     display: flex;
     justify-content: center;
@@ -256,7 +236,6 @@ svg:hover{
     right: 3em;
     z-index: 1;
 }
-
 .card button{
     margin: 0 0.5em;
     border: none;
@@ -269,12 +248,10 @@ svg:hover{
     border-bottom-right-radius: 15px;  
     transition: all 0.2s ease-out;
 }
-
 .card button:hover{
     background: var(--tertiary);
     box-shadow: 2px 0 6px 0  var(--tertiary);
 }
-
 .content-input{
     width: 600px;
     resize: none;
@@ -283,6 +260,11 @@ svg:hover{
 
 /* EDIT PAGE & CREATE PAGE */
 
+.flex-column{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .upload-post-form{
     display: flex;
     flex-direction: column;
@@ -291,13 +273,11 @@ svg:hover{
     margin: 2em;
     padding: 1em;
 }
-
 .title-input{
     padding: 0.5em 1em;
     margin-top: 0.5em;
     max-width: 360px;
 }
-
 .content-input{
     display: flex;
     font-family: lato;
@@ -308,11 +288,9 @@ svg:hover{
     height: 400px;
     width: 100%;
 }
-
 form input:focus, form textarea:focus{
     outline: transparent;
 }
-
 .upload-image-container{
     display: flex;
     flex-direction: column;
@@ -321,16 +299,13 @@ form input:focus, form textarea:focus{
     height: 320px;
     background: var(--tertiary)
 }
-
 .upload-image{
     object-fit: cover;
     height: 100%;
 }
-
 input[type="file"]{
     position: absolute; left: -99999rem 
 }
-
 .select-file-button{
     background: var(--secondary);
     padding: 1em;
@@ -343,12 +318,10 @@ input[type="file"]{
     align-self: center;
     text-align: center;
 }
-
 .select-file-button:hover{
     background: var(--primary);
     color: white;
 }
-
 .upload-post-button{
     border: none;
     padding: 1em;
@@ -358,14 +331,14 @@ input[type="file"]{
     width: 150px;
     align-self: center;
 }
-
 .select-file-description{
     margin: 0.5em;
     color: white;
 }
 
+/* NAVBAR */
+
 .navbar{
-    /* height: 200px; */
     width: 100px;
     position: fixed;
     bottom: 40%;
@@ -393,15 +366,16 @@ input[type="file"]{
     color: white;
     transition: all 0.2s ease-out;
 }
-
 .new-post-link{
     border-bottom-right-radius: 15px;
 }
-
-a:visited{
-    color: white;
+.stop-footer{
+    height: 80px;
+    width: 100%;
+    position: relative;
+    bottom: 0;
+    z-index: -1;
 }
-
 .logout-button{
     background: var(--primary);
     border: none;
@@ -414,11 +388,7 @@ a:visited{
     text-align: start;
 }
 
-.flex-column{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+/* DELETE POPUP */
 
 .confirmDeletePopup{
     display: flex;
@@ -434,7 +404,6 @@ a:visited{
     height: 100%;
     background: var(--tertiary);
 }
-
 #confirmDeleteButton, #cancelDeleteButton{
     padding: 1em;
     border-radius: 15px;
@@ -442,34 +411,21 @@ a:visited{
     color: black;
     width: max-content;
 }
-
 #confirmDeleteButton:hover{
     background: var(--primary);
     color: white;
     transform:scale(2)
 }
-
 #cancelDeleteButton{
     font-size: 2em;
     font-weight: bolder;
     transition: all 0.2s ease-out;
 }
-
 #cancelDeleteButton:hover{
     transform:scale(1.04)
 }
 
-.stop-footer{
-    height: 80px;
-    width: 100%;
-    position: relative;
-    bottom: 0;
-    z-index: -1;
-}
-
-.noPostsMessage{
-    font-size: 20px;
-}
+/* HEADER */
 
 .header{
     width: 90%;
@@ -480,11 +436,8 @@ a:visited{
     width: 40%;
 }
 
-.logo{
-    width: 100%;
-}
+/********** MEDIA QUERIES  **********/
 
-/* MEDIA QUERIES  */
 /* ////// MOBILE //////// */
 
 @media (max-width: 535px) {
@@ -500,11 +453,9 @@ a:visited{
         margin: 0.5em;
         width: 300px;
     }
-
     .card, .upload-post-form{
         width: 90vw;
     }
-
     .logo{
         width: 60%;
     }
@@ -524,6 +475,7 @@ a:visited{
 }
 
 /* ///// TABLET ////// */
+
 @media(max-width: 1000px){
     .navbar{
         flex-direction: row;

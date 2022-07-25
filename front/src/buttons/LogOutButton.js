@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import handleErrors from "../utils/handleErrors";
 
 export default function LogOutButton(){
     const navigate = useNavigate();
@@ -15,16 +16,14 @@ export default function LogOutButton(){
 
     function handleLogOut(){
         fetch("http://localhost:3001/auth/logout", settings)
+        .then(handleErrors)
         .then(response =>{
-            response.json();
-            if(response.status === 200){
-                Cookies.remove("userId");
-                Cookies.remove("token"); 
-                Cookies.remove("admin");
-                navigate("/");
-            }
+            Cookies.remove("userId");
+            Cookies.remove("token"); 
+            Cookies.remove("admin");
+            navigate("/");
         })
-        
+        .catch(error => console.log(error));
     }
     
     return(

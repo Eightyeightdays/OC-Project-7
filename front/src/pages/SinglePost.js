@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Card from "../components/Card";
 import Cookies from "js-cookie";
+import Card from "../components/Card";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
+import handleErrors from "../utils/handleErrors";
 
 export default function DisplaySinglePost(){
     const navigate = useNavigate();
@@ -22,8 +23,9 @@ export default function DisplaySinglePost(){
 
     const getSinglePost = useCallback(function(){
          fetch(`http://localhost:3001/posts/${params.postId}`, settings)
-        .then(response => response.json()) 
+        .then(handleErrors)
         .then(post => {setPost(post)}) 
+        .catch(error => console.log(error))
     }, [])
    
     useEffect(() => {
@@ -42,13 +44,12 @@ export default function DisplaySinglePost(){
         };
 
         fetch(`http://localhost:3001/posts/${id}`, settings)
+        .then(handleErrors)
         .then(response => {
-            response.json();
-            if(response.status === 200){
-                navigate("/home");
-                console.log("Post deleted");
-                }
+            navigate("/home");
+            console.log("Post deleted");
             })
+        .catch(error => console.log(error))
         };
 
     return(

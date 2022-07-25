@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate} from "react-router-dom";
 import Cookies from "js-cookie";
 import { handleTitle, handleContent } from "../utils/postInputHandlers";
+import handleErrors from "../utils/handleErrors";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 
@@ -27,19 +28,18 @@ export default function EditPost(){
 
     useEffect(()=>{
         fetch(`http://localhost:3001/posts/${params.postId}`, settings)
-                .then(response => response.json()) 
+                .then(handleErrors) 
                 .then(data => {
                     setPost(data);
-                    setTitle(data.title);
+                    setTitle(data.title);           // use data from existing post to fill out form
                     setContent(data.content);
                     let filePath = data.imageUrl;
-                    let position = filePath.search(/[0-9]{10}/) + 14;
+                    let position = filePath.search(/[0-9]{10}/) + 14;       // get filename from file path
                     let fileName = filePath.slice(position);
                     setFile(fileName);
-                }); 
+                })
+                .catch(error => console.log(error));
     }, [])
-    
-    
     
     function handleEdit(event){
         event.preventDefault();
@@ -63,15 +63,16 @@ export default function EditPost(){
         };
     
         fetch(`http://localhost:3001/posts/${params.postId}`, settings)
-            .then(response => response.json()) 
+            .then(handleErrors) 
             .then(data => {
                 setPost(data);
                 navigate(`/post/${params.postId}`);
             }) 
+            .catch(error => console.log(error));
     }
 
     function handleFileSelect(event){
-        setFile(event.target.files[0].name)
+        setFile(event.target.files[0].name)     // display selected file name
     }
 
     return(
@@ -79,9 +80,9 @@ export default function EditPost(){
             <Header />
             {post && <>
             <form className="upload-post-form" id="postForm" encType="multipart/form-data">
-                    Title<input className="title-input" id="titleInput" type="text" name="title" maxLength="50" onChange={(event)=>handleTitle(setTitle, setTitleAlert, title, event)} value={title} />
+                    Title<input className="title-input" id="titleInput" type="text" name="title" maxLength="50" onChange={event=>handleTitle(setTitle, setTitleAlert, title, event)} value={title} />
                     {<p>{titleAlert}</p>}
-                    Content<textarea className="content-input" type="text" name="content" maxLength="1500" onChange={(event)=>handleContent(setContent, setContentAlert, content, event)} value={content} />
+                    Content<textarea className="content-input" type="text" name="content" maxLength="1500" onChange={event=>handleContent(setContent, setContentAlert, content, event)} value={content} />
                     {<p>{contentAlert}</p>}
                     <div className="upload-image-container">
                         <img className="upload-image" alt="" src={post.imageUrl}></img>

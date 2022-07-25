@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import EditAndDeleteButton from "../buttons/EditAndDeleteButton";
 import ReactButton from "../buttons/ReactButton";
 import ConfirmDeletePopup from "./ConfirmDeletePopup";
+import handleErrors from "../utils/handleErrors";
 
 export default function Card(props){
     let{
@@ -50,10 +51,11 @@ export default function Card(props){
             body: JSON.stringify({type: type, userId: Cookies.get("userId")}),
         };
         fetch(`http://localhost:3001/posts/${postId}/react`, settings)
-        .then(response => response.json())
+        .then(handleErrors)
         .then(function (data) {
             setCountReactions(data.reactionCount);
-        });
+        })
+        .catch(error => console.log(error));
     }
 
     const confirmDelete = ()=>{
@@ -74,7 +76,6 @@ export default function Card(props){
     }
    
     return(
-
         <div className="card" >
             <div className="card_header">
                 <p className="card_creator-id">Posted by: <strong>{userId}</strong></p>

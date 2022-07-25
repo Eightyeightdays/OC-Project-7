@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { handleTitle, handleContent } from "../utils/postInputHandlers";
+import handleErrors from "../utils/handleErrors";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 
@@ -21,7 +22,7 @@ export default function CreatePost(){
         const formData = new FormData(form);
         const formObject = Object.fromEntries(formData.entries());
         
-        if(title === "" || content === "" || formObject.file ===" "){
+        if(title === "" || content === "" || formObject.file ===" "){   // only allow a post with title, content and file to be published
             return;
         }
 
@@ -38,19 +39,16 @@ export default function CreatePost(){
         };
 
         fetch("http://localhost:3001/posts", settings)  
+        .then(handleErrors)
         .then(response => {
-            response.json()
-            if(response.status === 201){
-                navigate("/home");
-            }else{
-                console.log(response)                        // TODO !!!!!
-            }
+            navigate("/home");
         })
+        .catch(error => console.log(error));
     }
     
     function handleFileSelect(event){
         setFile(event.target.files[0].name);
-        let url = URL.createObjectURL(event.target.files[0]);
+        let url = URL.createObjectURL(event.target.files[0]);   // create a preview of the selected file
         setSrc(url);
     }
 
