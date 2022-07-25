@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../assets/icon-left-font-monochrome-black.png";
+import Cookies from "js-cookie";
 
 export default function LoginAndSignUp(){
     const [error, setError] = useState([]);
@@ -46,6 +47,9 @@ export default function LoginAndSignUp(){
         .then(response => response.json())
         .then(data =>{
             if(data.token){
+                Cookies.set("userId", data.userId, { sameSite: 'strict' });
+                Cookies.set("token", data.token, { sameSite: 'strict' });            // set cookies
+                Cookies.set("admin", data.admin, { sameSite: 'strict' });
                 if(data.admin){ 
                     navigate("/home");
                 }
@@ -129,6 +133,9 @@ export default function LoginAndSignUp(){
                 .then(response => response.json())
                 .then(data =>{
                     if(data.token){
+                        Cookies.set("userId", data.userId, { sameSite: 'strict' });
+                        Cookies.set("token", data.token, { sameSite: 'strict' });            // set cookies
+                        Cookies.set("admin", data.admin, { sameSite: 'strict' });
                         navigate("/home");
                     }
                 })

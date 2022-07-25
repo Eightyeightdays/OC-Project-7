@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Card from "../components/Card";
-import extractCookieData from "../utils/extractCookieData";
+import Cookies from "js-cookie";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 
@@ -9,7 +9,6 @@ export default function DisplaySinglePost(){
     const navigate = useNavigate();
     const params = useParams();
     const [post, setPost] = useState();
-    const cookieData = extractCookieData(document.cookie);
     
     const settings = {
         method: "GET",
@@ -17,7 +16,7 @@ export default function DisplaySinglePost(){
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "Authorization" : cookieData.token,
+            "Authorization" : Cookies.get("token"),
         },
     };
 
@@ -38,7 +37,7 @@ export default function DisplaySinglePost(){
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                "Authorization": cookieData.token,
+                "Authorization": Cookies.get("token"),
             },
         };
 

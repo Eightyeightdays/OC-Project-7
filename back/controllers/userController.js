@@ -36,9 +36,6 @@ exports.createUser = (req, res) => {
 }
 
 exports.loginUser = (req, res) =>{
-    if(req.cookies.token){
-        res.clearCookie("token");   // Delete previous cookie
-    }
     User.findOne({email: req.body.email})
         .then(user =>{
             if(!user){
@@ -51,30 +48,29 @@ exports.loginUser = (req, res) =>{
                     }
 
                     let token;
-                    let cookieContents;
+                    let admin;
                     let response = {
                         userId: user._id, 
                     };
 
-                    if(user.admin){
+                    if(user.admin){         // define token, response and admin status for admin user
                         token = jwt.sign(
                             {userId: user._id, admin: true}, 
                             process.env.SECRET_PHRASE,
                             {expiresIn: "24h"});
-                        cookieContents = token + "_USERID_" + user._id + "_ADMIN";
                         response.admin = true;
                         response.token = token;
-                    }else{
+                        admin = true;
+                    }else{                  // define token, response and admin status for standard user
                         token = jwt.sign(
                             {userId: user._id}, 
                             process.env.SECRET_PHRASE,
                             {expiresIn: "24h"});
-                        cookieContents = token + "_USERID_" + user._id;
+                        response.admin = false;
                         response.token = token;
+                        admin = false;
                     }
-                    
-                    const twoHours = 7200000;
-                    res.cookie("token", cookieContents, {expires: new Date(Date.now() + twoHours), sameSite: "strict"});
+
                     return res.status(200).json(response); 
                 })
                 .catch(error => res.status(500).json({error: "Failed to validate user"}));
@@ -83,6 +79,5 @@ exports.loginUser = (req, res) =>{
 }
 
 exports.logoutUser = (req, res) =>{
-    res.clearCookie("token"); 
     res.status(200).json({message: "User logged out"})
 }

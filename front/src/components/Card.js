@@ -2,7 +2,7 @@ import React,  { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import extractCookieData from "../utils/extractCookieData";
+import Cookies from "js-cookie";
 import EditAndDeleteButton from "../buttons/EditAndDeleteButton";
 import ReactButton from "../buttons/ReactButton";
 import ConfirmDeletePopup from "./ConfirmDeletePopup";
@@ -16,7 +16,6 @@ export default function Card(props){
             content,
             imageUrl,
             reactions,
-            reactionCount,
             dateCreated,
             dateEdited,
         },
@@ -30,10 +29,8 @@ export default function Card(props){
 
     const navigate = useNavigate();
     const params = useParams();
-    const cookieData = extractCookieData(document.cookie);
-    const currentUser = cookieData.userId;
+    const currentUser = Cookies.get("userId");
     const [countReactions, setCountReactions]= useState(reactions.length);
-    
     const [toggle, setToggle] = useState(false);
     const [popup, setPopup] = useState(false);
 
@@ -48,9 +45,9 @@ export default function Card(props){
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                "Authorization" : cookieData.token,
+                "Authorization" : Cookies.get("token"),
             },
-            body: JSON.stringify({type: type, userId: cookieData.userId}),
+            body: JSON.stringify({type: type, userId: Cookies.get("userId")}),
         };
         fetch(`http://localhost:3001/posts/${postId}/react`, settings)
         .then(response => response.json())
@@ -83,7 +80,7 @@ export default function Card(props){
                 <p className="card_creator-id">Posted by: <strong>{userId}</strong></p>
                 <p className="card_date-posted">{dateCreated}{dateEdited && <strong> | Edited: {dateEdited}</strong>}</p>
                 <p className="card_title">{title}</p>
-                {(currentUser === userId || cookieData.admin ) && 
+                {(currentUser === userId || Cookies.get("admin") ) && 
                     <FontAwesomeIcon icon={faBars} className="settingsIcon" onClick={()=> toggleSettings()}/>
                 }
                 {toggle && 

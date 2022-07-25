@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import extractCookieData from "../utils/extractCookieData";
+import Cookies from "js-cookie";
 import { handleTitle, handleContent } from "../utils/postInputHandlers";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 
 export default function CreatePost(){
     const navigate = useNavigate();
-    const cookieData = extractCookieData(document.cookie);
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [titleAlert, setTitleAlert] = useState();
@@ -26,14 +25,14 @@ export default function CreatePost(){
             return;
         }
 
-        URL.revokeObjectURL(src);   // Remove from memory
+        URL.revokeObjectURL(src);   // Remove preview image URL from memory
 
         const settings = {
             method: "POST",
             credentials: "include",
             headers: {
                 "Accept": "application/json",
-                "Authorization": cookieData.token,
+                "Authorization": Cookies.get("token"),
             },
             body: formData,
         };

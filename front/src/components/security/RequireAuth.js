@@ -1,9 +1,8 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import extractCookieData from "../../utils/extractCookieData";
+import Cookies from "js-cookie";
 
 export default function RequireAuth({ children, redirectTo }) {
-    const cookieData = extractCookieData(document.cookie);
-    let isAuthenticated = cookieData.token;
+    let isAuthenticated = Cookies.get("token");
     return isAuthenticated ? children : <Navigate to={redirectTo} />;
   }

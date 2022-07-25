@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate} from "react-router-dom";
-import extractCookieData from "../utils/extractCookieData";
+import Cookies from "js-cookie";
 import { handleTitle, handleContent } from "../utils/postInputHandlers";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
@@ -13,7 +13,6 @@ export default function EditPost(){
     const [contentAlert, setContentAlert] = useState();
     const [file, setFile] = useState();
     const navigate = useNavigate();
-    const cookieData = extractCookieData(document.cookie);
 
     const params = useParams();
     const settings = {
@@ -22,7 +21,7 @@ export default function EditPost(){
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "Authorization" : cookieData.token,
+            "Authorization" : Cookies.get("token"),
         },
     };
 
@@ -46,7 +45,7 @@ export default function EditPost(){
         event.preventDefault();
         const form = document.getElementById("postForm");
         const formData = new FormData(form);
-        formData.append("userId", cookieData.userId);
+        formData.append("userId", Cookies.get("userId"));
         const formObject = Object.fromEntries(formData.entries());
         
         if(title === "" || content === "" || formObject.file ===" "){
@@ -58,7 +57,7 @@ export default function EditPost(){
             credentials: "include",
             headers: {
                 "Accept": "application/json",
-                "Authorization" : cookieData.token,
+                "Authorization" : Cookies.get("token"),
             },
             body: formData,
         };

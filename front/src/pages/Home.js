@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useCallback } from "react";
-import extractCookieData from "../utils/extractCookieData.js";
+import Cookies from "js-cookie";
 import Card from "../components/Card.js";
 import Navbar from "../components/Navbar.js";
 import Header from "../components/Header.js";
 
+
 export default function Home(){ 
     const [posts, setPosts] = useState([]);
-    const cookieData = extractCookieData(document.cookie);
 
     const settings = {
         method: "GET",
@@ -14,7 +14,7 @@ export default function Home(){
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "Authorization" : cookieData.token,
+            "Authorization" : Cookies.get("token"),
         },
     };
     
@@ -37,7 +37,7 @@ export default function Home(){
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                "Authorization": cookieData.token,
+                "Authorization": Cookies.get("token"),
             },
         };
         const getSettings = {
@@ -46,7 +46,7 @@ export default function Home(){
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                "Authorization": cookieData.token,
+                "Authorization": Cookies.get("token"),
             },
         };
 
