@@ -13,6 +13,7 @@ export default function EditPost(){
     const [titleAlert, setTitleAlert] = useState();
     const [contentAlert, setContentAlert] = useState();
     const [file, setFile] = useState();
+    const [src, setSrc] = useState();
     const navigate = useNavigate();
 
     const params = useParams();
@@ -33,6 +34,7 @@ export default function EditPost(){
                     setPost(data);
                     setTitle(data.title);           // use data from existing post to fill out form
                     setContent(data.content);
+                    setSrc(data.imageUrl);
                     let filePath = data.imageUrl;
                     let position = filePath.search(/[0-9]{10}/) + 14;       // get filename from file path
                     let fileName = filePath.slice(position);
@@ -73,6 +75,8 @@ export default function EditPost(){
 
     function handleFileSelect(event){
         setFile(event.target.files[0].name)     // display selected file name
+        let url = URL.createObjectURL(event.target.files[0]);   // create a preview of the selected file
+        setSrc(url);
     }
 
     return(
@@ -85,7 +89,7 @@ export default function EditPost(){
                     Content<textarea className="content-input" type="text" name="content" maxLength="1500" onChange={event=>handleContent(setContent, setContentAlert, content, event)} value={content} />
                     {<p>{contentAlert}</p>}
                     <div className="upload-image-container">
-                        <img className="upload-image" alt="" src={post.imageUrl}></img>
+                        <img className="upload-image" alt="" src={src}></img>
                         <div className="select-file-description">
                             {post && file}
                         </div>

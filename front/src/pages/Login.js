@@ -51,7 +51,8 @@ export default function LoginAndSignUp(){
                 Cookies.set("token", data.token, { sameSite: 'strict' });            // set cookies
                 Cookies.set("admin", data.admin, { sameSite: 'strict' });
                 if(data.admin){ 
-                    navigate("/home");
+                    // add or show a different screen if the user is admin
+                    navigate("/home");  
                 }
                 navigate("/home"); 
             }else{

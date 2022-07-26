@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Card from "../components/Card.js";
 import Navbar from "../components/Navbar.js";
@@ -19,18 +19,14 @@ export default function Home(){
         },
     };
     
-    const getAllPosts = useCallback(function (count) {
+    useEffect(() => {
         fetch("http://localhost:3001/posts", settings)
             .then(handleErrors)
             .then(response => {
                 setPosts(response);
             })
             .catch(error => console.log(error));
-    }, [])
-
-    useEffect(() => {
-        getAllPosts();
-    }, [getAllPosts]);
+    }, []);
 
     const handleDelete = (id)=>{
         const settings = {

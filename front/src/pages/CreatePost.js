@@ -41,9 +41,10 @@ export default function CreatePost(){
         fetch("http://localhost:3001/posts", settings)  
         .then(handleErrors)
         .then(response => {
+            console.log(response)
             navigate("/home");
         })
-        .catch(error => console.log(error));
+        .catch(error => console.log("ERROR: " + error));
     }
     
     function handleFileSelect(event){

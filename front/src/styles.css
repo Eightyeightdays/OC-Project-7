@@ -98,6 +98,10 @@ a:visited{
     border-top-left-radius: 0.85em;
     position: fixed;
     bottom: 0;
+    transition: all 0.2s ease-out;
+}
+.selectButton:hover{
+    background: var(--tertiary);
 }
 .loginButton{
     margin-top: 1em;
@@ -302,6 +306,7 @@ form input:focus, form textarea:focus{
 .upload-image{
     object-fit: cover;
     height: 100%;
+    min-height: 0;
 }
 input[type="file"]{
     position: absolute; left: -99999rem 

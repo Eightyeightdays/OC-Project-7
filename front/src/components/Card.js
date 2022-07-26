@@ -34,6 +34,7 @@ export default function Card(props){
     const [countReactions, setCountReactions]= useState(reactions.length);
     const [toggle, setToggle] = useState(false);
     const [popup, setPopup] = useState(false);
+    const admin = Cookies.get("admin"); // is a string, not a boolean
 
     function handleEdit(){
         let url = `/post/${postId}/edit`;
@@ -74,14 +75,14 @@ export default function Card(props){
     function toggleSettings(){
         setToggle(true);      
     }
-   
+    
     return(
-        <div className="card" >
+       <div className="card" >
             <div className="card_header">
                 <p className="card_creator-id">Posted by: <strong>{userId}</strong></p>
                 <p className="card_date-posted">{dateCreated}{dateEdited && <strong> | Edited: {dateEdited}</strong>}</p>
                 <p className="card_title">{title}</p>
-                {(currentUser === userId || Cookies.get("admin") === true ) && 
+                {(currentUser === userId || admin === "true") && 
                     <FontAwesomeIcon icon={faBars} className="settingsIcon" onClick={()=> toggleSettings()}/>
                 }
                 {toggle && 

@@ -51,26 +51,37 @@ exports.getAll = (req, res) => {
 
 exports.modify = (req, res) => {
     const [title, indentedText] = rebuild(req);
-
-    if (req.auth.userId !== req.body.userId || !req.auth.admin) {
-        return res.status(403).json({message: "You don't have permission to edit this post"})
-    } else {
-        const updatedPost = req.file ?
-            {
-                title: title,
-                content: indentedText,
-                dateEdited: dayjs().format("dddd, MMMM D YYYY, HH:mm:ss a"),
-                imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-            } : {
-                title: title, 
-                content: indentedText, 
-                dateEdited: dayjs().format("dddd, MMMM D YYYY, HH:mm:ss a")
-            };
-
-        Post.updateOne({_id: req.params.id}, {...updatedPost, _id: req.params.id})
-            .then(() => res.status(200).json({message: "Post updated"}))
-            .catch(error => res.status(400).json({error}))
-    }
+    Post.findOne({_id: req.params.id})
+        .then(post =>{
+            if (req.auth.userId !== post.userId && !req.auth.admin) {
+            return res.status(403).json({message: "You don't have permission to edit this post"})
+            } else {
+                const updatedPost = req.file ?
+                    {
+                        title: title,
+                        content: indentedText,
+                        dateEdited: dayjs().format("dddd, MMMM D YYYY, HH:mm:ss a"),
+                        imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+                    } : {
+                        title: title, 
+                        content: indentedText, 
+                        dateEdited: dayjs().format("dddd, MMMM D YYYY, HH:mm:ss a")
+                    };
+                if(req.file){
+                    const filename = post.imageUrl.split("/images/")[1];
+                    fs.unlink(`images/${filename}`, ()=>{
+                        Post.updateOne({_id: req.params.id}, {...updatedPost, _id: req.params.id})
+                        .then(() => res.status(200).json({message: "Post updated, previous file deleted"}))
+                        .catch(error => res.status(400).json({error}))
+                    })
+                }else{
+                    Post.updateOne({_id: req.params.id}, {...updatedPost, _id: req.params.id})
+                    .then(() => res.status(200).json({message: "Post updated"}))
+                    .catch(error => res.status(400).json({error}))
+                }
+            }    
+        })
+        .catch(error => res.status(400).json({error}))
 }
 
 exports.delete = (req, res) => {

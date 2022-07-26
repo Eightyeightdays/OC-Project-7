@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Card from "../components/Card";
@@ -20,17 +20,13 @@ export default function DisplaySinglePost(){
             "Authorization" : Cookies.get("token"),
         },
     };
-
-    const getSinglePost = useCallback(function(){
-         fetch(`http://localhost:3001/posts/${params.postId}`, settings)
-        .then(handleErrors)
-        .then(post => {setPost(post)}) 
-        .catch(error => console.log(error))
-    }, [])
-   
-    useEffect(() => {
-        getSinglePost();
-    }, [getSinglePost]);
+  
+   useEffect(() => {
+       fetch(`http://localhost:3001/posts/${params.postId}`, settings)
+       .then(handleErrors)
+       .then(post => {setPost(post)}) 
+       .catch(error => console.log(error))
+   }, []);
 
     const handleDelete = (id)=>{
         const settings = {
@@ -50,7 +46,7 @@ export default function DisplaySinglePost(){
             console.log("Post deleted");
             })
         .catch(error => console.log(error))
-        };
+    };
 
     return(
         <div className="flex-column">
