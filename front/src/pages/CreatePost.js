@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { handleTitle, handleContent } from "../utils/postInputHandlers";
 import handleErrors from "../utils/handleErrors";
+import handleFileSelect from "../utils/handleFileSelect";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 
@@ -14,6 +15,7 @@ export default function CreatePost(){
     const [contentAlert, setContentAlert] = useState();
     const [file, setFile] = useState();
     const [src, setSrc] = useState();
+    const [fileError, setFileError] = useState();
     
     function handleCreate(event){
         event.preventDefault();
@@ -26,8 +28,6 @@ export default function CreatePost(){
             return;
         }
 
-        URL.revokeObjectURL(src);   // Remove preview image URL from memory
-
         const settings = {
             method: "POST",
             credentials: "include",
@@ -38,21 +38,15 @@ export default function CreatePost(){
             body: formData,
         };
 
-        fetch("http://localhost:3001/posts", settings)  
+        fetch("http://localhost:3001/post", settings)  
         .then(handleErrors)
         .then(response => {
-            console.log(response)
+            URL.revokeObjectURL(src);   // Remove preview image URL from memory
             navigate("/home");
         })
-        .catch(error => console.log("ERROR: " + error));
+        .catch(error => console.log(error));
     }
     
-    function handleFileSelect(event){
-        setFile(event.target.files[0].name);
-        let url = URL.createObjectURL(event.target.files[0]);   // create a preview of the selected file
-        setSrc(url);
-    }
-
     return(
         <div className="flex-column">
             <Header />
@@ -67,13 +61,14 @@ export default function CreatePost(){
                             {file}
                         </div>
                         <label className="select-file-button">
-                            <input className="select-file-input" type="file" name="image" onChange={event=>handleFileSelect(event)}/>
+                            <input className="select-file-input" type="file" name="image" onChange={event=>handleFileSelect(event, setFile, setFileError, setSrc)}/>
                             Select file
                         </label>
                     </div>
                 <button className="upload-post-button" type="submit" onClick={handleCreate}>Publish</button>
             </form>
             <Navbar nav={true} />
+            <div id="error">{fileError}</div>
         </div>
     )
 }

@@ -22,7 +22,7 @@ export default function DisplaySinglePost(){
     };
   
    useEffect(() => {
-       fetch(`http://localhost:3001/posts/${params.postId}`, settings)
+       fetch(`http://localhost:3001/post/${params.postId}`, settings)
        .then(handleErrors)
        .then(post => {setPost(post)}) 
        .catch(error => console.log(error))
@@ -39,7 +39,7 @@ export default function DisplaySinglePost(){
             },
         };
 
-        fetch(`http://localhost:3001/posts/${id}`, settings)
+        fetch(`http://localhost:3001/post/${id}`, settings)
         .then(handleErrors)
         .then(response => {
             navigate("/home");

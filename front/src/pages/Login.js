@@ -61,7 +61,11 @@ export default function LoginAndSignUp(){
                 return;
             }
         })
-        .catch(error => console.log(error));
+        .catch(error => {
+            errorMessage.push("LOGIN DETAILS INCORRECT");
+            displayErrorMessage(errorMessage);
+            console.log(error)
+        });
     }
 
     function handleInputs(event){
@@ -187,7 +191,6 @@ export default function LoginAndSignUp(){
                     </ul>
                 </div>
             </div>
-            
         </>
     )
 }

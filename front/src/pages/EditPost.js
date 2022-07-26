@@ -3,6 +3,7 @@ import { useParams, useNavigate} from "react-router-dom";
 import Cookies from "js-cookie";
 import { handleTitle, handleContent } from "../utils/postInputHandlers";
 import handleErrors from "../utils/handleErrors";
+import handleFileSelect from "../utils/handleFileSelect";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 
@@ -14,6 +15,7 @@ export default function EditPost(){
     const [contentAlert, setContentAlert] = useState();
     const [file, setFile] = useState();
     const [src, setSrc] = useState();
+    const [fileError, setFileError] = useState();
     const navigate = useNavigate();
 
     const params = useParams();
@@ -28,7 +30,7 @@ export default function EditPost(){
     };
 
     useEffect(()=>{
-        fetch(`http://localhost:3001/posts/${params.postId}`, settings)
+        fetch(`http://localhost:3001/post/${params.postId}`, settings)
                 .then(handleErrors) 
                 .then(data => {
                     setPost(data);
@@ -36,7 +38,7 @@ export default function EditPost(){
                     setContent(data.content);
                     setSrc(data.imageUrl);
                     let filePath = data.imageUrl;
-                    let position = filePath.search(/[0-9]{10}/) + 14;       // get filename from file path
+                    let position = filePath.search(/[0-9]{10}/) + 14;       // get filename from file path to show in preview
                     let fileName = filePath.slice(position);
                     setFile(fileName);
                 })
@@ -64,19 +66,13 @@ export default function EditPost(){
             body: formData,
         };
     
-        fetch(`http://localhost:3001/posts/${params.postId}`, settings)
+        fetch(`http://localhost:3001/post/${params.postId}`, settings)
             .then(handleErrors) 
-            .then(data => {
-                setPost(data);
+            .then(response => {
+                URL.revokeObjectURL(src);   // Remove preview image URL from memory
                 navigate(`/post/${params.postId}`);
             }) 
             .catch(error => console.log(error));
-    }
-
-    function handleFileSelect(event){
-        setFile(event.target.files[0].name)     // display selected file name
-        let url = URL.createObjectURL(event.target.files[0]);   // create a preview of the selected file
-        setSrc(url);
     }
 
     return(
@@ -94,13 +90,14 @@ export default function EditPost(){
                             {post && file}
                         </div>
                         <label className="select-file-button">
-                            <input className="select-file-input" type="file" name="image" onChange={event=>handleFileSelect(event)}/>
+                            <input className="select-file-input" type="file" name="image" onChange={event=>handleFileSelect(event, setFile, setFileError, setSrc)}/>
                             Select file
                         </label>
                     </div>
                 <button className="upload-post-button" type="submit" onClick={handleEdit}>Save changes</button>
             </form>
             <Navbar nav={true} />
+            <div id="error">{fileError}</div>
             </>}
         </>
     )

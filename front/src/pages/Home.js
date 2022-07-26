@@ -20,7 +20,7 @@ export default function Home(){
     };
     
     useEffect(() => {
-        fetch("http://localhost:3001/posts", settings)
+        fetch("http://localhost:3001/post", settings)
             .then(handleErrors)
             .then(response => {
                 setPosts(response);
@@ -48,10 +48,10 @@ export default function Home(){
             },
         };
 
-        fetch(`http://localhost:3001/posts/${id}`, settings)
+        fetch(`http://localhost:3001/post/${id}`, settings)
         .then(handleErrors)
         .then(response => {
-            fetch("http://localhost:3001/posts", getSettings)
+            fetch("http://localhost:3001/post", getSettings)
             .then(handleErrors)
             .then(response => {
                 setPosts(response);

@@ -51,7 +51,7 @@ export default function Card(props){
             },
             body: JSON.stringify({type: type, userId: Cookies.get("userId")}),
         };
-        fetch(`http://localhost:3001/posts/${postId}/react`, settings)
+        fetch(`http://localhost:3001/post/${postId}/react`, settings)
         .then(handleErrors)
         .then(function (data) {
             setCountReactions(data.reactionCount);

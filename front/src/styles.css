@@ -132,6 +132,9 @@ a:visited{
 #error.visible{
     bottom: 0;
 }
+ul{
+    padding: 0;
+}
 
 /* CARD */
 
@@ -464,7 +467,10 @@ input[type="file"]{
     .logo{
         width: 60%;
     }
-
+    #error{
+        width: 100%;
+        bottom: -290px; 
+    }
 }
 
 @media(max-width: 650px){
