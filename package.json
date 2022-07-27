@@ -1,0 +1,23 @@
+{
+  "name": "groupomania",
+  "version": "1.0.0",
+  "description": "A social media application using the MERN stack",
+  "main": "server",
+  "scripts": {
+    "install": "concurrently \"cd back && npm install\" \"cd front && npm install\" ",
+    "start": "concurrently \"cd back && npm start\" \"cd front && npm start\" "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eightyeightdays/OC-Project-7.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Eightyeightdays/OC-Project-7/issues"
+  },
+  "homepage": "https://github.com/Eightyeightdays/OC-Project-7#readme",
+  "dependencies": {
+    "concurrently": "^7.3.0"
+  }
+}

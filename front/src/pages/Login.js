@@ -42,7 +42,7 @@ export default function LoginAndSignUp(){
         },
         body: JSON.stringify(user)
         };
-    
+        
         fetch("http://localhost:3001/auth/login", settings)
         .then(handleErrors)
         .then(data =>{
