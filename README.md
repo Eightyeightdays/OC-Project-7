@@ -2,7 +2,7 @@
 
 A social media application using the MERN stack
 
-1. To setup the project clone the repository and then in the terminal navigate to the back folder and change the .env.local file to .env
+1. To setup the project clone the repository and then navigate to the back folder and change the .env.local file to .env
 
 2. Open the .env file and add your database URL and secret phrase:
 
