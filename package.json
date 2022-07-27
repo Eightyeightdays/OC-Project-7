@@ -4,14 +4,13 @@
   "description": "A social media application using the MERN stack",
   "main": "server",
   "scripts": {
-    "install": "concurrently \"cd back && npm install\" \"cd front && npm install\" ",
     "start": "concurrently \"cd back && npm start\" \"cd front && npm start\" "
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Eightyeightdays/OC-Project-7.git"
   },
-  "author": "",
+  "author": "X",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Eightyeightdays/OC-Project-7/issues"
