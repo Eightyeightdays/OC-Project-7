@@ -56,14 +56,14 @@ exports.loginUser = (req, res) =>{
                         token = jwt.sign(
                             {userId: user._id, admin: true}, 
                             process.env.SECRET_PHRASE,
-                            {expiresIn: "24h"});
+                            {expiresIn: "8h"});
                         response.admin = true;
                         response.token = token;
                     }else{                  // define token, response and admin status for standard user
                         token = jwt.sign(
                             {userId: user._id, admin: false}, 
                             process.env.SECRET_PHRASE,
-                            {expiresIn: "24h"});
+                            {expiresIn: "8h"});
                         response.admin = false;
                         response.token = token;
                     }

@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import { handleTitle, handleContent } from "../utils/postInputHandlers";
 import handleErrors from "../utils/handleErrors";
 import handleFileSelect from "../utils/handleFileSelect";
+import createSettings from "../utils/createSettings";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 
@@ -19,15 +20,7 @@ export default function EditPost(){
     const navigate = useNavigate();
 
     const params = useParams();
-    const settings = {
-        method: "GET",
-        credentials: "include",
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization" : Cookies.get("token"),
-        },
-    };
+    const settings = createSettings("GET");
 
     useEffect(()=>{
         fetch(`http://localhost:3001/post/${params.postId}`, settings)
@@ -56,15 +49,7 @@ export default function EditPost(){
             return;
         }
 
-        const settings = {
-            method: "PUT",
-            credentials: "include",
-            headers: {
-                "Accept": "application/json",
-                "Authorization" : Cookies.get("token"),
-            },
-            body: formData,
-        };
+        const settings = createSettings("PUT", false, formData);
     
         fetch(`http://localhost:3001/post/${params.postId}`, settings)
             .then(handleErrors) 

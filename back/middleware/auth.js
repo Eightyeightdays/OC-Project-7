@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 module.exports = (req, res, next) =>{
     try{
         const token = req.headers.authorization;
-        const decodedToken = jwt.verify(token, process.env.SECRET_PHRASE);
+        const decodedToken = jwt.verify(token, process.env.SECRET_PHRASE);  // verifies that the token matches the secret phrase and returns the payload
         const userId = decodedToken.userId;
         req.auth = {userId};                    // add the decoded user ID to the request object 
         const adminStatus = decodedToken.admin;

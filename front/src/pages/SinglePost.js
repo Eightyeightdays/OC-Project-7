@@ -1,25 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import Card from "../components/Card";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 import handleErrors from "../utils/handleErrors";
+import createSettings from "../utils/createSettings";
 
 export default function DisplaySinglePost(){
     const navigate = useNavigate();
     const params = useParams();
     const [post, setPost] = useState();
     
-    const settings = {
-        method: "GET",
-        credentials: "include",
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization" : Cookies.get("token"),
-        },
-    };
+    const settings = createSettings("GET");
   
    useEffect(() => {
        fetch(`http://localhost:3001/post/${params.postId}`, settings)
@@ -29,15 +21,7 @@ export default function DisplaySinglePost(){
    }, []);
 
     const handleDelete = (id)=>{
-        const settings = {
-            method: "DELETE",
-            credentials: "include",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization": Cookies.get("token"),
-            },
-        };
+        const settings = createSettings("DELETE");
 
         fetch(`http://localhost:3001/post/${id}`, settings)
         .then(handleErrors)

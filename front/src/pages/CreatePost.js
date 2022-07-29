@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import { handleTitle, handleContent } from "../utils/postInputHandlers";
 import handleErrors from "../utils/handleErrors";
 import handleFileSelect from "../utils/handleFileSelect";
+import createSettings from "../utils/createSettings";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 
@@ -28,15 +28,7 @@ export default function CreatePost(){
             return;
         }
 
-        const settings = {
-            method: "POST",
-            credentials: "include",
-            headers: {
-                "Accept": "application/json",
-                "Authorization": Cookies.get("token"),
-            },
-            body: formData,
-        };
+        const settings = createSettings("POST", false, formData)
 
         fetch("http://localhost:3001/post", settings)  
         .then(handleErrors)

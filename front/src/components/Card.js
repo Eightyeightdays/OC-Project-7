@@ -3,10 +3,11 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import Cookies from "js-cookie";
-import EditAndDeleteButton from "../buttons/EditAndDeleteButton";
-import ReactButton from "../buttons/ReactButton";
+import EditAndDeleteButton from "./buttons/EditAndDeleteButton";
+import ReactButton from "./buttons/ReactButton";
 import ConfirmDeletePopup from "./ConfirmDeletePopup";
 import handleErrors from "../utils/handleErrors";
+import createSettings from "../utils/createSettings";
 
 export default function Card(props){
     let{
@@ -30,10 +31,10 @@ export default function Card(props){
 
     const navigate = useNavigate();
     const params = useParams();
-    const currentUser = Cookies.get("userId");
     const [countReactions, setCountReactions]= useState(reactions.length);
     const [toggle, setToggle] = useState(false);
     const [popup, setPopup] = useState(false);
+    const currentUser = Cookies.get("userId");
     const admin = Cookies.get("admin"); // is a string, not a boolean
 
     function handleEdit(){
@@ -42,15 +43,7 @@ export default function Card(props){
     }
 
     function reactToPost(type){
-        const settings = {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization" : Cookies.get("token"),
-            },
-            body: JSON.stringify({type: type, userId: Cookies.get("userId")}),
-        };
+        const settings = createSettings("POST", true, JSON.stringify({type: type, userId: Cookies.get("userId")}))
         fetch(`http://localhost:3001/post/${postId}/react`, settings)
         .then(handleErrors)
         .then(function (data) {

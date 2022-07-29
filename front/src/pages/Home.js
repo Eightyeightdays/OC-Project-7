@@ -1,23 +1,13 @@
 import React, { useEffect, useState } from "react";
-import Cookies from "js-cookie";
 import Card from "../components/Card.js";
 import Navbar from "../components/Navbar.js";
 import Header from "../components/Header.js";
 import handleErrors from "../utils/handleErrors";
-
+import createSettings from "../utils/createSettings.js";
 
 export default function Home(){ 
     const [posts, setPosts] = useState([]);
-
-    const settings = {
-        method: "GET",
-        credentials: "include",
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization" : Cookies.get("token"),
-        },
-    };
+    const settings = createSettings("GET")
     
     useEffect(() => {
         fetch("http://localhost:3001/post", settings)
@@ -29,29 +19,12 @@ export default function Home(){
     }, []);
 
     const handleDelete = (id)=>{
-        const settings = {
-            method: "DELETE",
-            credentials: "include",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization": Cookies.get("token"),
-            },
-        };
-        const getSettings = {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization": Cookies.get("token"),
-            },
-        };
+        const delSettings = createSettings("DELETE")
 
-        fetch(`http://localhost:3001/post/${id}`, settings)
+        fetch(`http://localhost:3001/post/${id}`, delSettings)
         .then(handleErrors)
         .then(response => {
-            fetch("http://localhost:3001/post", getSettings)
+            fetch("http://localhost:3001/post", settings)
             .then(handleErrors)
             .then(response => {
                 setPosts(response);

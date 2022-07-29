@@ -3,8 +3,11 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Logo from "../assets/icon-left-font-monochrome-black.png";
 import handleErrors from "../utils/handleErrors";
+import createSettings from "../utils/createSettings";
 
 export default function LoginAndSignUp(){
+    const emailValidator = require("email-validator");
+    const passwordValidator = require('password-validator');
     const [error, setError] = useState([]);
     const [existingUser, setExistingUser] = useState(false);
     const [buttonLabel, setButtonLabel] = useState("Sign up");
@@ -32,16 +35,7 @@ export default function LoginAndSignUp(){
             return;
         }
 
-        const settings = {
-        method: "POST",
-        credentials: "include",
-        headers: {
-            "Access-Control-Allow-Credentials": true,
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user)
-        };
+        const settings = createSettings("POST", true, JSON.stringify(user))
         
         fetch("http://localhost:3001/auth/login", settings)
         .then(handleErrors)
@@ -82,8 +76,6 @@ export default function LoginAndSignUp(){
         const signUpForm = document.getElementById("signUpForm");
         const user = Object.fromEntries(new FormData(signUpForm).entries());
         const {email, password} = user;
-        const emailValidator = require("email-validator");
-        const passwordValidator = require('password-validator');
         const schema = new passwordValidator();
         schema.is().min(8, "Password must contain a minimum of 8 characters");
         schema.is().max(15, "Password must be a maxiumum of 15 characters");
@@ -119,19 +111,11 @@ export default function LoginAndSignUp(){
             return;
         }
 
-        const settings = {
-        method: "POST",
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user)
-        };
+        const settings = createSettings("POST", true, JSON.stringify(user));
     
         fetch("http://localhost:3001/auth/signup", settings)
         .then(handleErrors)
         .then(response => {
-            settings.credentials = "include";
             fetch("http://localhost:3001/auth/login", settings)
             .then(handleErrors)
             .then(data =>{

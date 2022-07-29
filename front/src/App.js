@@ -20,32 +20,31 @@ export default function App() {
                     <RequireAuth redirectTo="/">
                         <Home path="/home"/>
                         </RequireAuth>
-                }
-                />
+                }/>
+
                 <Route
                 path="/post/:postId"
                 element={
                     <RequireAuth redirectTo="/">
                         <SinglePost path="/post/:postId" />
                         </RequireAuth>
-                }
-                />
+                }/>
+
                 <Route
                 path="/post/new"
                 element={
                     <RequireAuth redirectTo="/">
                         <CreatePost path="/post/new" />
                         </RequireAuth>
-                }
-                />
+                }/>
+
                 <Route
                 path="/post/:postId/edit"
                 element={
                     <RequireAuth redirectTo="/">
                         <EditPost path="/post/:postId/edit" />
                         </RequireAuth>
-                }
-                />
+                }/>
             </Routes>
         </Router>
     );

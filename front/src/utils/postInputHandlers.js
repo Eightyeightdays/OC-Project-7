@@ -1,7 +1,7 @@
 export function handleTitle(setTitle, setMessage, title, e){
     setTitle(e.target.value);
     if(e.target.value.length >= 50){
-        setMessage("Maximum 50 character limit reached");                   // TODO - ADD EXTRA STYLING
+        setMessage("Maximum 50 character limit reached");                  
     }else{
         setMessage("");
     }

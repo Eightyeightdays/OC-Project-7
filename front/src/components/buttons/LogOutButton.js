@@ -1,18 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import handleErrors from "../utils/handleErrors";
+import handleErrors from "../../utils/handleErrors";
+import createSettings from "../../utils/createSettings";
 
 export default function LogOutButton(){
     const navigate = useNavigate();
-    const settings = {
-        method: "POST",
-        credentials: "include",
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        },
-    };
+    const settings = createSettings("POST")
 
     function handleLogOut(){
         fetch("http://localhost:3001/auth/logout", settings)

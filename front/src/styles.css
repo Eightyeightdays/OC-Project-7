@@ -107,7 +107,11 @@ a:visited{
     margin-top: 1em;
     letter-spacing: 0.15em;
     color: white;
-    background: var(--tertiary)
+    background: var(--tertiary);
+    transition: all 0.2s ease-out;
+}
+.loginButton:hover{
+    background: var(--primary);
 }
 
 /* ERROR POPUP */
