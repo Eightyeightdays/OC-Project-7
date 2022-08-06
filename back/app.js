@@ -1,4 +1,4 @@
-require("dotenv").config({path: "./.env"});
+require("dotenv").config({path: "./.env", silent: process.env.NODE_ENV === 'production'});
 
 const path = require("path");
 const express = require("express");

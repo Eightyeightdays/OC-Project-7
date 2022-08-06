@@ -19,7 +19,7 @@ export default function App() {
                 element={
                     <RequireAuth redirectTo="/">
                         <Home path="/home"/>
-                        </RequireAuth>
+                    </RequireAuth>
                 }/>
 
                 <Route
@@ -27,7 +27,7 @@ export default function App() {
                 element={
                     <RequireAuth redirectTo="/">
                         <SinglePost path="/post/:postId" />
-                        </RequireAuth>
+                    </RequireAuth>
                 }/>
 
                 <Route
@@ -35,7 +35,7 @@ export default function App() {
                 element={
                     <RequireAuth redirectTo="/">
                         <CreatePost path="/post/new" />
-                        </RequireAuth>
+                    </RequireAuth>
                 }/>
 
                 <Route
@@ -43,7 +43,7 @@ export default function App() {
                 element={
                     <RequireAuth redirectTo="/">
                         <EditPost path="/post/:postId/edit" />
-                        </RequireAuth>
+                    </RequireAuth>
                 }/>
             </Routes>
         </Router>
