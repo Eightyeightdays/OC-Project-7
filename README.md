@@ -1,5 +1,3 @@
-# OC-Project-7
-
 A social media application using the MERN stack
 
 1. To setup the project clone the repository and then navigate to the back folder and change the .env.local file to .env
